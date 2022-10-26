@@ -1,8 +1,9 @@
-import axios from "axios"
-import {getTokens, setAuthToken, setRefreshToken} from "@utils"
+import axios from "axios";
+import {getTokens, setAuthToken, setRefreshToken} from "@utils";
 
+const BASE_URL = "/api/v0";
 const api = axios.create({
-    baseURL: "/api/v0",
+    baseURL: BASE_URL,
 })
 
 api.interceptors.response.use(
@@ -19,7 +20,7 @@ api.interceptors.response.use(
 
             // eslint-disable-next-line no-return-await
             return await axios
-                .get("/api/v0/user/refresh-token", {
+                .get(`${BASE_URL}/user/refresh-token`, {
                     headers: {
                         "refresh-token": refreshToken,
                     },
