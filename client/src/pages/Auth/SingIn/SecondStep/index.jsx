@@ -9,7 +9,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import {openDialog, closeDialog} from "@redux/dialog/action";
+import {closeDialog} from "@redux/dialog/action";
+import {authPingTest} from "@redux/auth/action";
 import CustomButton from '@components/CustomButton';
 import {MAIN_COLOR} from "@utils/constants";
 
@@ -65,7 +66,7 @@ const SingInSecondStep = () => {
             <CustomButton
               customStyle={CUSTOM_BUTTON_LOG_IN_STYLE}
               name={CUSTOM_BUTTON_LOG_IN_NAME}
-              onclickAction={() => openDialog()}
+              onclickAction={() => authPingTest()}
             />
           </Grid>
           <DialogContentText sx={{fontSize: 15, pt: 3}}>
