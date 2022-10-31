@@ -26,7 +26,7 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
 
   return (
-    <Box sx={{padding: '0 100px', width: '400px', height: '100%',}}>
+    <Box sx={{padding: '0 100px', width: '380px', height: '90%',}}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',

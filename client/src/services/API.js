@@ -1,50 +1,41 @@
 import axios from "axios";
-import {getTokens, setAuthToken, setRefreshToken} from "@utils";
+import {getTokens, setAuthToken, setRefreshToken, isRefreshTokenExpired} from "@utils";
 
 const BASE_URL = "/api/v0";
 const api = axios.create({
   baseURL: BASE_URL,
 })
 
-api.interceptors.response.use(
-  (response) => response.data,
-  async function (error) {
-    const {refreshToken} = getTokens()
-    const originalRequest = error.config
+api.interceptors.response.use(res => res.data, async error => {
+  const {refreshToken} = getTokens();
+  const originalRequest = error?.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
+  if (isRefreshTokenExpired(refreshToken)) {
 
-      return await axios
-        .get(`${BASE_URL}/user/refresh-token`, {
-          headers: {
-            "refresh-token": refreshToken,
-          },
-        })
-        .then(({data}) => {
-          setAuthToken(data.jwt)
-          setRefreshToken(data.refreshToken)
-          originalRequest.headers.Authorization = `Bearer ${data.jwt}`
-          return api(originalRequest)
-        })
-    }
-
-    return Promise.reject(error);
   }
-)
+
+  if (error?.response?.status === 403 && !originalRequest?._retry) {
+    originalRequest._retry = true;
+    const {data: {type, accessToken}} = await axios.post(`${BASE_URL}/auth/token`, {refreshToken})
+    setAuthToken(accessToken);
+    originalRequest.headers.Authorization = `${type} ${accessToken}`;
+
+    return api(originalRequest);
+  }
+
+  return Promise.reject(error);
+});
 
 export const URLS = {
   AUTH: {
-    PING: `/auth/ping`
+    PING: `${BASE_URL}/auth/ping`,
+    IS_ACCOUNT_EXIST: `${BASE_URL}/auth/account`,
+    LOGIN: `${BASE_URL}/auth/login`,
   },
   USER: {
     _ROOT: "/user",
-    ALL_USER: "/user/all",
-    LOG_IN: `/user/log-in`,
-    LOG_OUT: `/user/log-out`,
-    SIGN_UP: `/user/sign-up`,
-    PROFILE: "/user/profile",
+    LOGOUT: `/user/logout`,
   }
 }
 
-export default api
+export default {api, axios};

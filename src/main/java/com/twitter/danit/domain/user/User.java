@@ -6,7 +6,6 @@ import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.tweet.Tweet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -64,10 +63,4 @@ public class User extends BaseEntity {
 
   @ManyToMany
   private Set<Chat> chats;
-
-  public User(String userTag, String email, String password) {
-    this.userTag = userTag;
-    this.email = email;
-    this.password = password;
-  }
 }

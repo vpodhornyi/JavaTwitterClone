@@ -23,7 +23,7 @@ export const createAction = (actionName, { async = false, ...options }) => {
     )
   }
 
-  return actions
+  return actions;
 }
 
 export const createActions = ({ actions = [], async = [] }, options) => {

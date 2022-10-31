@@ -5,6 +5,7 @@ import { API_ACTIONS as AUTH_ACTIONS } from "./auth/action";
 
 import authReducer from "./auth/reducer";
 import dialogReducer from "./dialog/reducer";
+import snackBarReducer from "./snackBar/reducer";
 import logoIconReducer from "./business/logoIcon/reducer";
 import mainMenuReducer from "./business/menu/mainMenu/reducer";
 
@@ -13,6 +14,7 @@ const { applyMiddleware, combineReducers, createStore } = require("redux");
 const reducer = combineReducers({
   auth: authReducer,
   dialog: dialogReducer,
+  snackBar: snackBarReducer,
   logoIcon: logoIconReducer,
   mainMenu: mainMenuReducer,
 })
@@ -26,7 +28,7 @@ export default () => {
 
   if (accessToken) {
     setAuthToken(accessToken)
-    store.dispatch(AUTH_ACTIONS.fetchProfile())
+    // store.dispatch(AUTH_ACTIONS.fetchProfile())
   }
 
   return store;

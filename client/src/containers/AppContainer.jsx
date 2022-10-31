@@ -4,6 +4,7 @@ import {Routes, Route} from "react-router-dom";
 import {PageLoader, Preloader} from "@components/Loader";
 import PrivateRoute from "@components/PrivateRoute";
 import DialogWindow from "@components/DialogWindow";
+import SnackBar from "@components/SnackBar";
 import routes from "../routes";
 
 const AppContainer = () => {
@@ -17,10 +18,12 @@ const AppContainer = () => {
     []
   );
 
+
   return (
     <>
       <Preloader loaded={!loading}/>
       <DialogWindow/>
+      <SnackBar/>
       <Suspense fallback={<PageLoader loaded={!loading}/>}>
         <Routes>{routeComponents}</Routes>
       </Suspense>

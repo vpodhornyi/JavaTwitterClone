@@ -5,6 +5,17 @@ import {Link, Container, Box} from "@mui/material";
 import MainMenu from "@components/navigations/MainMenu";
 import LogoIcon from "@components/icons/LogoIcon";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
+import {logout} from "@redux/auth/action";
+import CustomButton from "@components/CustomButton";
+import {MAIN_COLOR} from "@utils/constants";
+
+const CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE = `
+    background-color: ${MAIN_COLOR};
+    color: #fff;
+    border: none;
+      &:hover {
+        background-color: #0D80D8;
+    }`;
 
 const Sidebar = () => {
   const {
@@ -29,10 +40,12 @@ const Sidebar = () => {
         </Link>
         <MainMenu/>
       </Box>
-      <Box sx={{
-        backgroundColor: "#fe0000"
-      }}>
-        Avatar
+      <Box>
+        <CustomButton
+          customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
+          name={"Logout"}
+          onclickAction={() => logout()}
+        />
       </Box>
     </Container>
   );

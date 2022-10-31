@@ -10,7 +10,7 @@ public class GenerateKeys {
     System.out.println(generateKey());
   }
 
-  private static String generateKey() {
+  public static String generateKey() {
     return Encoders.BASE64.encode(Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded());
   }
 }

@@ -22,6 +22,8 @@ import java.util.Date;
 public class JwtProvider {
   public static final int ACCESS_LEAVE_MINUTES = 1;
   public static final int REFRESH_LEAVE_DAYS = 30;
+  public static final String USER_LOGIN_FIELD = "userTag";
+
   private final SecretKey jwtAccessSecret;
   private final SecretKey jwtRefreshSecret;
 
@@ -29,6 +31,7 @@ public class JwtProvider {
     this.jwtAccessSecret = getSecretKey(jwtAccessSecret);
     this.jwtRefreshSecret = getSecretKey(jwtRefreshSecret);
   }
+
 
   private SecretKey getSecretKey(String secretKey) {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
@@ -39,11 +42,10 @@ public class JwtProvider {
     final Instant accessExpirationInstant = now.plusMinutes(ACCESS_LEAVE_MINUTES).atZone(ZoneId.systemDefault()).toInstant();
     final Date accessExpiration = Date.from(accessExpirationInstant);
     return Jwts.builder()
-      .setSubject(user.getEmail())
+      .setSubject(user.getUserTag())
       .setExpiration(accessExpiration)
       .signWith(jwtAccessSecret)
-//      .claim("roles", user.getRoles())
-      .claim("userTag", user.getUserTag())
+      .claim(USER_LOGIN_FIELD, user.getUserTag())
       .compact();
   }
 

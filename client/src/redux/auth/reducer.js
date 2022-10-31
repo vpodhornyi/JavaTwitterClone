@@ -1,12 +1,12 @@
-import { getTokens } from "@utils";
-import { ACTIONS } from "./action";
+import {getTokens} from "@utils";
+import {ACTIONS} from "./action";
 
-const { accessToken } = getTokens();
+const {accessToken} = getTokens();
 
 const INIT_STATE = {
-  // authorized: Boolean(accessToken),
-  authorized: true,
+  authorized: Boolean(accessToken),
   loading: false,
+  authLogin: 'bob1234',
   user: {
     isBlocked: false,
     isAdmin: false,
@@ -17,82 +17,27 @@ const INIT_STATE = {
   },
 }
 
-export default (state = INIT_STATE, action) => {
-  switch (action.type) {
-    case String(ACTIONS.login.request):
-    case String(ACTIONS.signup.request):
-    case String(ACTIONS.profile.request):
-    case String(ACTIONS.topup.request):
-    case String(ACTIONS.transfer.request):
-    case String(ACTIONS.createaccount.request):
-    case String(ACTIONS.changecurrency.request):
+export default (state = INIT_STATE, {payload, type}) => {
+  switch (type) {
+    case String(ACTIONS.setLogin):
       return {
         ...state,
-        loading: true,
+        authLogin: payload.login
       }
-    case String(ACTIONS.login.success):
-    case String(ACTIONS.signup.success):
-    case String(ACTIONS.profile.success):
+    case String(ACTIONS.authorized):
       return {
-        ...state,
+        ...INIT_STATE,
         authorized: true,
-        loading: false,
-        user: action.payload,
       }
-    case String(ACTIONS.login.fail):
-    case String(ACTIONS.signup.fail):
-    case String(ACTIONS.profile.fail):
-      return {
-        ...state,
-        authorized: false,
-        loading: false,
-      }
-    case String(ACTIONS.logout):
+    case String(ACTIONS.unauthorized):
       return {
         ...INIT_STATE,
         authorized: false,
       }
-
-    case String(ACTIONS.transfer.success):
+    case String(ACTIONS.login.request):
       return {
         ...state,
-        loading: false,
-        user: {
-          ...state.user,
-          accounts:  action.payload
-        }
-      }
-    case String(ACTIONS.topup.success):
-    case String(ACTIONS.changecurrency.success):
-      return {
-        ...state,
-        loading: false,
-        user: {
-          ...state.user,
-          accounts: state.user.accounts.map(ac=>{
-            if(action.payload.number===ac.number){
-              return action.payload;
-            }
-            return  ac;
-          })
-        }
-      }
-    case String(ACTIONS.createaccount.success):
-      return {
-        ...state,
-        loading: false,
-        user: {
-          ...state.user,
-          accounts: state.user.accounts.concat(action.payload)
-        }
-      }
-    case String(ACTIONS.topup.fail):
-    case String(ACTIONS.transfer.fail):
-    case String(ACTIONS.createaccount.fail):
-    case String(ACTIONS.changecurrency.fail):
-      return {
-        ...state,
-        loading: false,
+        loading: true,
       }
     default:
       return state

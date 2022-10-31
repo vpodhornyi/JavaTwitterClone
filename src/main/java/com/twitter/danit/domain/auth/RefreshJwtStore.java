@@ -16,5 +16,7 @@ import javax.persistence.Table;
 public class RefreshJwtStore extends BaseEntity {
 
   @Column(nullable = false)
+  private String login;
+  @Column(nullable = false)
   private String refreshToken;
 }

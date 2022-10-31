@@ -32,12 +32,12 @@ public class JwtAuthentication implements Authentication {
 
   @Override
   public Object getPrincipal() {
-    return null;
+    return userTag;
   }
 
   @Override
   public boolean isAuthenticated() {
-    return false;
+    return authenticated;
   }
 
   @Override
