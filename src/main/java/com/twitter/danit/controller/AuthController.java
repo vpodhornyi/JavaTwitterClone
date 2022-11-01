@@ -11,17 +11,11 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("${api.version}/auth")
 @Validated
+@RequiredArgsConstructor
 public class AuthController {
-
   private final JwtAuthService jwtAuthService;
-
-  @GetMapping("/ping")
-  public String ping() {
-    return "pong";
-  }
 
   @PostMapping("/account")
   public ResponseEntity<AccountCheckResponse> account(@Valid @RequestBody AccountCheckRequest authRequest) {
@@ -30,14 +24,14 @@ public class AuthController {
     return ResponseEntity.ok(res);
   }
 
-  @PostMapping("/login")
+  @PostMapping("/authorize")
   public ResponseEntity<JwtResponse> getAccessRefreshTokens(@Valid @RequestBody JwtRequest authRequest) {
     final JwtResponse res = jwtAuthService.login(authRequest);
 
     return ResponseEntity.ok(res);
   }
 
-  @PostMapping("/token")
+  @PostMapping("/access")
   public ResponseEntity<JwtResponse> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
     final JwtResponse jwtResponse = jwtAuthService.getAccessToken(request.getRefreshToken());
     return ResponseEntity.ok(jwtResponse);

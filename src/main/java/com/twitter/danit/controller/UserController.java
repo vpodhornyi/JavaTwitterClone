@@ -25,7 +25,7 @@ public class UserController {
   private final JwtAuthService jwtAuthService;
 
   @GetMapping
-  public ResponseEntity<User> getUser() {
+  public ResponseEntity<Object> getUser() {
     String userTag = (String) jwtAuthService.getAuthInfo().getPrincipal();
     User user = userService.getByUserTag(userTag);
 

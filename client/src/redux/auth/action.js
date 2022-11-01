@@ -1,5 +1,5 @@
-import {createActions} from '../utils'
-import API, {URLS} from "@service/API"
+import {createActions} from '../utils';
+import API, {URLS} from "@service/API";
 import {setAuthToken, setRefreshToken} from "../../utils";
 import {openDialog, closeDialog} from "@redux/dialog/action";
 import SingInSecondStep from '@pages/Auth/SingIn/SecondStep';
@@ -7,33 +7,23 @@ import SingInSecondStep from '@pages/Auth/SingIn/SecondStep';
 const {api, axios} = API;
 const actions = createActions(
   {
-    actions: ["SET_LOGIN", "AUTHORIZED", "UNAUTHORIZED"],
-    async: ["AUTH_PING_TEST", "LOGOUT", "LOGIN",],
+    async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "LOGOUT"],
   },
   {
     prefix: "auth",
   }
-)
+);
 
 export const ACTIONS = {
   ...actions.actions,
   ...actions.async,
 }
 
-export const authPingTest = () => dispatch => {
-  api.get(URLS.AUTH.PING)
-    .then((res) => {
-      console.log('auth ping success');
-    })
-    .catch(() => {
-      console.log('auth ping error');
-    })
-}
-
 export const isAccountExist = (login) => async dispatch => {
   try {
+    dispatch(ACTIONS.isAccountExist.request());
     const {data} = await axios.post(URLS.AUTH.IS_ACCOUNT_EXIST, {login})
-    await dispatch(ACTIONS.setLogin(data));
+    dispatch(ACTIONS.isAccountExist.success(data));
     await dispatch(openDialog(SingInSecondStep));
 
   } catch (err) {
@@ -41,13 +31,14 @@ export const isAccountExist = (login) => async dispatch => {
   }
 }
 
-export const login = ({login, password}) => async dispatch => {
+export const authorize = ({login, password}) => async dispatch => {
   try {
-    const {data} = await axios.post(URLS.AUTH.LOGIN, {login, password});
-    await dispatch(closeDialog());
+    dispatch(ACTIONS.authorize.request());
+    const {data} = await axios.post(URLS.AUTH.AUTHORIZE, {login, password});
+    dispatch(closeDialog());
     setAuthToken(data.accessToken);
     setRefreshToken(data.refreshToken);
-    dispatch(ACTIONS.authorized());
+    dispatch(ACTIONS.authorize.success());
 
   } catch (err) {
     console.log("login error - ", err)
@@ -59,7 +50,7 @@ export const logout = () => async dispatch => {
     await api.get(URLS.USER.LOGOUT)
     setAuthToken();
     setRefreshToken();
-    dispatch(ACTIONS.unauthorized());
+    dispatch(ACTIONS.logout.success());
 
   } catch (err) {
     console.log('logout error - ', err);

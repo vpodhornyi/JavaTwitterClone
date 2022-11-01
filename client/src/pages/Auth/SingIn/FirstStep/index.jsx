@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector,} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Grid from '@mui/material/Grid';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import {openDialog, closeDialog} from "@redux/dialog/action";
 import {isAccountExist} from "@redux/auth/action";
-import {getAuthLogin} from "@redux/auth/selector";
+import {getLoginName} from "@redux/auth/selector";
 import OrLine from '@components/OrLine';
 import CustomButton from '@components/CustomButton';
 import ForgotPassword from '../ForgotPassword';
@@ -43,8 +43,7 @@ const CUSTOM_BUTTON_FORGOT_PASSWORD_NAME = 'Forgot password?';
 
 
 const SingInFirstStep = () => {
-  const authLogin = useSelector(getAuthLogin);
-  const [login, setLogin] = useState(authLogin);
+  const [login, setLogin] = useState(useSelector(getLoginName));
   const dispatch = useDispatch();
 
   const onChange = (e) => {

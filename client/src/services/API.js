@@ -7,16 +7,12 @@ const api = axios.create({
 })
 
 api.interceptors.response.use(res => res.data, async error => {
-  const {refreshToken} = getTokens();
   const originalRequest = error?.config;
-
-  if (isRefreshTokenExpired(refreshToken)) {
-
-  }
 
   if (error?.response?.status === 403 && !originalRequest?._retry) {
     originalRequest._retry = true;
-    const {data: {type, accessToken}} = await axios.post(`${BASE_URL}/auth/token`, {refreshToken})
+    const {refreshToken} = getTokens();
+    const {data: {type, accessToken}} = await axios.post(`${BASE_URL}/auth/access`, {refreshToken})
     setAuthToken(accessToken);
     originalRequest.headers.Authorization = `${type} ${accessToken}`;
 
@@ -27,10 +23,12 @@ api.interceptors.response.use(res => res.data, async error => {
 });
 
 export const URLS = {
+  API: {
+    PING: `/ping`,
+  },
   AUTH: {
-    PING: `${BASE_URL}/auth/ping`,
     IS_ACCOUNT_EXIST: `${BASE_URL}/auth/account`,
-    LOGIN: `${BASE_URL}/auth/login`,
+    AUTHORIZE: `${BASE_URL}/auth/authorize`,
   },
   USER: {
     _ROOT: "/user",

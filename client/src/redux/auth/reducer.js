@@ -6,38 +6,39 @@ const {accessToken} = getTokens();
 const INIT_STATE = {
   authorized: Boolean(accessToken),
   loading: false,
-  authLogin: 'bob1234',
-  user: {
-    isBlocked: false,
-    isAdmin: false,
-    accounts: [],
-    _id: "",
-    email: "",
-    fullName: "",
-  },
+  loginName: 'bob1234',
 }
 
 export default (state = INIT_STATE, {payload, type}) => {
   switch (type) {
-    case String(ACTIONS.setLogin):
+    case String(ACTIONS.isAccountExist.request):
+    case String(ACTIONS.authorize.request):
       return {
         ...state,
-        authLogin: payload.login
+        loading: true,
       }
-    case String(ACTIONS.authorized):
+    case String(ACTIONS.isAccountExist.success):
+      return {
+        ...state,
+        loginName: payload.login,
+        loading: false,
+      }
+    case String(ACTIONS.authorize.success):
       return {
         ...INIT_STATE,
         authorized: true,
+        loading: false,
       }
-    case String(ACTIONS.unauthorized):
+    case String(ACTIONS.logout.success):
       return {
         ...INIT_STATE,
         authorized: false,
       }
-    case String(ACTIONS.login.request):
+    case String(ACTIONS.isAccountExist.fail):
+    case String(ACTIONS.authorize.fail):
       return {
         ...state,
-        loading: true,
+        loading: false,
       }
     default:
       return state

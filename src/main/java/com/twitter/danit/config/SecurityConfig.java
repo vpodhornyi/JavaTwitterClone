@@ -23,10 +23,10 @@ public class SecurityConfig {
   private final String token;
 
   public SecurityConfig(JwtFilter jwtFilter,
-                        @Value("${api.version}/auth/ping") String ping,
+                        @Value("/ping") String ping,
                         @Value("${api.version}/auth/account") String account,
-                        @Value("${api.version}/auth/login") String login,
-                        @Value("${api.version}/auth/token") String token) {
+                        @Value("${api.version}/auth/authorize") String login,
+                        @Value("${api.version}/auth/access") String token) {
     this.jwtFilter = jwtFilter;
     this.ping = ping;
     this.account = account;
