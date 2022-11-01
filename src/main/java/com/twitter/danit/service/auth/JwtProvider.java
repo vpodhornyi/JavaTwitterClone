@@ -20,9 +20,12 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtProvider {
-  public static final int ACCESS_LEAVE_MINUTES = 1;
-  public static final int REFRESH_LEAVE_DAYS = 30;
-  public static final String USER_LOGIN_FIELD = "userTag";
+  @Value("${jwt.access.leave.minutes}")
+  private int accessLeaveMinutes;
+  @Value("${jwt.refresh.leave.days}")
+  private int refreshLeaveDays;
+  @Value("${jwt.authorization.user.field}")
+  private String userLoginField;
 
   private final SecretKey jwtAccessSecret;
   private final SecretKey jwtRefreshSecret;
@@ -39,19 +42,19 @@ public class JwtProvider {
 
   public String generateAccessToken(@NonNull User user) {
     final LocalDateTime now = LocalDateTime.now();
-    final Instant accessExpirationInstant = now.plusMinutes(ACCESS_LEAVE_MINUTES).atZone(ZoneId.systemDefault()).toInstant();
+    final Instant accessExpirationInstant = now.plusMinutes(accessLeaveMinutes).atZone(ZoneId.systemDefault()).toInstant();
     final Date accessExpiration = Date.from(accessExpirationInstant);
     return Jwts.builder()
       .setSubject(user.getUserTag())
       .setExpiration(accessExpiration)
       .signWith(jwtAccessSecret)
-      .claim(USER_LOGIN_FIELD, user.getUserTag())
+      .claim(userLoginField, user.getUserTag())
       .compact();
   }
 
   public String generateRefreshToken(@NonNull User user) {
     final LocalDateTime now = LocalDateTime.now();
-    final Instant refreshExpirationInstant = now.plusDays(REFRESH_LEAVE_DAYS).atZone(ZoneId.systemDefault()).toInstant();
+    final Instant refreshExpirationInstant = now.plusDays(refreshLeaveDays).atZone(ZoneId.systemDefault()).toInstant();
     final Date refreshExpiration = Date.from(refreshExpirationInstant);
     return Jwts.builder()
       .setSubject(user.getUserTag())

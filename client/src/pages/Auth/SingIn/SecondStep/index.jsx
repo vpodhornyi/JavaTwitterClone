@@ -32,59 +32,60 @@ const SingInSecondStep = () => {
     setPassword(e.target.value);
   }
 
-  return (<Box sx={{padding: '0 100px', width: '380px', height: '90%',}}>
-    <Box sx={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-    }}>
-      <IconButton aria-label="close" sx={{
-        position: 'absolute', top: 5, left: 5,
-      }}
-                  onClick={() => dispatch(closeDialog())}>
-        <CloseIcon/>
-      </IconButton>
-      <TwitterIcon sx={{fontSize: 40, color: MAIN_COLOR}}/>
-    </Box>
-    <DialogTitle sx={{pb: 5}}>Enter your password</DialogTitle>
-    <DialogContent sx={{
-      height: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-    }}>
-      <Box>
-        <Grid>
-          <Grid item xs={12} sx={{pb: 1}}>
+  return (
+    <Box sx={{padding: '0 100px', width: '380px', height: '90%',}}>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}>
+        <IconButton aria-label="close" sx={{
+          position: 'absolute', top: 5, left: 5,
+        }}
+                    onClick={() => dispatch(closeDialog())}>
+          <CloseIcon/>
+        </IconButton>
+        <TwitterIcon sx={{fontSize: 40, color: MAIN_COLOR}}/>
+      </Box>
+      <DialogTitle sx={{pb: 5}}>Enter your password</DialogTitle>
+      <DialogContent sx={{
+        height: '80%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      }}>
+        <Box>
+          <Grid>
+            <Grid item xs={12} sx={{pb: 1}}>
+              <Grid item sx={{padding: '10px 0 20px 0'}}>
+                <TextField value={loginName}
+                           disabled={true}
+                           id="email"
+                           sx={{width: '100%'}}
+                           label="Email or username"
+                           variant="outlined"/>
+              </Grid>
+            </Grid>
             <Grid item sx={{padding: '10px 0 20px 0'}}>
-              <TextField value={loginName}
-                         disabled={true}
-                         id="email"
-                         sx={{width: '100%'}}
-                         label="Email or username"
-                         variant="outlined"/>
+              <TextField
+                onChange={e => onChange(e)}
+                value={password}
+                id="password"
+                sx={{width: '100%'}}
+                label="Password"
+                variant="outlined"/>
             </Grid>
           </Grid>
-          <Grid item sx={{padding: '10px 0 20px 0'}}>
-            <TextField
-              onChange={e => onChange(e)}
-              value={password}
-              id="password"
-              sx={{width: '100%'}}
-              label="Password"
-              variant="outlined"/>
+        </Box>
+        <Box>
+          <Grid item sx={{padding: '10px 0 30px 0'}}>
+            <CustomButton
+              customStyle={CUSTOM_BUTTON_LOG_IN_STYLE}
+              name={CUSTOM_BUTTON_LOG_IN_NAME}
+              onclickAction={() => authorize({login: loginName, password})}
+            />
           </Grid>
-        </Grid>
-      </Box>
-      <Box>
-        <Grid item sx={{padding: '10px 0 30px 0'}}>
-          <CustomButton
-            customStyle={CUSTOM_BUTTON_LOG_IN_STYLE}
-            name={CUSTOM_BUTTON_LOG_IN_NAME}
-            onclickAction={() => authorize({login: loginName, password})}
-          />
-        </Grid>
-        <DialogContentText sx={{fontSize: 15, pt: 3}}>
-          {`Don't have an account? Sign up`}
-        </DialogContentText>
-      </Box>
-    </DialogContent>
-  </Box>);
+          <DialogContentText sx={{fontSize: 15, pt: 3}}>
+            {`Don't have an account? Sign up`}
+          </DialogContentText>
+        </Box>
+      </DialogContent>
+    </Box>);
 };
 
 export default SingInSecondStep;

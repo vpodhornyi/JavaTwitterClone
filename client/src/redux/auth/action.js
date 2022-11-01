@@ -34,7 +34,7 @@ export const isAccountExist = (login) => async dispatch => {
 export const authorize = ({login, password}) => async dispatch => {
   try {
     dispatch(ACTIONS.authorize.request());
-    const {data} = await axios.post(URLS.AUTH.AUTHORIZE, {login, password});
+    const {data} = await axios.post(URLS.AUTH.AUTHORIZATION, {login, password});
     dispatch(closeDialog());
     setAuthToken(data.accessToken);
     setRefreshToken(data.refreshToken);
@@ -45,9 +45,9 @@ export const authorize = ({login, password}) => async dispatch => {
   }
 }
 
-export const logout = () => async dispatch => {
+export const cancelAuthorization = () => async dispatch => {
   try {
-    await api.get(URLS.USER.LOGOUT)
+    await api.get(URLS.AUTH.CANCEL_AUTHORIZATION)
     setAuthToken();
     setRefreshToken();
     dispatch(ACTIONS.logout.success());

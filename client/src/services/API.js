@@ -2,9 +2,22 @@ import axios from "axios";
 import {getTokens, setAuthToken, setRefreshToken, isRefreshTokenExpired} from "@utils";
 
 const BASE_URL = "/api/v0";
-const api = axios.create({
-  baseURL: BASE_URL,
-})
+// const api = axios.create({
+//   baseURL: BASE_URL,
+// })
+const api = axios.create();
+
+
+axios.get('/ping')
+  .then(({data}) => {
+    console.log(data);
+    api.baseUrl = data.apiVersion;
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
+
 
 api.interceptors.response.use(res => res.data, async error => {
   const originalRequest = error?.config;
@@ -28,11 +41,11 @@ export const URLS = {
   },
   AUTH: {
     IS_ACCOUNT_EXIST: `${BASE_URL}/auth/account`,
-    AUTHORIZE: `${BASE_URL}/auth/authorize`,
+    AUTHORIZATION: `${BASE_URL}/auth/authorization`,
+    CANCEL_AUTHORIZATION: `/auth/cancel-authorization`,
   },
   USER: {
     _ROOT: "/user",
-    LOGOUT: `/user/logout`,
   }
 }
 

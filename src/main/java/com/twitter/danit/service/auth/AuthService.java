@@ -14,5 +14,5 @@ public interface AuthService {
 
   public JwtAuthentication getAuthInfo();
 
-  void deleteAllByLogin(String login);
+  void deleteRefreshTokens(String login);
 }

@@ -5,7 +5,7 @@ import {Link, Container, Box} from "@mui/material";
 import MainMenu from "@components/navigations/MainMenu";
 import LogoIcon from "@components/icons/LogoIcon";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
-import {logout} from "@redux/auth/action";
+import {cancelAuthorization} from "@redux/auth/action";
 import CustomButton from "@components/CustomButton";
 import {MAIN_COLOR} from "@utils/constants";
 
@@ -44,7 +44,7 @@ const Sidebar = () => {
         <CustomButton
           customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
           name={"Logout"}
-          onclickAction={() => logout()}
+          onclickAction={() => cancelAuthorization()}
         />
       </Box>
     </Container>

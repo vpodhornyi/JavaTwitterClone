@@ -24,7 +24,7 @@ public class AuthController {
     return ResponseEntity.ok(res);
   }
 
-  @PostMapping("/authorize")
+  @PostMapping("/authorization")
   public ResponseEntity<JwtResponse> getAccessRefreshTokens(@Valid @RequestBody JwtRequest authRequest) {
     final JwtResponse res = jwtAuthService.login(authRequest);
 
@@ -41,6 +41,12 @@ public class AuthController {
   public ResponseEntity<JwtResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) {
     final JwtResponse jwtResponse = jwtAuthService.refresh(request.getRefreshToken());
     return ResponseEntity.ok(jwtResponse);
+  }
+
+  @GetMapping("/cancel-authorization")
+  public void logout() {
+    String userTag = (String) jwtAuthService.getAuthInfo().getPrincipal();
+    jwtAuthService.deleteRefreshTokens(userTag);
   }
 }
 

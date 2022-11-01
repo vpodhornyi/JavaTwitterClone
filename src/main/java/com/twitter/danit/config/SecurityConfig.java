@@ -25,7 +25,7 @@ public class SecurityConfig {
   public SecurityConfig(JwtFilter jwtFilter,
                         @Value("/ping") String ping,
                         @Value("${api.version}/auth/account") String account,
-                        @Value("${api.version}/auth/authorize") String login,
+                        @Value("${api.version}/auth/authorization") String login,
                         @Value("${api.version}/auth/access") String token) {
     this.jwtFilter = jwtFilter;
     this.ping = ping;
