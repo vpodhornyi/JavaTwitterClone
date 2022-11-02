@@ -47,7 +47,10 @@ public class JwtAuthService implements AuthService {
     if (user.getPassword().equals(req.getPassword())) {
       final String newAccessToken = jwtProvider.generateAccessToken(user);
       final String newRefreshToken = jwtProvider.generateRefreshToken(user);
-      refreshJwtStoreDao.save(new RefreshJwtStore(user.getUserTag(), newRefreshToken));
+      RefreshJwtStore refreshJwtStore = new RefreshJwtStore(user.getUserTag(), newRefreshToken);
+      refreshJwtStore.setCreatedBy(user.getEmail());
+      refreshJwtStore.setUpdatedBy(user.getEmail());
+      refreshJwtStoreDao.save(refreshJwtStore);
 
       return new JwtResponse(newAccessToken, newRefreshToken);
     }

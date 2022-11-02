@@ -6,11 +6,9 @@ import PrivateRoute from "@components/PrivateRoute";
 import DialogWindow from "@components/DialogWindow";
 import SnackBar from "@components/SnackBar";
 import routes from "../routes";
-import {isApiOk} from "@redux/api/selector";
 
 const AppContainer = () => {
   const loading = false;
-  const apiOk = useSelector(isApiOk);
 
   const routeComponents = useMemo(() => routes.map(route => (
       <Route key={route.path} path={route.path} element={
@@ -22,7 +20,7 @@ const AppContainer = () => {
 
   return (
     <>
-      <Preloader loaded={apiOk}/>
+      {/*<Preloader loaded={apiOk}/>*/}
       <DialogWindow/>
       <SnackBar/>
       <Suspense fallback={<PageLoader loaded={!loading}/>}>
