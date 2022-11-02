@@ -4,8 +4,10 @@ import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
 
 const PrivateRoute = ({route}) => {
-  const {authorized} = useSelector((state) => state.auth)
-  const {isPublic, element: Element} = route;
+  const {authorized} = useSelector((state) => state.auth);
+  const {isPublic, isLogin, element: Element} = route;
+
+  if (authorized && isLogin) return <Navigate to="/home"/>;
 
   if (isPublic) return <Element/>;
 

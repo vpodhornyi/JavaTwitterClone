@@ -8,9 +8,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -19,18 +17,18 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable<T> {
   @CreatedBy
-  @Column(name = "created_by")
+  @Column(name = "created_by", updatable = false, nullable = false)
   private T createdBy;
 
   @CreatedDate
-  @Column(name = "created_at")
+  @Column(name = "created_at", updatable = false, nullable = false)
   private Date createdAt;
 
   @LastModifiedBy
-  @Column(name = "updated_by")
+  @Column(name = "updated_by", updatable = false, nullable = false)
   private T updatedBy;
 
   @LastModifiedDate
-  @Column(name = "updated_at")
+  @Column(name = "updated_at", updatable = false, nullable = false)
   private Date updatedAt;
 }

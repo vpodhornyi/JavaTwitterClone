@@ -1,6 +1,6 @@
 import React from "react";
 import cx from "classnames";
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 import css from "./styles.module.scss";
 import PropTypes from "prop-types";
@@ -12,7 +12,7 @@ const Preloader = ({ loaded }) => {
         [css['loader-hide']]: loaded,
       })}
     >
-
+      <CircularProgress/>
     </div>
   )
 };

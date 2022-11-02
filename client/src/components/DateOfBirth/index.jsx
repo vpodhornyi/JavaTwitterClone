@@ -11,8 +11,18 @@ const DateOfBirth = () => {
         This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or
         something else.
       </DialogContentText>
-      <Grid container>
-        <Grid item xs={5} sx={{padding: '10px 0'}}>
+      <Grid container sx={{padding: '20px 0'}}>
+        <TextField
+          id="date"
+          label="Birthday"
+          type="date"
+          // defaultValue="2017-05-24"
+          sx={{ width: '100%' }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+       {/* <Grid item xs={5} sx={{padding: '10px 0'}}>
           <TextField select sx={{width: '100%'}} id="monthe" label="Monthe" variant="outlined"/>
         </Grid>
         <Grid item xs={3} sx={{padding: '10px 20px'}}>
@@ -20,7 +30,7 @@ const DateOfBirth = () => {
         </Grid>
         <Grid item xs={4} sx={{padding: '10px 0'}}>
           <TextField select sx={{width: '100%'}} id="year" label="Year" variant="outlined"/>
-        </Grid>
+        </Grid>*/}
       </Grid>
     </>
   )

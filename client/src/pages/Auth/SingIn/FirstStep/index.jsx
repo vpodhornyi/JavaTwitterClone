@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Grid from '@mui/material/Grid';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,9 +10,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import {openDialog, closeDialog} from "@redux/dialog/action";
+import {isAccountExist} from "@redux/auth/action";
+import {getLoginName} from "@redux/auth/selector";
 import OrLine from '@components/OrLine';
 import CustomButton from '@components/CustomButton';
-import SingInSecondStep from '../SecondStep';
 import ForgotPassword from '../ForgotPassword';
 import {MAIN_COLOR} from "@utils/constants";
 
@@ -40,11 +41,17 @@ const CUSTOM_BUTTON_FORGOT_PASSWORD_STYLE = `
     }`;
 const CUSTOM_BUTTON_FORGOT_PASSWORD_NAME = 'Forgot password?';
 
+
 const SingInFirstStep = () => {
+  const [login, setLogin] = useState(useSelector(getLoginName));
   const dispatch = useDispatch();
 
+  const onChange = (e) => {
+    setLogin(e.target.value);
+  }
+
   return (
-    <Box sx={{padding: '0 100px', width: '400px', height: '100%',}}>
+    <Box sx={{padding: '0 100px', width: '380px', height: '95%'}}>
       <Box sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -81,14 +88,20 @@ const SingInFirstStep = () => {
                 <OrLine/>
               </Grid>
               <Grid item sx={{padding: '10px 0 30px 0'}}>
-                <TextField id="email" sx={{width: '100%'}} label="Phone, email or username" variant="outlined"/>
+                <TextField
+                  value={login}
+                  onChange={e => onChange(e)}
+                  sx={{width: '100%'}}
+                  id="login"
+                  label="Email or username"
+                  variant="outlined"/>
               </Grid>
             </Grid>
             <Grid item sx={{padding: '10px 0 30px 0'}}>
               <CustomButton
                 customStyle={CUSTOM_BUTTON_NEXT_STYLE}
                 name={CUSTOM_BUTTON_NEXT_NAME}
-                onclickAction={() => openDialog(SingInSecondStep)}
+                onclickAction={() => isAccountExist(login)}
               />
             </Grid>
             <Grid item sx={{padding: '10px 0 30px 0'}}>

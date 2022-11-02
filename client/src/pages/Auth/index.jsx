@@ -9,7 +9,9 @@ import OrLine from '@components/OrLine';
 import SignUpFirstStep from './SignUp/FirstStep';
 import LogInFirstStep from './SingIn/FirstStep';
 import {openDialog} from "@redux/dialog/action";
+
 import {mediaQuery, MAIN_COLOR} from "@utils/constants";
+
 
 const WIDTH_BUTTON_CONTAINER = '300px';
 const CUSTOM_BUTTON_SING_UP_WITH_GOOGLE_STYLE = `
@@ -39,6 +41,7 @@ const CUSTOM_BUTTON_SING_IN_NAME = 'Sing in';
 
 const Auth = () => {
   const matches = useMediaQuery(mediaQuery.mobile);
+
 
   return (
     <Grid container direction={'row-reverse'}>
@@ -113,7 +116,7 @@ const Auth = () => {
         </Box>
       </Grid>
     </Grid>
-  );
+  )
 };
 
 export default Auth;
