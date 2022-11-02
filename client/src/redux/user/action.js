@@ -23,7 +23,6 @@ export const getUserBaseData = () => async dispatch => {
   try {
     await api.get(URLS.USER.LOGOUT)
 
-    dispatch(ACTIONS.unauthorized());
 
   } catch (err) {
     console.log('logout error - ', err);
