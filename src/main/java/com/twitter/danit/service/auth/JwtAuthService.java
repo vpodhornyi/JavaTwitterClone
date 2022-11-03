@@ -45,14 +45,7 @@ public class JwtAuthService implements AuthService {
     }
 
     if (user.getPassword().equals(req.getPassword())) {
-      final String newAccessToken = jwtProvider.generateAccessToken(user);
-      final String newRefreshToken = jwtProvider.generateRefreshToken(user);
-      RefreshJwtStore refreshJwtStore = new RefreshJwtStore(user.getUserTag(), newRefreshToken);
-      refreshJwtStore.setCreatedBy(user.getEmail());
-      refreshJwtStore.setUpdatedBy(user.getEmail());
-      refreshJwtStoreDao.save(refreshJwtStore);
-
-      return new JwtResponse(newAccessToken, newRefreshToken);
+      return getJwtResponse(user);
     }
     throw new WrongPasswordException();
   }
@@ -90,15 +83,22 @@ public class JwtAuthService implements AuthService {
 
         if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
           User user = userService.getByUserTag(login);
-          final String newAccessToken = jwtProvider.generateAccessToken(user);
-          final String newRefreshToken = jwtProvider.generateRefreshToken(user);
-          refreshJwtStoreDao.save(new RefreshJwtStore(user.getUserTag(), newRefreshToken));
-
-          return new JwtResponse(newAccessToken, newRefreshToken);
+          return getJwtResponse(user);
         }
       }
     }
     throw new RuntimeException();
+  }
+
+  private JwtResponse getJwtResponse(User user) {
+    final String newAccessToken = jwtProvider.generateAccessToken(user);
+    final String newRefreshToken = jwtProvider.generateRefreshToken(user);
+    RefreshJwtStore refreshJwtStore = new RefreshJwtStore(user.getUserTag(), newRefreshToken);
+    refreshJwtStore.setCreatedBy(user.getEmail());
+    refreshJwtStore.setUpdatedBy(user.getEmail());
+    refreshJwtStoreDao.save(refreshJwtStore);
+
+    return new JwtResponse(newAccessToken, newRefreshToken);
   }
 
   @Override

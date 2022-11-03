@@ -44,7 +44,7 @@ public class AuthController {
   }
 
   @GetMapping("/cancel-authorization")
-  public void logout() {
+  public void deleteRefreshTokens() {
     String userTag = (String) jwtAuthService.getAuthInfo().getPrincipal();
     jwtAuthService.deleteRefreshTokens(userTag);
   }

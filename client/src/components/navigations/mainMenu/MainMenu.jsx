@@ -3,10 +3,11 @@ import {useSelector} from 'react-redux';
 
 import {MenuList, Box} from "@mui/material";
 import {styled} from "@mui/material/styles";
-import MenuItemLink from "@components/navigations/MenuItemLink";
+import MenuItemLink from "./MenuItemLink";
 import CustomMenuItem from "@components/navigations/CustomMenuItem";
 import {getMainMenuState} from "@redux/business/menu/mainMenu/selector";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import "./mainManuStyle.scss";
 
 const isMatchesUrl = href => href.split('/').pop() === window.location.href.split('/').pop();
 
@@ -42,6 +43,12 @@ const MainMenu = () => {
             href={href}/>)
         )}
         <Box sx={{
+          '.MuiListItemIcon-root': {
+            minWidth: 30
+          },
+          '.MuiListItemText-root': {
+            marginLeft: 2
+          },
           '&:hover > .MuiMenuItem-root': {
             borderRadius: 40,
             backgroundColor: '#E0E0E0'
@@ -49,7 +56,10 @@ const MainMenu = () => {
           display: 'flex',
           cursor: 'pointer'
         }}>
-          <CustomMenuItem iconName={iconName} text={text}></CustomMenuItem>
+          <CustomMenuItem iconStyle={{
+            color: '#000000',
+            fontSize: 30
+          }} iconName={iconName} text={text}></CustomMenuItem>
         </Box>
       </StyledMenuList>
     </>

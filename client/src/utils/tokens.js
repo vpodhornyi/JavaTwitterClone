@@ -1,21 +1,28 @@
 import API from "@service/API"
 
 const {api} = API;
-export const setAuthToken = (token) => {
+
+export const setHeaderAuthorization = (token, type) => {
   if (token) {
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
-    localStorage.setItem("accessToken", token)
+    api.defaults.headers.common.Authorization = `${type} ${token}`
   } else {
     delete api.defaults.headers.common.Authorization
-    localStorage.removeItem("accessToken")
+  }
+}
+
+export const setAuthToken = (token) => {
+  if (token) {
+    localStorage.setItem("accessToken", token);
+  } else {
+    localStorage.removeItem("accessToken");
   }
 }
 
 export const setRefreshToken = (token) => {
   if (token) {
-    localStorage.setItem("refreshToken", token)
+    localStorage.setItem("refreshToken", token);
   } else {
-    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("refreshToken");
   }
 }
 

@@ -1,6 +1,6 @@
 import {createActions} from '../utils';
 import API, {URLS} from "@service/API";
-import {setAuthToken, setRefreshToken} from "../../utils";
+import {setAuthToken, setHeaderAuthorization, setRefreshToken} from "../../utils";
 import {openDialog, closeDialog} from "@redux/dialog/action";
 import SingInSecondStep from '@pages/Auth/SingIn/SecondStep';
 
@@ -25,19 +25,28 @@ export const isAccountExist = (login) => async dispatch => {
     const {data} = await axios.post(URLS.AUTH.IS_ACCOUNT_EXIST, {login})
     dispatch(ACTIONS.isAccountExist.success(data));
     await dispatch(openDialog(SingInSecondStep));
+    return true;
 
   } catch (err) {
     console.log('isAccountExist error - ', err);
+    return false;
+  }
+}
+
+export const runSecondLoginStep = (login) => async dispatch => {
+  if (await dispatch(isAccountExist(login))) {
+    dispatch(openDialog(SingInSecondStep));
   }
 }
 
 export const authorize = ({login, password}) => async dispatch => {
   try {
     dispatch(ACTIONS.authorize.request());
-    const {data} = await axios.post(URLS.AUTH.AUTHORIZATION, {login, password});
+    const {data: {type, accessToken, refreshToken}} = await axios.post(URLS.AUTH.AUTHORIZATION, {login, password});
     dispatch(closeDialog());
-    setAuthToken(data.accessToken);
-    setRefreshToken(data.refreshToken);
+    setHeaderAuthorization(accessToken, type)
+    setAuthToken(accessToken);
+    setRefreshToken(refreshToken);
     dispatch(ACTIONS.authorize.success());
 
   } catch (err) {

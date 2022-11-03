@@ -1,0 +1,12 @@
+.item-link {
+  display: flex;
+
+  &:hover > .MuiMenuItem-root {
+    border-radius: 40px;
+    background-color: #E0E0E0
+  }
+
+  & .MuiListItemIcon-root {
+    min-width: 30px
+  }
+}

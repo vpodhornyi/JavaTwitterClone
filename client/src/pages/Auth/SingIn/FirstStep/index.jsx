@@ -10,7 +10,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import {openDialog, closeDialog} from "@redux/dialog/action";
-import {isAccountExist} from "@redux/auth/action";
+import {runSecondLoginStep} from "@redux/auth/action";
 import {getLoginName} from "@redux/auth/selector";
 import OrLine from '@components/OrLine';
 import CustomButton from '@components/CustomButton';
@@ -101,7 +101,7 @@ const SingInFirstStep = () => {
               <CustomButton
                 customStyle={CUSTOM_BUTTON_NEXT_STYLE}
                 name={CUSTOM_BUTTON_NEXT_NAME}
-                onclickAction={() => isAccountExist(login)}
+                onclickAction={() => runSecondLoginStep(login)}
               />
             </Grid>
             <Grid item sx={{padding: '10px 0 30px 0'}}>

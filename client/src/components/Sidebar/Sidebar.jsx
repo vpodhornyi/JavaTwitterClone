@@ -2,7 +2,7 @@ import React from "react";
 
 import {useSelector} from 'react-redux';
 import {Link, Container, Box} from "@mui/material";
-import MainMenu from "@components/navigations/MainMenu";
+import MainMenu from "@components/navigations/mainMenu/MainMenu";
 import LogoIcon from "@components/icons/LogoIcon";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
 import {cancelAuthorization} from "@redux/auth/action";

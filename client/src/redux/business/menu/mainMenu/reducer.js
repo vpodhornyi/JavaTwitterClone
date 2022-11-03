@@ -6,16 +6,9 @@ const INIT = {
       borderRadius: 20,
       padding: 15,
     },
-    '& .MuiListItemIcon-root': {
-      minWidth: 30
-    },
     '& .MuiTypography-root': {
       display: 'flex',
       fontSize: 19
-    },
-    '& .MuiTypography-root:hover > .MuiMenuItem-root': {
-      borderRadius: 40,
-      backgroundColor: '#E0E0E0'
     },
     '& .MuiTouchRipple-root': {
       display: 'none'
