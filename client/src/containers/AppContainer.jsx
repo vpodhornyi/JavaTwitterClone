@@ -6,6 +6,7 @@ import PrivateRoute from "@components/PrivateRoute";
 import DialogWindow from "@components/DialogWindow";
 import SnackBar from "@components/SnackBar";
 import routes from "../routes";
+import Box from "@mui/material/Box";
 
 const AppContainer = () => {
   const loading = false;

@@ -14,7 +14,8 @@ api.interceptors.response.use(res => res.data, async error => {
   if (error?.response?.status === 403 && !originalRequest?._retry) {
     originalRequest._retry = true;
     const {refreshToken} = getTokens();
-    const {data: {type, accessToken}} = await axios.post(`${BASE_URL}/auth/access`, {refreshToken})
+    const {data: {type, accessToken}} = await axios.post(`${BASE_URL}/auth/access`, {refreshToken});
+    setHeaderAuthorization(accessToken, type);
     setAuthToken(accessToken);
     originalRequest.headers.Authorization = `${type} ${accessToken}`;
 

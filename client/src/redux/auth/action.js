@@ -25,9 +25,11 @@ export const isAccountExist = (login) => async dispatch => {
     const {data} = await axios.post(URLS.AUTH.IS_ACCOUNT_EXIST, {login})
     dispatch(ACTIONS.isAccountExist.success(data));
     await dispatch(openDialog(SingInSecondStep));
+
     return true;
 
   } catch (err) {
+    //TODO show error
     console.log('isAccountExist error - ', err);
     return false;
   }
@@ -50,6 +52,7 @@ export const authorize = ({login, password}) => async dispatch => {
     dispatch(ACTIONS.authorize.success());
 
   } catch (err) {
+    //TODO show error
     console.log("login error - ", err)
   }
 }
@@ -59,9 +62,11 @@ export const cancelAuthorization = () => async dispatch => {
     await api.get(URLS.AUTH.CANCEL_AUTHORIZATION)
     setAuthToken();
     setRefreshToken();
+    setHeaderAuthorization();
     dispatch(ACTIONS.logout.success());
 
   } catch (err) {
+    //TODO show error
     console.log('logout error - ', err);
   }
 }

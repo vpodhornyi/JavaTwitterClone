@@ -2,6 +2,7 @@ import React from "react";
 import {Navigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import PropTypes from "prop-types";
+import MainContainer from "../../containers/MainConatiner/MainContainer";
 
 const PrivateRoute = ({route}) => {
   const {authorized} = useSelector((state) => state.auth);
@@ -11,7 +12,7 @@ const PrivateRoute = ({route}) => {
 
   if (isPublic) return <Element/>;
 
-  return authorized ? <Element/> : <Navigate to="/"/>
+  return authorized ? <MainContainer page={Element}/> : <Navigate to="/"/>
 };
 
 PrivateRoute.propTypes = {
