@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import {useButton} from '@mui/base/ButtonUnstyled';
 import {styled} from '@mui/system';
+import {Typography} from '@mui/material';
 import Preloader from "../Loader/Preloader";
 
 const CustomButtonRootF = style => styled('button')`
@@ -11,7 +12,7 @@ const CustomButtonRootF = style => styled('button')`
   border-radius: 30px;
   width: 100%;
   font-weight: 600;
-  font-family: Helvetica, Arial, sans-serif;
+ 
   font-size: 14px;
   transition: all 200ms ease;
   cursor: pointer;
@@ -44,7 +45,7 @@ export default function UseButton({name, customStyle, onclickAction}) {
 
   return <CustomButton
     onClick={() => dispatch(onclickAction())}
-    CustomButtonRoot={CustomButtonRoot}>{name}</CustomButton>
+    CustomButtonRoot={CustomButtonRoot}><Typography>{name}</Typography></CustomButton>
 };
 
 CustomButton.propTypes = {

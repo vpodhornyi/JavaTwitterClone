@@ -6,7 +6,7 @@ const Default = () => <>:-)</>;
 
 const IconByName = ({iconName, iconStyle}) => {
   const Icon = MuiIcons[iconName];
-  return Icon ? <Icon sx={iconStyle}/> : <Default/>;
+  return Icon ? <Icon color='#000000' sx={{...iconStyle}}/> : <Default/>;
 };
 
 IconByName.propTypes = {

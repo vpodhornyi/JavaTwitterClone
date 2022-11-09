@@ -10,37 +10,37 @@ const routes = [
   {
     isPublic: false,
     path: "/home",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Home")),
   },
   {
     isPublic: false,
     path: "/explore",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Home")),
   },
   {
     isPublic: false,
     path: "/notifications",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Home")),
   },
   {
     isPublic: false,
     path: "/messages",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Messages")),
   },
   {
     isPublic: false,
     path: "/bookmarks",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Home")),
   },
   {
     isPublic: false,
     path: "/lists",
-    element: lazy(() => import("@pages/Main")),
+    element: lazy(() => import("@pages/Home")),
   },
   {
     isPublic: false,
-    path: "/user_name",
-    element: lazy(() => import("@pages/Main")),
+    path: "/:user_name",
+    element: lazy(() => import("@pages/Home")),
   },
 ];
 

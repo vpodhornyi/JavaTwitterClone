@@ -22,7 +22,7 @@ export const ACTIONS = {
 export const isAccountExist = (login) => async dispatch => {
   try {
     dispatch(ACTIONS.isAccountExist.request());
-    const {data} = await axios.post(URLS.AUTH.IS_ACCOUNT_EXIST, {login})
+    const data = await api.post(URLS.AUTH.IS_ACCOUNT_EXIST, {login})
     dispatch(ACTIONS.isAccountExist.success(data));
     await dispatch(openDialog(SingInSecondStep));
 
@@ -44,7 +44,7 @@ export const runSecondLoginStep = (login) => async dispatch => {
 export const authorize = ({login, password}) => async dispatch => {
   try {
     dispatch(ACTIONS.authorize.request());
-    const {data: {type, accessToken, refreshToken}} = await axios.post(URLS.AUTH.AUTHORIZATION, {login, password});
+    const {type, accessToken, refreshToken} = await api.post(URLS.AUTH.AUTHORIZATION, {login, password});
     dispatch(closeDialog());
     setHeaderAuthorization(accessToken, type)
     setAuthToken(accessToken);
@@ -70,3 +70,6 @@ export const cancelAuthorization = () => async dispatch => {
     console.log('logout error - ', err);
   }
 }
+
+export const foo = () => {
+};

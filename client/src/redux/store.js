@@ -8,6 +8,7 @@ import dialogReducer from "./dialog/reducer";
 import snackBarReducer from "./snackBar/reducer";
 import logoIconReducer from "./business/logoIcon/reducer";
 import mainMenuReducer from "./business/menu/mainMenu/reducer";
+import themeReducer from "./business/theme/reducer";
 
 const { applyMiddleware, combineReducers, createStore } = require("redux");
 
@@ -17,6 +18,7 @@ const reducer = combineReducers({
   snackBar: snackBarReducer,
   logoIcon: logoIconReducer,
   mainMenu: mainMenuReducer,
+  theme: themeReducer,
 })
 
 export default () => {

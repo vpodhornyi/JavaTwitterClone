@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import {Typography} from '@mui/material';
 
 const Line = () => <Box sx={{
   borderBottom: '1px solid #DDDFE2',
@@ -20,7 +21,7 @@ const OrLine = () => {
       }}
     >
       <Line/>
-      <Box>or</Box>
+      <Typography variant='body1'>or</Typography>
       <Line/>
     </Box>
   )

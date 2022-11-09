@@ -21,11 +21,11 @@ public abstract class Auditable<T> {
   private T createdBy;
 
   @CreatedDate
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at", updatable = false, nullable = false)
   private Date createdAt;
 
   @LastModifiedBy
-  @Column(name = "updated_by", updatable = false, nullable = false)
+  @Column(name = "updated_by", nullable = false)
   private T updatedBy;
 
   @LastModifiedDate

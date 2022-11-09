@@ -1,12 +1,10 @@
 import axios from "axios";
-import {getTokens, setAuthToken, setRefreshToken, isRefreshTokenExpired} from "@utils";
+import {getTokens, setAuthToken, setRefreshToken, setHeaderAuthorization} from "@utils";
 
 const BASE_URL = "/api/v0";
 const api = axios.create({
   baseURL: BASE_URL,
 })
-
-
 
 api.interceptors.response.use(res => res.data, async error => {
   const originalRequest = error?.config;
@@ -27,8 +25,8 @@ api.interceptors.response.use(res => res.data, async error => {
 
 export const URLS = {
   AUTH: {
-    IS_ACCOUNT_EXIST: `${BASE_URL}/auth/account`,
-    AUTHORIZATION: `${BASE_URL}/auth/authorization`,
+    IS_ACCOUNT_EXIST: `/auth/account`,
+    AUTHORIZATION: `/auth/authorization`,
     CANCEL_AUTHORIZATION: `/auth/cancel-authorization`,
   },
   USER: {
