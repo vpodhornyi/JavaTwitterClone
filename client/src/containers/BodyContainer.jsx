@@ -6,13 +6,13 @@ import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
 const BodyContainer = ({page}) => {
-  const StyledBox = styled(Box)(styles);
+  const BoxWrapper = styled(Box)(styles);
 
   return (
-    <StyledBox>
+    <BoxWrapper>
       <Header/>
       <Main page={page}/>
-    </StyledBox>
+    </BoxWrapper>
   )
 }
 
