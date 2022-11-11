@@ -4,18 +4,18 @@ import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import {Avatar, Typography} from "@mui/material";
 import CustomIconButton from "@components/buttons/CustomIconButton";
-import {openChatInfo} from "@redux/message/action";
+import {openChatInfo, resetActiveId} from "@redux/message/action";
 import {getMessageData} from "@redux/message/selector";
 
 const Header = () => {
-  const StyledBox = styled(Box)(styles);
+  const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
   const {user} = useSelector(getMessageData);
 
   return (
-    <StyledBox>
+    <BoxWrapper>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
-        <Box sx={{mr: '10px'}} className='backButton'>
+        <Box sx={{mr: '10px'}} className='backButton' onClick={() => dispatch(resetActiveId())}>
           <CustomIconButton name='ArrowBackOutlined' title='Back'/>
         </Box>
         <Avatar sx={{mr: '10px', width: '2.5rem', height: '2.5rem'}} src={user.avatarImgUrl}/>
@@ -24,7 +24,7 @@ const Header = () => {
       <Box onClick={() => dispatch(openChatInfo())}>
         <CustomIconButton name='InfoOutlined' title='Details'/>
       </Box>
-    </StyledBox>);
+    </BoxWrapper>);
 }
 
 const styles = ({theme}) => ({
@@ -37,6 +37,13 @@ const styles = ({theme}) => ({
   top: 0,
   left: 0,
   right: 0,
+  zIndex: 1000,
+
+  '.avatarWrapper': {
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    }
+  },
 
   '& .MuiTypography-root': {
     fontSize: '1.3rem',

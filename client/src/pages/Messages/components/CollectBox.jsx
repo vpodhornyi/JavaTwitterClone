@@ -1,13 +1,14 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import Box from "@mui/material/Box";
 import {styled} from "@mui/material/styles";
-import SelectMessage from "./SelectMessage";
-import Conversation from "./Conversation";
-import {getMessageData} from '@redux/message/selector';
 import ConversationInfo from "./conversationInfo/ConversationInfo";
+import Conversation from "./Conversation";
+import Navigation from './navigation/Navigation';
+import {getMessageData} from '@redux/message/selector';
+import {useSelector} from "react-redux";
 
-const SectionDetails = () => {
-  const SectionWrapper = styled('section')(styles);
+const CollectBox = () => {
+  const BoxWrapper = styled(Box)(styles);
   const {isChatSelected, isChatInfo} = useSelector(getMessageData);
   const select = () => {
     switch (true) {
@@ -16,25 +17,26 @@ const SectionDetails = () => {
       case isChatSelected:
         return <Conversation/>;
       default:
-        return <SelectMessage/>;
+        return <Navigation/>;
     }
   }
+
   return (
-    <SectionWrapper>
+    <BoxWrapper>
       {select()}
-    </SectionWrapper>);
+    </BoxWrapper>);
 }
 
 const styles = ({theme}) => ({
   position: 'relative',
   height: '100%',
   width: '100%',
-  display: 'none',
+  borderLeft: '1px solid #DDDFE2',
   borderRight: '1px solid #DDDFE2',
 
   [theme.breakpoints.up('md')]: {
-    display: 'block'
+    display: 'none',
   }
 });
 
-export default SectionDetails;
+export default CollectBox;

@@ -1,27 +1,28 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import SectionNavigation from "./SectionNavigation";
+import SectionDetails from "./SectionDetails";
 import {styled} from "@mui/material/styles";
-import CollectBox from './components/CollectBox';
-import SectionsBox from './components/SectionsBox';
+
 
 const Home = () => {
   const BoxWrapper = styled(Box)(styles);
 
   return (
     <BoxWrapper>
-      <CollectBox/>
-      <SectionsBox/>
+      <SectionNavigation/>
+      <SectionDetails/>
     </BoxWrapper>);
 }
 
 const styles = ({theme}) => ({
-  display: 'flex',
-  height: '100%',
   width: '100%',
+  display: 'none',
 
   [theme.breakpoints.up('md')]: {
     width: '100%',
-  }
+    display: 'flex',
+  },
 });
 
 export default Home;

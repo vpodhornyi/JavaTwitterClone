@@ -5,8 +5,9 @@ import API, {URLS} from "@service/API";
 const {api} = API;
 const actions = createActions(
   {
-    actions: ['SET_ACTIVE_ID', 'CLOSE_CHAT_INFO', 'OPEN_CHAT_INFO'],
-    async: ["GET_MESSAGES_USERS"],
+    actions: ['SET_ACTIVE_ID', 'CLOSE_CHAT_INFO', 'OPEN_CHAT_INFO', 'RESET_ACTIVE_ID', 'NAVIGATION_LOADING',
+    'DETAIL_LOADING', 'SENDING_MESSAGE'],
+    async: ["GET_CONVERSATION"],
   },
   {
     prefix: "message",
@@ -21,6 +22,7 @@ export const ACTIONS = {
 
 export const getUsersRoutes = () => async dispatch => {
   try {
+    dispatch(ACTIONS.navigationLoading())
     await api.get()
 
 
@@ -29,14 +31,22 @@ export const getUsersRoutes = () => async dispatch => {
   }
 }
 
-export const getUserMessages = ({id}) => async dispatch => {
+export const getConversation = ({id}) => async dispatch => {
   try {
-    dispatch(ACTIONS.setActiveId({id}))
+    dispatch(ACTIONS.setActiveId({id}));
+    dispatch(ACTIONS.detailLoading());
     // await api.get()
+    setTimeout(() => {
+      dispatch(ACTIONS.detailLoading());
+    }, 500)
 
   } catch (err) {
     console.log('logout error - ', err);
   }
+}
+
+export const resetActiveId = () => async dispatch => {
+  dispatch(ACTIONS.resetActiveId());
 }
 
 export const openChatInfo = () => async dispatch => {

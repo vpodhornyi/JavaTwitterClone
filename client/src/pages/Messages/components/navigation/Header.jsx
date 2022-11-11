@@ -3,16 +3,19 @@ import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 import CustomIconButton from "@components/buttons/CustomIconButton";
+import Avatar from "./Avatar";
 
-
-const SectionNavigation = () => {
-  const StyledBox = styled(Box)(styles);
+const Header = () => {
+  const BoxWrapper = styled(Box)(styles);
 
   return (
-    <StyledBox>
-      <Typography variant='h2'>Messages</Typography>
+    <BoxWrapper>
+      <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Avatar/>
+        <Typography variant='h2'>Messages</Typography>
+      </Box>
       <CustomIconButton name='ForwardToInboxOutlined' title='New message'/>
-    </StyledBox>);
+    </BoxWrapper>);
 }
 
 const styles = ({theme}) => ({
@@ -31,10 +34,10 @@ const styles = ({theme}) => ({
     width: 390,
   },
 
-  '& > .MuiTypography-root': {
+  '& .MuiTypography-root': {
     fontSize: '1.3rem',
     fontWeight: theme.typography.fontWeightBold
   }
 });
 
-export default SectionNavigation;
+export default Header;

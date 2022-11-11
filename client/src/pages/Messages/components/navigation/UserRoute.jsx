@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import {Avatar, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 import CustomIconButton from "@components/buttons/CustomIconButton";
-import {getUserMessages} from "@redux/message/action";
+import {getConversation} from "@redux/message/action";
 
 const UserRoute = ({user, activeId}) => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const UserRoute = ({user, activeId}) => {
 
   return (
     <BoxWrapper
-      onClick={() => dispatch(getUserMessages({id: user.id}))}
+      onClick={() => dispatch(getConversation({id: user.id}))}
       sx={activeId !== -1 && activeId === user.id ? {
         backgroundColor: 'rgb(239, 243, 244)',
         borderRight: '2px blue solid',

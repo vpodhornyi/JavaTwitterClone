@@ -1,6 +1,9 @@
-import {ACTIONS, closeChatInfo, getUserMessages} from "./action";
+import {ACTIONS} from "./action";
 
 const INIT_STATE = {
+  navigationLoading: false,
+  detailLoading: false,
+  sendingMessage: false,
   isChatInfo: false,
   activeId: -1,
   users: [
@@ -42,10 +45,26 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, {payload, type}) => {
   switch (type) {
-    case String(ACTIONS.setActiveId):
+    case String(ACTIONS.navigationLoading):
+      return {
+        ...state,
+        navigationLoading: !state.navigationLoading,
+      };
+      case String(ACTIONS.detailLoading):
+      return {
+        ...state,
+        detailLoading: !state.detailLoading,
+      };
+      case String(ACTIONS.setActiveId):
       return {
         ...state,
         activeId: payload.id,
+        isChatInfo: false,
+      };
+    case String(ACTIONS.resetActiveId):
+      return {
+        ...state,
+        activeId: -1,
         isChatInfo: false,
       };
     case String(ACTIONS.openChatInfo):
