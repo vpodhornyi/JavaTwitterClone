@@ -5,37 +5,51 @@ import {Box} from "@mui/material";
 import MessageBox from "./MessageBox";
 import Reaction from "./Reaction";
 import Time from "./Time";
+import PropTypes from "prop-types";
 
-const Index = () => {
+const Index = ({left = false}) => {
   const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
 
   return (
     <BoxWrapper>
-      <Box>
-        <MessageBox/>
+      <Box className={left ? 'LeftMessage' : 'RightMessage'}>
+        <Box>
+          <MessageBox left={left}/>
+        </Box>
+        <Reaction/>
+        <Time/>
       </Box>
-      <Reaction/>
-      <Time/>
-
     </BoxWrapper>);
 }
 
-const styles = ({theme}) => ({
-  cursor: 'pointer',
-  display: 'flex',
-  justifyContent: 'flex-end',
-  flexDirection: 'column',
-  paddingBottom: 20,
-  alignItems: 'end',
+Index.propTypes = {
+  left: PropTypes.bool,
+}
 
+const styles = ({theme}) => ({
   '& > .MuiBox-root': {
     display: 'flex',
     justifyContent: 'flex-end',
+    flexDirection: 'column',
+    paddingBottom: 20,
+    alignItems: 'end',
+  },
+
+  '& > .MuiBox-root > .MuiBox-root': {
+    display: 'flex',
 
     '&:hover .Actions': {
       opacity: 1
     }
+  },
+
+  '& > .RightMessage > .MuiBox-root': {
+    justifyContent: 'flex-end',
+  },
+
+  '& > .LeftMessage > .MuiBox-root': {
+    justifyContent: 'flex-start',
   },
 });
 

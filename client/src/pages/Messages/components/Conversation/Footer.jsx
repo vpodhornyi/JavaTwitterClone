@@ -13,12 +13,13 @@ const Footer = () => {
 }
 
 const styles = ({theme}) => ({
-  padding: 5,
+  padding: '5px 15px',
   position: 'absolute',
   bottom: 0,
   left: 0,
   right: 0,
   borderTop: '1px solid #DDDFE2',
+  backgroundColor: 'rgba(255,255,255, 1)',
 });
 
 export default Footer;

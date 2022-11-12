@@ -10,7 +10,8 @@ export const getMessageData = state => {
       user: isChatSelected ? data.users[data.activeId] : {},
       activeId: data.activeId,
       isChatSelected,
-      isChatInfo: data.isChatInfo
+      isChatInfo: data.isChatInfo,
+      message: data.message,
     }
   }
 }

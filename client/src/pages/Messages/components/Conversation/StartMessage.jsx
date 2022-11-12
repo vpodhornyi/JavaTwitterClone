@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box, TextField} from "@mui/material";
@@ -8,7 +8,13 @@ import CustomIconButton from "@components/buttons/CustomIconButton";
 const StartMessage = () => {
   const BoxWrapper = styled(Box)(styles);
   const TextFieldWrapper = styled(TextField)(TextFieldStyles);
-  const {isDetailLoading} = useSelector(getMessageData);
+  const {isDetailLoading, message} = useSelector(getMessageData);
+  const [messageText, setMessageText] = useState('');
+
+  const onChange = (e) => {
+    console.log(e.target.value);
+    setMessageText(e.target.value);
+  }
 
   return (
     <BoxWrapper>
@@ -21,9 +27,11 @@ const StartMessage = () => {
       <Box>
         <CustomIconButton name='EmojiEmotionsOutlined' iconSize='small'/>
       </Box>
-      <TextFieldWrapper placeholder='Start a new message' fullWidth multiline id="filled-basic" variant="filled"/>
+      <TextFieldWrapper value={messageText} onChange={e => onChange(e)} placeholder='Start a new message' fullWidth
+                        multiline
+                        id="filled-basic" variant="filled"/>
       <Box>
-        <CustomIconButton name='SendOutlined' iconSize='small' disabled={true}/>
+        <CustomIconButton name='SendOutlined' iconSize='small' disabled={false}/>
       </Box>
     </BoxWrapper>);
 }
@@ -42,18 +50,18 @@ const TextFieldStyles = ({theme}) => ({
   },
 
   '& .MuiInputBase-root': {
-    padding: 0,
-    marginLeft: 10,
-    backgroundColor: 'rgb(239, 243, 244)',
+    padding: 0, marginLeft: 10, marginRight: 10, backgroundColor: 'rgb(239, 243, 244)',
 
     '&:hover': {
       backgroundColor: 'rgb(239, 243, 244)',
     },
 
   },
+
   '& .MuiInputBase-root:before': {
     content: 'none'
   },
+
   '& .MuiInputBase-root:after': {
     content: 'none'
   },

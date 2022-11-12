@@ -6,6 +6,7 @@ const INIT_STATE = {
   sendingMessage: false,
   isChatInfo: false,
   activeId: -1,
+  message: '',
   users: [
     {
       id: 0,
@@ -50,12 +51,12 @@ export default (state = INIT_STATE, {payload, type}) => {
         ...state,
         navigationLoading: !state.navigationLoading,
       };
-      case String(ACTIONS.detailLoading):
+    case String(ACTIONS.detailLoading):
       return {
         ...state,
         detailLoading: !state.detailLoading,
       };
-      case String(ACTIONS.setActiveId):
+    case String(ACTIONS.setActiveId):
       return {
         ...state,
         activeId: payload.id,
@@ -76,7 +77,12 @@ export default (state = INIT_STATE, {payload, type}) => {
       return {
         ...state,
         isChatInfo: false,
-      }
+      };
+    case String(ACTIONS.setMessage):
+      return {
+        ...state,
+        message: payload.message,
+      };
     default:
       return state;
   }

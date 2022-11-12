@@ -14,21 +14,46 @@ const Conversation = () => {
 
   return (
     <BoxWrapper>
-      <UserInfo/>
-      <Message/>
+      <Box className='Overlay'>
+        <Box className='MessagesBox'>
+          <UserInfo/>
+          <Message left={false}/>
+          <Message left={true}/>
+          <Message left={true}/>
+          <Message left={false}/>
+          <Message left={false}/>
+          <Message left={true}/>
+          <Message left={false}/>
+          <Message left={true}/>
+          <Message left={false}/>
+          <Message left={false}/>
+          <Message left={false}/>
+        </Box>
+      </Box>
       <Footer/>
     </BoxWrapper>);
 }
 
 const styles = ({theme}) => ({
   boxSizing: 'border-box',
-  paddingLeft: 15,
-  paddingRight: 15,
   position: 'relative',
   width: '100%',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
+
+  '& > .Overlay': {
+    overflow: 'overlay',
+    overflowX: 'hidden',
+    paddingRight: 15,
+    marginBottom: 55
+  },
+
+  '& > .MuiBox-root > .MessagesBox': {
+    overflow: 'overlay',
+    paddingLeft: 15,
+    paddingRight: 15,
+  }
 });
 
 export default Conversation;

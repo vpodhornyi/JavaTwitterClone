@@ -6,7 +6,7 @@ const {api} = API;
 const actions = createActions(
   {
     actions: ['SET_ACTIVE_ID', 'CLOSE_CHAT_INFO', 'OPEN_CHAT_INFO', 'RESET_ACTIVE_ID', 'NAVIGATION_LOADING',
-    'DETAIL_LOADING', 'SENDING_MESSAGE'],
+    'DETAIL_LOADING', 'SENDING_MESSAGE', 'SET_MESSAGE'],
     async: ["GET_CONVERSATION"],
   },
   {
