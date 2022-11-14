@@ -15,7 +15,8 @@ const Header = () => {
         <Typography variant='h2'>Messages</Typography>
       </Box>
       <CustomIconButton name='ForwardToInboxOutlined' title='New message'/>
-    </BoxWrapper>);
+    </BoxWrapper>
+  );
 }
 
 const styles = ({theme}) => ({

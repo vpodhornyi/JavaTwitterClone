@@ -5,9 +5,10 @@ const INIT_STATE = {
   detailLoading: false,
   sendingMessage: false,
   isChatInfo: false,
+  showHeaderAvatar: false,
   activeId: -1,
   message: '',
-  users: [
+  conversations: [
     {
       id: 0,
       name: 'Bob Marley',
@@ -77,6 +78,16 @@ export default (state = INIT_STATE, {payload, type}) => {
       return {
         ...state,
         isChatInfo: false,
+      };
+    case String(ACTIONS.showHeaderAvatar):
+      return {
+        ...state,
+        showHeaderAvatar: true,
+      };
+    case String(ACTIONS.hideHeaderAvatar):
+      return {
+        ...state,
+        showHeaderAvatar: false,
       };
     case String(ACTIONS.setMessage):
       return {

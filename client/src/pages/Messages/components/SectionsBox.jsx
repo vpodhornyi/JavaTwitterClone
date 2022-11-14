@@ -5,7 +5,7 @@ import SectionDetails from "./SectionDetails";
 import {styled} from "@mui/material/styles";
 
 
-const Home = () => {
+const SectionsBox = () => {
   const BoxWrapper = styled(Box)(styles);
 
   return (
@@ -25,4 +25,4 @@ const styles = ({theme}) => ({
   },
 });
 
-export default Home;
+export default SectionsBox;

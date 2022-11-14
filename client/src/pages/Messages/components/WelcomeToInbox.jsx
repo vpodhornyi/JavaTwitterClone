@@ -5,7 +5,7 @@ import {Typography} from "@mui/material";
 import CustomButton from "@components/__CustomButton";
 
 
-const SelectMessage = () => {
+const WelcomeToInbox = () => {
   const StyledBox = styled(Box)(styles);
 
   return (
@@ -13,21 +13,22 @@ const SelectMessage = () => {
       <Box sx={{
         width: '320px'
       }}>
-        <Typography sx={{fontWeight: 600}} variant='h2'>Select a message</Typography>
-        <Typography sx={{pb: 3, pt: 1}} variant='body1'>Choose from your existing conversations, start a new one, or just keep swimming.</Typography>
-        <CustomButton name='New message'/>
+        <Typography sx={{fontWeight: 600}} variant='h2'>Welcome to your inbox!</Typography>
+        <Typography sx={{pb: 3, pt: 1}} variant='body1'>Drop a line, share Tweets and more with private conversation
+          between you and others on Twitter</Typography>
+        <CustomButton name='Write a message'/>
       </Box>
     </StyledBox>);
 }
 
 const styles = ({theme}) => ({
+  paddingTop: 20,
   boxSizing: 'border-box',
   width: '100%',
-  height: '100%',
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   justifyContent: 'center',
 
 });
 
-export default SelectMessage;
+export default WelcomeToInbox;

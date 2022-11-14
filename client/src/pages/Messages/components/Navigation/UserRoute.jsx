@@ -26,7 +26,7 @@ const UserRoute = ({user, activeId}) => {
             <Typography sx={{ml: '5px'}}>{user.userTag}</Typography>
             <Typography sx={{
               '&:before': {
-                content: '"\\B7"',
+                content: '"·"',
                 marginLeft: '5px',
                 marginRight: '5px',
               }

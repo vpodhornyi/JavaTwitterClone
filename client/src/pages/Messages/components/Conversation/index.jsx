@@ -4,7 +4,7 @@ import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import ChatHeader from "./Header";
 import {getMessageData} from "@redux/message/selector";
-import Loading from "../Loading";
+import Loading from "@components/Loader/Loading";
 import ConversationBody from "./ConversationBody";
 
 const Index = () => {

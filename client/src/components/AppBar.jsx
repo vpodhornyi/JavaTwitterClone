@@ -1,4 +1,5 @@
 import React from "react";
+import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import LogoIcon from "@components/icons/LogoIcon";
 import MainMenu from "@components/navigations/mainMenu/MainMenu";
@@ -7,6 +8,7 @@ import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
+
 import {MAIN_COLOR} from "@utils/constants";
 
 const CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE = `
@@ -20,6 +22,7 @@ const CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE = `
 const AppBar = () => {
   const {logo: {color, href}} = useSelector(getLogoIconState);
   const StyledBox = styled(Box)(styles);
+  const dispatch = useDispatch();
 
   return (
     <StyledBox>
@@ -35,9 +38,7 @@ const AppBar = () => {
         <CustomButton
           customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
           name={"Logout"}
-          onclickAction={() => {
-          }}
-        />
+          onclickAction={() => {}}/>
       </Box>
     </StyledBox>
   );

@@ -4,12 +4,13 @@ import Box from "@mui/material/Box";
 import Header from "./Header";
 
 
-const ConversationInfo = () => {
+const Index = () => {
   const StyledBox = styled(Box)(styles);
 
   return (
     <StyledBox>
       <Header/>
+      <Box sx={{pt: 10}}>{'.............................TODO'}</Box>
     </StyledBox>);
 }
 
@@ -20,4 +21,4 @@ const styles = ({theme}) => ({
 
 });
 
-export default ConversationInfo;
+export default Index;

@@ -1,9 +1,9 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import {styled} from "@mui/material/styles";
-import ConversationInfo from "./conversationInfo/ConversationInfo";
+import ConversationInfo from "./ConversationInfo";
 import Conversation from "./Conversation";
-import Navigation from './navigation/Navigation';
+import Navigation from './Navigation';
 import {getMessageData} from '@redux/message/selector';
 import {useSelector} from "react-redux";
 

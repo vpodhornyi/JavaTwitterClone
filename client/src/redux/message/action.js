@@ -6,7 +6,7 @@ const {api} = API;
 const actions = createActions(
   {
     actions: ['SET_ACTIVE_ID', 'CLOSE_CHAT_INFO', 'OPEN_CHAT_INFO', 'RESET_ACTIVE_ID', 'NAVIGATION_LOADING',
-    'DETAIL_LOADING', 'SENDING_MESSAGE', 'SET_MESSAGE'],
+    'DETAIL_LOADING', 'SENDING_MESSAGE', 'SET_MESSAGE', 'SHOW_HEADER_AVATAR', 'HIDE_HEADER_AVATAR'],
     async: ["GET_CONVERSATION"],
   },
   {
@@ -23,8 +23,10 @@ export const ACTIONS = {
 export const getUsersRoutes = () => async dispatch => {
   try {
     dispatch(ACTIONS.navigationLoading())
-    await api.get()
-
+    // await api.get()
+    setTimeout(() => {
+      dispatch(ACTIONS.navigationLoading());
+    }, 500)
 
   } catch (err) {
     console.log('logout error - ', err);
@@ -55,4 +57,12 @@ export const openChatInfo = () => async dispatch => {
 
 export const closeChatInfo = () => async dispatch => {
   dispatch(ACTIONS.closeChatInfo());
+}
+
+export const showHeaderAvatar = () => async dispatch => {
+  dispatch(ACTIONS.showHeaderAvatar());
+}
+
+export const hideHeaderAvatar = () => async dispatch => {
+  dispatch(ACTIONS.hideHeaderAvatar());
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
-import Navigation from './navigation/Navigation';
+import Navigation from './Navigation';
 
 const SectionNavigation = () => {
   const SectionWrapper = styled('section')(styles);

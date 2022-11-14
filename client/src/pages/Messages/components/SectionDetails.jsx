@@ -4,7 +4,7 @@ import {styled} from "@mui/material/styles";
 import SelectMessage from "./SelectMessage";
 import Conversation from "./Conversation";
 import {getMessageData} from '@redux/message/selector';
-import ConversationInfo from "./conversationInfo/ConversationInfo";
+import ConversationInfo from "./ConversationInfo";
 
 const SectionDetails = () => {
   const SectionWrapper = styled('section')(styles);

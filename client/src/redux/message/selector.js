@@ -6,12 +6,13 @@ export const getMessageData = state => {
     return {
       isNavigationLoading: data.navigationLoading,
       isDetailLoading: data.detailLoading,
-      users: data.users,
-      user: isChatSelected ? data.users[data.activeId] : {},
+      conversations: data.conversations,
+      user: isChatSelected ? data.conversations[data.activeId] : {},
       activeId: data.activeId,
       isChatSelected,
       isChatInfo: data.isChatInfo,
       message: data.message,
+      showHeaderAvatar: data.showHeaderAvatar
     }
   }
 }

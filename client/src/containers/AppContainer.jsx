@@ -8,6 +8,7 @@ import SnackBar from "@components/SnackBar";
 import routes from "../routes";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 
+
 const AppContainer = () => {
   const loading = false;
   const theme = createTheme({
