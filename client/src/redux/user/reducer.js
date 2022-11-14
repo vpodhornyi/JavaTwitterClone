@@ -1,7 +1,7 @@
 import {ACTIONS} from "./action";
 
 const INIT_STATE = {
-  id: 0,
+  id: 3,
   name: '',
   userTag: '',
   email: '',

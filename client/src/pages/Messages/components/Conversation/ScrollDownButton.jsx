@@ -4,7 +4,7 @@ import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import IconByName from "@components/icons/IconByName";
 
-const Index = () => {
+const ScrollDownButton = () => {
   const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
 
@@ -29,4 +29,4 @@ const styles = ({theme}) => ({
   }
 });
 
-export default Index;
+export default ScrollDownButton;

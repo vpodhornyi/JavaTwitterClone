@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import StartMessage from "./StartMessage";
 
-const Footer = () => {
+const Index = () => {
   const BoxWrapper = styled(Box)(styles);
 
   return (
@@ -18,4 +18,4 @@ const styles = ({theme}) => ({
   backgroundColor: 'rgba(255,255,255, 1)',
 });
 
-export default Footer;
+export default Index;

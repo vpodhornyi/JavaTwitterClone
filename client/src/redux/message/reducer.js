@@ -5,9 +5,7 @@ const INIT_STATE = {
   detailLoading: false,
   sendingMessage: false,
   isChatInfo: false,
-  showHeaderAvatar: false,
   activeId: -1,
-  message: '',
   conversations: [
     {
       id: 0,
@@ -19,28 +17,50 @@ const INIT_STATE = {
       location: '',
       avatarImgUrl: '',
       headerImgUrl: '',
+    }
+  ],
+  conversationData: [
+    {
+      key: 'AS32edd23',
+      isAuth: true,
+      text: 'Hello',
+      userId: 3,
     },
     {
-      id: 1,
-      name: 'Alex Black',
-      userTag: '@bob1234',
-      email: 'bob@gmail.com',
-      birthDate: '',
-      bio: '',
-      location: '',
-      avatarImgUrl: '',
-      headerImgUrl: '',
+      key: 'LOjMH12H1',
+      isAuth: false,
+      text: 'Hi',
+      userId: 0,
     },
     {
-      id: 2,
-      name: 'Lee Marley',
-      userTag: '@bob1234',
-      email: 'bob@gmail.com',
-      birthDate: '',
-      bio: '',
-      location: '',
-      avatarImgUrl: '',
-      headerImgUrl: '',
+      key: 'erFRF5GrR',
+      isAuth: true,
+      text: 'How are you?',
+      userId: 3,
+    },
+    {
+      key: '123klk312',
+      isAuth: false,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis harum modi necessitatibus,' +
+        ' non nostrum perspiciatis rem sint vero voluptas voluptatum! Architecto cumque deleniti eligendi' +
+        ' eum possimus provident quibusdam quo totam.',
+      userId: 3,
+    },
+    {
+      key: 'da23rfewge',
+      isAuth: true,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis harum modi necessitatibus,' +
+        ' non nostrum perspiciatis rem sint vero voluptas voluptatum! Architecto cumque deleniti eligendi' +
+        ' eum possimus provident quibusdam quo totam.',
+      userId: 3,
+    },
+    {
+      key: '546grege434',
+      isAuth: false,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis harum modi necessitatibus,' +
+        ' non nostrum perspiciatis rem sint vero voluptas voluptatum! Architecto cumque deleniti eligendi' +
+        ' eum possimus provident quibusdam quo totam.',
+      userId: 3,
     },
   ]
 }
@@ -78,21 +98,6 @@ export default (state = INIT_STATE, {payload, type}) => {
       return {
         ...state,
         isChatInfo: false,
-      };
-    case String(ACTIONS.showHeaderAvatar):
-      return {
-        ...state,
-        showHeaderAvatar: true,
-      };
-    case String(ACTIONS.hideHeaderAvatar):
-      return {
-        ...state,
-        showHeaderAvatar: false,
-      };
-    case String(ACTIONS.setMessage):
-      return {
-        ...state,
-        message: payload.message,
       };
     default:
       return state;

@@ -5,23 +5,24 @@ import Action from "./Action";
 import Message from "./Message";
 import PropTypes from "prop-types";
 
-const MessageBox = ({left}) => {
+const MessageBox = ({left, text}) => {
   const BoxWrapper = styled(Box)(styles);
 
   return (
     <BoxWrapper>
       {left ? (<>
-        <Message left={left}/>
+        <Message left={left} text={text}/>
         <Action/>
       </>) : (<>
         <Action/>
-        <Message/>
+        <Message text={text}/>
       </>)}
     </BoxWrapper>);
 }
 
 MessageBox.propTypes = {
   left: PropTypes.bool,
+  text: PropTypes.string,
 }
 
 const styles = ({theme}) => ({

@@ -3,8 +3,9 @@ import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import CustomIconButton from "@components/buttons/CustomIconButton";
+import More from "./More";
 
-const Action = () => {
+const Index = () => {
   const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
 
@@ -13,9 +14,7 @@ const Action = () => {
       <Box>
         <CustomIconButton name='FavoriteBorderOutlined' title='React' size='small' iconSize='small'/>
       </Box>
-      <Box>
-        <CustomIconButton name='MoreHorizOutlined' title='More' size='small' iconSize='small'/>
-      </Box>
+      <More/>
     </BoxWrapper>);
 }
 
@@ -25,4 +24,4 @@ const styles = ({theme}) => ({
 
 });
 
-export default Action;
+export default Index;

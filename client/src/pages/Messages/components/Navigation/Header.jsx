@@ -1,12 +1,16 @@
 import React from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
 import CustomIconButton from "@components/buttons/CustomIconButton";
 import Avatar from "./Avatar";
+import {openDialog} from "@redux/dialog/action";
+import DialogNewMessage from "../DialogNewMessage";
 
 const Header = () => {
   const BoxWrapper = styled(Box)(styles);
+  const dispatch = useDispatch();
 
   return (
     <BoxWrapper>
@@ -14,7 +18,9 @@ const Header = () => {
         <Avatar/>
         <Typography variant='h2'>Messages</Typography>
       </Box>
-      <CustomIconButton name='ForwardToInboxOutlined' title='New message'/>
+      <Box onClick={() => dispatch(openDialog(DialogNewMessage))}>
+        <CustomIconButton name='ForwardToInboxOutlined' title='New message'/>
+      </Box>
     </BoxWrapper>
   );
 }

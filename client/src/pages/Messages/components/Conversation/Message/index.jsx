@@ -1,5 +1,4 @@
 import React from "react";
-import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import MessageBox from "./MessageBox";
@@ -7,15 +6,14 @@ import Reaction from "./Reaction";
 import Time from "./Time";
 import PropTypes from "prop-types";
 
-const Index = ({left = false}) => {
+const Index = ({left = false, text}) => {
   const BoxWrapper = styled(Box)(styles);
-  const dispatch = useDispatch();
 
   return (
     <BoxWrapper>
       <Box className={left ? 'LeftMessage' : 'RightMessage'}>
         <Box>
-          <MessageBox left={left}/>
+          <MessageBox left={left} text={text}/>
         </Box>
         <Reaction/>
         <Time/>
@@ -25,6 +23,7 @@ const Index = ({left = false}) => {
 
 Index.propTypes = {
   left: PropTypes.bool,
+  text: PropTypes.string,
 }
 
 const styles = ({theme}) => ({
@@ -49,6 +48,10 @@ const styles = ({theme}) => ({
   },
 
   '& > .LeftMessage > .MuiBox-root': {
+    justifyContent: 'flex-start',
+    width: '100%'
+  },
+  '& > .LeftMessage > .MuiBox-root > .MuiBox-root': {
     justifyContent: 'flex-start',
   },
 });

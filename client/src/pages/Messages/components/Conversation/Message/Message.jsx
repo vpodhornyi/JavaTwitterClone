@@ -1,21 +1,20 @@
 import React from "react";
-import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
-const Message = ({left}) => {
+const Message = ({left, text}) => {
   const BoxWrapper = styled(Box)(styles);
-  const dispatch = useDispatch();
 
   return (
     <BoxWrapper className={left ? 'LeftMessage' : 'RightMessage'}>
-      <Typography>ecwec wcecw fwfwe sdfsf sdfsdf  wwwwwwwwwwwwwwwwwwwwwwwf sdfsdf sfsd f s fd s df s df  sd f sd f s df s f</Typography>
+      <Typography>{text}</Typography>
     </BoxWrapper>);
 }
 
 Message.propTypes = {
   left: PropTypes.bool,
+  text: PropTypes.string,
 }
 
 const styles = ({theme}) => ({

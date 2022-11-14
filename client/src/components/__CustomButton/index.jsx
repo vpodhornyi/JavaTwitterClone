@@ -24,13 +24,12 @@ const def = theme =>  ({
   },
 });
 
-const Voo = ({customStyle, name, iconName, onclickAction, fontWeight = 'fontWeightMedium'}) => {
-  const dispatch = useDispatch();
+const Voo = ({customStyle, name, iconName, fontWeight = 'fontWeightMedium'}) => {
 
   const Foo = styled(Fab)(({theme}) => ({...def(theme), ...customStyle}));
 
   return (
-    <Foo variant="extended" onClick={() => dispatch(onclickAction())}>
+    <Foo variant="extended">
       {/*{iconName && <IconByName iconName={iconName}/>}*/}
       <Typography variant='body1'>{name}</Typography>
     </Foo>
@@ -42,7 +41,6 @@ Voo.propTypes = {
   name: PropTypes.string,
   iconName: PropTypes.string,
   fontWeight: PropTypes.string,
-  onclickAction: PropTypes.func,
 }
 
 export default Voo;

@@ -7,6 +7,7 @@ export const getMessageData = state => {
       isNavigationLoading: data.navigationLoading,
       isDetailLoading: data.detailLoading,
       conversations: data.conversations,
+      conversationData: data.conversationData,
       user: isChatSelected ? data.conversations[data.activeId] : {},
       activeId: data.activeId,
       isChatSelected,

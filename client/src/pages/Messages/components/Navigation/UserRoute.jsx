@@ -6,6 +6,7 @@ import {Avatar, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 import CustomIconButton from "@components/buttons/CustomIconButton";
 import {getConversation} from "@redux/message/action";
+import More from './More';
 
 const UserRoute = ({user, activeId}) => {
   const dispatch = useDispatch();
@@ -42,9 +43,11 @@ const UserRoute = ({user, activeId}) => {
         display: 'none',
         position: 'absolute',
         top: '5px',
-        right: '5px'
+        right: '5px',
+        zIndex: 1000,
       }}>
-        <CustomIconButton name='MoreHorizOutlined' title='More'/>
+        {/*<CustomIconButton name='MoreHorizOutlined' title='More'/>*/}
+        <More/>
       </Box>
     </BoxWrapper>);
 }

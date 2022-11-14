@@ -28,8 +28,8 @@ const AppContainer = () => {
         white: '#ffffff',
       },
       background: {
-        paper: '#1976d2',
-        default: '#ba68c8',
+        paper: '#ffffff',
+        default: '#000000',
       },
       primary: {
         main: '#ffd400',
@@ -46,7 +46,7 @@ const AppContainer = () => {
         main: '#00ba7c',
       },
       text: {
-        primary: '#ba68c8'
+        primary: '#000000'
       },
       action: {
         active: '#0f1419'
