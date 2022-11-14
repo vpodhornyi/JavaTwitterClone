@@ -24,23 +24,23 @@ const def = theme =>  ({
   },
 });
 
-const Voo = ({customStyle, name, iconName, fontWeight = 'fontWeightMedium'}) => {
+const CustomFabButton = ({customStyle, name, iconName, fontWeight = 'fontWeightMedium'}) => {
 
-  const Foo = styled(Fab)(({theme}) => ({...def(theme), ...customStyle}));
+  const FabWrapper = styled(Fab)(({theme}) => ({...def(theme), ...customStyle}));
 
   return (
-    <Foo variant="extended">
+    <FabWrapper variant="extended">
       {/*{iconName && <IconByName iconName={iconName}/>}*/}
       <Typography variant='body1'>{name}</Typography>
-    </Foo>
+    </FabWrapper>
   );
 };
 
-Voo.propTypes = {
+CustomFabButton.propTypes = {
   customStyle: PropTypes.any,
   name: PropTypes.string,
   iconName: PropTypes.string,
   fontWeight: PropTypes.string,
 }
 
-export default Voo;
+export default CustomFabButton;

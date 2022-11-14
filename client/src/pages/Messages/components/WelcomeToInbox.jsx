@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import {Typography} from "@mui/material";
-import CustomButton from "@components/__CustomButton";
+import CustomFabButton from "@components/buttons/CustomFabButton";
 import DialogNewMessage from "./DialogNewMessage";
 import {openDialog} from "@redux/dialog/action";
 
@@ -20,7 +20,7 @@ const WelcomeToInbox = () => {
         <Typography sx={{pb: 3, pt: 1}} variant='body1'>Drop a line, share Tweets and more with private conversation
           between you and others on Twitter</Typography>
         <Box onClick={() => dispatch(openDialog(DialogNewMessage))}>
-          <CustomButton name='Write a message'/>
+          <CustomFabButton name='Write a message'/>
         </Box>
       </Box>
     </StyledBox>);

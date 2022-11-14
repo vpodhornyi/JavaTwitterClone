@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import __CustomButton from '@components/__CustomButton';
+import CustomFabButton from '@components/buttons/CustomFabButton';
 import OrLine from '../../components/OrLine';
 import SignUpFirstStep from './SignUp/FirstStep';
 import LogInFirstStep from './SingIn/FirstStep';
@@ -54,21 +54,21 @@ const Auth = () => {
           <Typography fontWeight='fontWeightBold' variant='h1'>Happening now</Typography>
           <Typography fontWeight='fontWeightBold' variant='h2'>Join Twitter today.</Typography>
           <Grid container sx={{pt: 3, width: WIDTH_BUTTON_CONTAINER}}>
-            <__CustomButton
+            <CustomFabButton
               sx={{bgcolor: ''}}
               customStyle={CUSTOM_BUTTON_SING_UP_WITH_GOOGLE_STYLE}
               name={CUSTOM_BUTTON_SING_UP_WITH_GOOGLE_NAME}
               onclickAction={() => openDialog()}
             />
             <OrLine/>
-            <__CustomButton
+            <CustomFabButton
               customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
               name={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_NAME}
               onclickAction={() => openDialog(SignUpFirstStep)}
             />
             <Typography fontWeight='fontWeightBold'>Already have an
               account?</Typography>
-            <__CustomButton
+            <CustomFabButton
               customStyle={CUSTOM_BUTTON_SING_IN_STYLE}
               name={CUSTOM_BUTTON_SING_IN_NAME}
               onclickAction={() => openDialog(LogInFirstStep)}
