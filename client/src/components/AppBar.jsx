@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
-
+import {cancelAuthorization} from '@redux/auth/action';
 import {MAIN_COLOR} from "@utils/constants";
 
 const CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE = `
@@ -38,7 +38,7 @@ const AppBar = () => {
         <CustomButton
           customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
           name={"Logout"}
-          onclickAction={() => {}}/>
+          onclickAction={() => dispatch(cancelAuthorization())}/>
       </Box>
     </StyledBox>
   );

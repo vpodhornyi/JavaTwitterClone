@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useDispatch} from "react-redux";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
@@ -44,7 +45,7 @@ const CUSTOM_BUTTON_SING_IN_NAME = 'Sing in';
 
 const Auth = () => {
   const matches = useMediaQuery(mediaQuery.mobile);
-  // const classes = useStyles(useTheme());
+  const dispatch = useDispatch();
 
   return (
     <Grid container direction={'row-reverse'}>
@@ -68,11 +69,12 @@ const Auth = () => {
             />
             <Typography fontWeight='fontWeightBold'>Already have an
               account?</Typography>
-            <CustomFabButton
-              customStyle={CUSTOM_BUTTON_SING_IN_STYLE}
-              name={CUSTOM_BUTTON_SING_IN_NAME}
-              onclickAction={() => openDialog(LogInFirstStep)}
-            />
+            <Box onClick={() => dispatch(openDialog(LogInFirstStep))}>
+              <CustomFabButton
+                customStyle={CUSTOM_BUTTON_SING_IN_STYLE}
+                name={CUSTOM_BUTTON_SING_IN_NAME}
+              />
+            </Box>
           </Grid>
         </Container>
       </Grid>
