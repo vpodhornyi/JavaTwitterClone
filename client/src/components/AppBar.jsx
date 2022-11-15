@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import LogoIcon from "@components/icons/LogoIcon";
 import MainMenu from "@components/navigations/mainMenu/MainMenu";
-import CustomButton from "@components/CustomButton";
+import CustomFabButton from "@components/buttons/CustomFabButton";
 import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
@@ -34,11 +34,10 @@ const AppBar = () => {
         </Link>
         <MainMenu/>
       </Box>
-      <Box>
-        <CustomButton
+      <Box onClick={() => dispatch(cancelAuthorization())}>
+        <CustomFabButton
           customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
-          name={"Logout"}
-          onclickAction={() => dispatch(cancelAuthorization())}/>
+          name={"Logout"}/>
       </Box>
     </StyledBox>
   );

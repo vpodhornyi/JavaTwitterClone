@@ -18,10 +18,6 @@ const styles = ({theme}) => ({
   display: 'flex',
   height: '100%',
   width: '100%',
-
-  [theme.breakpoints.up('md')]: {
-    width: '100%',
-  }
 });
 
 export default Home;

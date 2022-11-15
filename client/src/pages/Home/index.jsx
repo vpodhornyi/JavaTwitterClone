@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 const Home = () => {
   return (
     <Box sx={{
+      height: '100%',
       display: 'flex',
       justifyContent: 'space-between',
     }}>

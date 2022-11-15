@@ -20,7 +20,7 @@ PrimaryColumn.propTypes = {
 const styles = ({theme}) => ({
   backgroundColor: '#ff7a00',
   width: '100%',
-  height: '100vh',
+  height: '100%',
 
   [theme.breakpoints.up('sm')]: {
     width: 600,
