@@ -2,13 +2,14 @@ import React from "react";
 import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import StartMessage from "./StartMessage";
+import CustomTextField from "./CustomTextField";
 
 const Index = () => {
   const BoxWrapper = styled(Box)(styles);
 
   return (
     <BoxWrapper>
-      <StartMessage/>
+      <StartMessage input={CustomTextField}/>
     </BoxWrapper>);
 }
 

@@ -10,7 +10,7 @@ import {getMessageData} from "@redux/message/selector";
 const Header = () => {
   const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
-  const {user} = useSelector(getMessageData);
+  const {currentConversation} = useSelector(getMessageData);
 
   return (
     <BoxWrapper>
@@ -18,8 +18,8 @@ const Header = () => {
         <Box sx={{mr: '10px'}} className='backButton' onClick={() => dispatch(resetActiveId())}>
           <CustomIconButton name='ArrowBackOutlined' title='Back'/>
         </Box>
-        <Avatar sx={{mr: '10px', width: '2.5rem', height: '2.5rem'}} src={user.avatarImgUrl}/>
-        <Typography variant='h2'>{user.name}</Typography>
+        <Avatar sx={{mr: '10px', width: '2.5rem', height: '2.5rem'}} src={currentConversation.avatarImgUrl}/>
+        <Typography variant='h2'>{currentConversation.name}</Typography>
       </Box>
       <Box onClick={() => dispatch(openChatInfo())}>
         <CustomIconButton name='InfoOutlined' title='Details'/>

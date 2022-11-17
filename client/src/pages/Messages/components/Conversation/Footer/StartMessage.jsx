@@ -3,27 +3,32 @@ import {useDispatch, useSelector} from "react-redux";
 import {Box} from "@mui/material";
 import {getMessageData} from "@redux/message/selector";
 import CustomIconButton from "@components/buttons/CustomIconButton";
-import CustomTextField from "./CustomTextField";
-import {sendMessage} from "@redux/message/action";
+// import CustomTextField from "./CustomTextField";
+import {sendMessage, setMessage} from "@redux/message/action";
+import PropTypes from "prop-types";
 
-const StartMessage = () => {
-  const {isDetailLoading, message, user} = useSelector(getMessageData);
+const StartMessage = ({input: Input}) => {
+  const {isDetailLoading, message, currentConversation} = useSelector(getMessageData);
   const [text, setText] = useState('');
   const dispatch = useDispatch();
 
   const onChange = (e) => {
-    setText(e.target.value);
+    // setText(e.target.value);
+
+    dispatch(setMessage({text: e.target.value}));
   }
 
   const buttonClickSend = () => {
-    dispatch(sendMessage({text, user}));
-    setText('')
+    dispatch(sendMessage({text: message, currentConversation}));
+    // setText('');
+    dispatch(setMessage({text: ''}));
   }
 
   const enterKeyDownSend = (e) => {
     if (e.keyCode === 13) {
-      dispatch(sendMessage({text, user}));
-      setText('')
+      dispatch(sendMessage({text: message, currentConversation}));
+      // setText('');
+      dispatch(setMessage({text: ''}));
     }
   }
 
@@ -43,11 +48,15 @@ const StartMessage = () => {
     <Box>
       <CustomIconButton name='EmojiEmotionsOutlined' iconSize='small'/>
     </Box>
-    <CustomTextField enterKeyDownSend={enterKeyDownSend} onChange={onChange} text={text}/>
+    <Input enterKeyDownSend={enterKeyDownSend} onChange={onChange} text={message}/>
     <Box onClick={buttonClickSend}>
       <CustomIconButton name='SendOutlined' iconSize='small' disabled={false}/>
     </Box>
   </Box>);
+}
+
+StartMessage.propTypes = {
+  input: PropTypes.func
 }
 
 export default StartMessage;

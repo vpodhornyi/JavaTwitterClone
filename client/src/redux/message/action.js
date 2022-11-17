@@ -6,7 +6,7 @@ const {api} = API;
 const actions = createActions(
   {
     actions: ['SET_ACTIVE_ID', 'CLOSE_CHAT_INFO', 'OPEN_CHAT_INFO', 'RESET_ACTIVE_ID', 'NAVIGATION_LOADING',
-    'DETAIL_LOADING', 'SEND_MESSAGE'],
+    'DETAIL_LOADING', 'SEND_MESSAGE', 'SET_MESSAGE'],
     async: ["GET_CONVERSATION"],
   },
   {
@@ -33,7 +33,7 @@ export const getUsersRoutes = () => async dispatch => {
   }
 }
 
-export const sendMessage = ({text, user}) => async dispatch => {
+export const sendMessage = ({text, currentConversation}) => async dispatch => {
   try {
     console.log(text);
     // await api.get()
@@ -55,6 +55,10 @@ export const getConversation = ({id}) => async dispatch => {
   } catch (err) {
     console.log('logout error - ', err);
   }
+}
+
+export const setMessage = (payload) => async dispatch => {
+  dispatch(ACTIONS.setMessage(payload));
 }
 
 export const resetActiveId = () => async dispatch => {

@@ -1,9 +1,33 @@
-import React from "react";
+import React, {memo} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {TextField} from "@mui/material";
 import PropTypes from "prop-types";
+import {getMessageData} from "@redux/message/selector";
+import {sendMessage, setMessage} from "@redux/message/action";
 
+const CustomTextField = ({text, onChange, enterKeyDownSend}) => {
+  const {message} = useSelector(getMessageData);
+  const dispatch = useDispatch();
 
-const CustomTextField = ({enterKeyDownSend, onChange, text}) => {
+  /*  const onChange = (e) => {
+      // setText(e.target.value);
+
+      dispatch(setMessage({text: e.target.value}));
+    }
+
+    const buttonClickSend = () => {
+      dispatch(sendMessage({text: message}));
+      // setText('');
+      dispatch(setMessage({text: ''}));
+    }
+
+    const enterKeyDownSend = (e) => {
+      if (e.keyCode === 13) {
+        dispatch(sendMessage({text: message}));
+        // setText('');
+        dispatch(setMessage({text: ''}));
+      }
+    }*/
 
   return <TextField
     sx={{

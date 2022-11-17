@@ -8,14 +8,14 @@ import {getMessageData} from "@redux/message/selector";
 const Index = () => {
   const BoxWrapper = styled(Box)(styles);
   const dispatch = useDispatch();
-  const {user} = useSelector(getMessageData);
+  const {currentConversation} = useSelector(getMessageData);
 
   return (
     <Link to='/user_name' style={{textDecoration: 'none'}}>
       <BoxWrapper>
-        <Avatar sx={{width: '5rem', height: '5rem'}} src={user.avatarImgUrl}/>
-        <Typography sx={{fontWeight: 600}}>{user.name}</Typography>
-        <Typography sx={{pb: 2}}>{user.userTag}</Typography>
+        <Avatar sx={{width: '5rem', height: '5rem'}} src={currentConversation.avatarImgUrl}/>
+        <Typography sx={{fontWeight: 600}}>{currentConversation.name}</Typography>
+        <Typography sx={{pb: 2}}>{currentConversation.userTag}</Typography>
         <Typography>Joined November 2022 · 1 Follower</Typography>
         <Typography>User Tag</Typography>
       </BoxWrapper>
