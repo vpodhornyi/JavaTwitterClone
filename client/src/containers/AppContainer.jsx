@@ -1,97 +1,83 @@
-import React, {Suspense, useMemo} from "react";
-import {useSelector} from "react-redux";
-import {Routes, Route} from "react-router-dom";
+import React, {Suspense} from "react";
 import {PageLoader, Preloader} from "@components/Loader";
-import PrivateRoute from "@components/PrivateRoute";
+import {useSelector} from "react-redux";
 import DialogWindow from "@components/DialogWindow";
 import SnackBar from "@components/SnackBar";
-import routes from "../routes";
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles";
+import AppBar from "../components/AppBar";
+import Router from "../components/Router";
+import {themeStyles} from "../utils/theme";
+import {getAuthorized} from '@redux/auth/selector';
 
 
 const AppContainer = () => {
   const loading = false;
-  const theme = createTheme({
-    breakpoints: {
-      values: {
-        xs: 500,
-        sm: 715,
-        md: 1018,
-        lg: 1108,
-        xl: 1295,
-      },
-    },
-    palette: {
-      mode: 'light',
-      common: {
-        black: '#1976d2',
-        white: '#ffffff',
-      },
-      background: {
-        paper: '#ffffff',
-        default: '#000000',
-      },
-      primary: {
-        main: '#ffd400',
-        secondary: '#00ba7c',
-        contrastText: '#ffd400'
-      },
-      neutral: {
-        main: '#ffd400',
-      },
-      orangeAccent: {
-        main: '#ff7a00',
-      },
-      greenAccent: {
-        main: '#00ba7c',
-      },
-      text: {
-        primary: '#000000'
-      },
-      action: {
-        active: '#0f1419'
-      }
-    },
-    typography: {
-      fontFamily: "TwitterChirp, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif",
-      fontWeightLight: 300,
-      fontWeightRegular: 400,
-      fontWeightMedium: 500,
-      fontWeightBold: 600,
-      h1: {
-        fontSize: '4rem',
-      },
-      h2: {
-        fontSize: '2rem',
-      },
-      body1: {
-        fontSize: '1rem',
-      },
-      body2: {
-        fontSize: '0.875rem',
-      },
-    },
-  });
-
-  const routeComponents = useMemo(() => routes.map(route => (
-      <Route key={route.path} path={route.path} element={<PrivateRoute route={route}/>}/>
-    )),
-    []
-  );
-
-  const html = document.getElementsByTagName('html')[0];
-  html.style.fontSize = '14px';
+  const authorized = useSelector(getAuthorized);
+  const theme = createTheme(themeStyles);
 
   return (
     <ThemeProvider theme={theme}>
-      {/*<Preloader loaded={apiOk}/>*/}
+      <Header>
+        <AppBar authorized={authorized}/>
+      </Header>
+      <Main>
+        <Container>
+          <Suspense fallback={<PageLoader loaded={!loading}/>}>
+            <Router authorized={authorized}/>
+          </Suspense>
+        </Container>
+      </Main>
       <DialogWindow/>
       <SnackBar/>
-      <Suspense fallback={<PageLoader loaded={!loading}/>}>
-        <Routes>{routeComponents}</Routes>
-      </Suspense>
     </ThemeProvider>
   )
 }
+
+const Header = styled('header')(({theme}) => ({
+  display: 'none',
+
+  [theme.breakpoints.up('xs')]: {
+    flexGrow: 0,
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'end',
+  },
+
+  [theme.breakpoints.up('sm')]: {
+    flexGrow: 1,
+  },
+}));
+
+const Main = styled('main')(({theme}) => ({
+  flexGrow: 1,
+  height: '100%',
+
+  [theme.breakpoints.up('sm')]: {
+    flexGrow: 2,
+  },
+
+  [theme.breakpoints.up('md')]: {
+    flexGrow: 1,
+  }
+}));
+
+const Container = styled('div')(({theme}) => ({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+
+  [theme.breakpoints.up('sm')]: {
+    width: 600,
+  },
+
+  [theme.breakpoints.up('md')]: {
+    width: 920,
+  },
+
+  [theme.breakpoints.up('lg')]: {
+    width: 990,
+  }
+}));
 
 export default AppContainer;

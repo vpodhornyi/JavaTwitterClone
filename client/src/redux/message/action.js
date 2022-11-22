@@ -57,10 +57,6 @@ export const getConversation = ({id}) => async dispatch => {
   }
 }
 
-export const setMessage = (payload) => async dispatch => {
-  dispatch(ACTIONS.setMessage(payload));
-}
-
 export const resetActiveId = () => async dispatch => {
   dispatch(ACTIONS.resetActiveId());
 }

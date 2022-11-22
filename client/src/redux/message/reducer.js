@@ -7,31 +7,43 @@ const INIT_STATE = {
   sendingMessage: false,
   isChatInfo: false,
   activeId: -1,
-  conversations: [
+  chats: [
     {
       id: 1,
-      name: 'Bob',
-      userTag: '@bob1234',
-      email: 'bob@gmail.com',
-      birthDate: '',
-      bio: '',
-      location: '',
-      avatarImgUrl: '',
-      headerImgUrl: '',
+      title: 'Bob',
+      users: [
+        {
+          id: 1,
+          name: 'Bob',
+          userTag: '@bob1234',
+          email: 'bob@gmail.com',
+          birthDate: '',
+          bio: '',
+          location: '',
+          avatarImgUrl: '',
+          headerImgUrl: '',
+        }
+      ]
     },
     {
       id: 3,
-      name: 'Lily',
-      userTag: '@lily4535',
-      email: 'cap@marvel.com',
-      birthDate: '',
-      bio: '',
-      location: '',
-      avatarImgUrl: '',
-      headerImgUrl: '',
+      title: 'Lily',
+      users: [
+        {
+          id: 3,
+          name: 'Lily',
+          userTag: '@lily4535',
+          email: 'cap@marvel.com',
+          birthDate: '',
+          bio: '',
+          location: '',
+          avatarImgUrl: '',
+          headerImgUrl: '',
+        }
+      ]
     }
   ],
-  conversationData: [
+  chatData: [
     {
       key: 'AS32edd23',
       isAuth: true,
@@ -90,9 +102,10 @@ export default (state = INIT_STATE, {payload, type}) => {
         detailLoading: !state.detailLoading,
       };
     case String(ACTIONS.setMessage):
+      const {id, text} = payload;
+      state.chats.find(v => v.id === id).text = text;
       return {
         ...state,
-        message: payload.text,
       };
     case String(ACTIONS.setActiveId):
       return {

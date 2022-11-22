@@ -2,26 +2,18 @@ import React from "react";
 import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import LogoIcon from "@components/icons/LogoIcon";
-import MainMenu from "@components/navigations/mainMenu/MainMenu";
+import MainMenu from "./MainMenu";
 import CustomFabButton from "@components/buttons/CustomFabButton";
 import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
 import {cancelAuthorization} from '@redux/auth/action';
-import {MAIN_COLOR} from "@utils/constants";
+import PropTypes from "prop-types";
 
-const CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE = `
-    background-color: ${MAIN_COLOR};
-    color: #fff;
-    border: none;
-      &:hover {
-        background-color: #0D80D8;
-    }`;
 
-const AppBar = () => {
+const AppBar = ({authorized}) => {
   const {logo: {color, href}} = useSelector(getLogoIconState);
-  const StyledBox = styled(Box)(styles);
   const dispatch = useDispatch();
 
   return (
@@ -32,23 +24,29 @@ const AppBar = () => {
           to={href}>
           <LogoIcon/>
         </Link>
-        <MainMenu/>
+        <MainMenu authorized={authorized}/>
       </Box>
-      <Box onClick={() => dispatch(cancelAuthorization())}>
-        <CustomFabButton
-          customStyle={CUSTOM_BUTTON_SING_UP_WITH_EMAIL_STYLE}
-          name={"Logout"}/>
-      </Box>
+      {authorized &&
+        <Box onClick={() => dispatch(cancelAuthorization())}>
+          <CustomFabButton
+            name={"Logout"}/>
+        </Box>
+      }
     </StyledBox>
   );
 }
 
 const styles = ({theme}) => ({
-  // backgroundColor: theme.palette.primary.main,
   height: '100%',
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
 })
+
+const StyledBox = styled(Box)(styles);
+
+AppBar.propTypes = {
+  authorized: PropTypes.bool,
+}
 
 export default AppBar;

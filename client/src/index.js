@@ -6,12 +6,9 @@ import {createRoot} from "react-dom/client";
 import {BrowserRouter} from "react-router-dom";
 import './normolize.css';
 
-
 const reduxStore = store();
-const element = document.getElementById("root");
-element.style.height = '100%';
 
-const root = createRoot(element);
+const root = createRoot(document.getElementById("root"));
 
 root.render(
   <Provider store={reduxStore}>

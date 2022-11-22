@@ -3,13 +3,13 @@ import PrimaryColumn from "@components/PrimaryColumn";
 import SidebarColumn from "@components/SidebarColumn";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
-import Explore from "../Explore";
+import PrivateRoute from "../../components/Router/PrivateRoute";
 
-const Home = ({authorized}) => {
+const Root = ({authorized}) => {
   return (
     <>
       <PrimaryColumn>
-        <Box sx={{height: '200vh'}}></Box>
+        ROOT EXPLORE
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn
@@ -18,8 +18,8 @@ const Home = ({authorized}) => {
   );
 }
 
-Home.propTypes = {
+Root.propTypes = {
   authorized: PropTypes.bool,
 }
 
-export default Home;
+export default Root;

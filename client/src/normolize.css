@@ -60,3 +60,10 @@ html, body {
 html {
     font-size: 14px;
 }
+
+#root {
+    height: 100%;
+    display: flex;
+    overflow-y: scroll;
+    overscroll-behavior-y: none;
+}

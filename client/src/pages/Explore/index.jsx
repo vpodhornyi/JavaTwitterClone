@@ -1,15 +1,13 @@
 import React from "react";
 import PrimaryColumn from "@components/PrimaryColumn";
 import SidebarColumn from "@components/SidebarColumn";
-import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
-import Explore from "../Explore";
 
-const Home = ({authorized}) => {
+const Explore = ({authorized}) => {
   return (
     <>
       <PrimaryColumn>
-        <Box sx={{height: '200vh'}}></Box>
+        EXPLORER
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn
@@ -18,8 +16,8 @@ const Home = ({authorized}) => {
   );
 }
 
-Home.propTypes = {
+Explore.propTypes = {
   authorized: PropTypes.bool,
 }
 
-export default Home;
+export default Explore;
