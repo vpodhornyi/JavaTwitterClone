@@ -7,6 +7,7 @@ import SingInSecondStep from '@pages/Auth/SingIn/SecondStep';
 const {api, axios} = API;
 const actions = createActions(
   {
+    actions: ['SET_ROUTES', 'SET_MENU'],
     async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "LOGOUT"],
   },
   {

@@ -1,14 +1,16 @@
 import React from "react";
-import CollectBox from './components/CollectBox';
-import SectionsBox from './components/SectionsBox';
+import {SectionDetails, SectionNavigation} from "../../components";
 
-const Home = () => {
-
-  return <>
-    <CollectBox/>
-    <SectionsBox/>
-  </>;
+const Messages = () => {
+  return (
+    <>
+      <SectionNavigation>
+        MESSAGES
+      </SectionNavigation>
+      <SectionDetails>
+        SectionDetails
+      </SectionDetails>
+    </>);
 }
 
-
-export default Home;
+export default Messages;

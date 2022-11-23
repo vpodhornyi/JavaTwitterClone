@@ -1,25 +1,18 @@
 import React from "react";
-import PrimaryColumn from "@components/PrimaryColumn";
-import SidebarColumn from "@components/SidebarColumn";
-import Box from "@mui/material/Box";
-import PropTypes from "prop-types";
-import PrivateRoute from "../../components/Router/PrivateRoute";
+import {PrimaryColumn, SidebarColumn} from "../../components";
 
-const Root = ({authorized}) => {
+
+const Root = () => {
   return (
     <>
       <PrimaryColumn>
-        ROOT EXPLORE
+        NOTIFICATION
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn
       </SidebarColumn>
     </>
   );
-}
-
-Root.propTypes = {
-  authorized: PropTypes.bool,
 }
 
 export default Root;

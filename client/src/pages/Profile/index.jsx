@@ -1,11 +1,13 @@
 import React from "react";
-import {PrimaryColumn, SidebarColumn} from "../../components";
+import PrimaryColumn from "@components/PrimaryColumn";
+import SidebarColumn from "@components/SidebarColumn";
+import Box from "@mui/material/Box";
 
 const Home = () => {
   return (
     <>
       <PrimaryColumn>
-        HOME
+        PROFILE
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn

@@ -8,10 +8,22 @@ const INIT_STATE = {
   authorized: true,
   loading: false,
   loginName: 'bob1234',
+  routes: [],
+  menu: [],
 }
 
 export default (state = INIT_STATE, {payload, type}) => {
   switch (type) {
+    case String(ACTIONS.setRoutes):
+      return {
+        ...state,
+        routes: payload.routes,
+      }
+    case String(ACTIONS.setMenu):
+      return {
+        ...state,
+        menu: payload.menu,
+      }
     case String(ACTIONS.isAccountExist.request):
     case String(ACTIONS.authorize.request):
       return {

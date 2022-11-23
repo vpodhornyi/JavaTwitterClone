@@ -1,18 +1,16 @@
 import React from "react";
-import {useDispatch} from "react-redux";
-import {styled} from "@mui/material/styles";
-import LogoIcon from "@components/icons/LogoIcon";
-import MainMenu from "./MainMenu";
-import CustomFabButton from "@components/buttons/CustomFabButton";
-import Box from "@mui/material/Box";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {styled} from "@mui/material/styles";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+
+import {MainMenu, LogoIcon, CustomFabButton} from "../components";
 import {getLogoIconState} from "@redux/business/logoIcon/selector";
 import {cancelAuthorization} from '@redux/auth/action';
-import PropTypes from "prop-types";
 
 
-const AppBar = ({authorized}) => {
+const AppBar = ({authorized, menu}) => {
   const {logo: {color, href}} = useSelector(getLogoIconState);
   const dispatch = useDispatch();
 
@@ -24,7 +22,7 @@ const AppBar = ({authorized}) => {
           to={href}>
           <LogoIcon/>
         </Link>
-        <MainMenu authorized={authorized}/>
+        <MainMenu authorized={authorized} menu={menu}/>
       </Box>
       {authorized &&
         <Box onClick={() => dispatch(cancelAuthorization())}>
@@ -47,6 +45,7 @@ const StyledBox = styled(Box)(styles);
 
 AppBar.propTypes = {
   authorized: PropTypes.bool,
+  menu: PropTypes.array,
 }
 
 export default AppBar;

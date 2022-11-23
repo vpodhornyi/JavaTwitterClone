@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <PrimaryColumn>
-        HOME
+       BOOKMARKS
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn

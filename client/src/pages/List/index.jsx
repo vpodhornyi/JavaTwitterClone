@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <>
       <PrimaryColumn>
-        HOME
+        LIST
       </PrimaryColumn>
       <SidebarColumn>
         SidebarColumn

@@ -1,15 +1,15 @@
 import React from "react";
-import {Navigate} from "react-router-dom";
+import {Navigate, redirect} from "react-router-dom";
 import PropTypes from "prop-types";
 import {ROUTES} from "../../routes";
 
 
 const PrivateRoute = ({route, authorized}) => {
   const {isPublic, page: Page} = route;
+  console.log(route);
+  // if (isPublic) return <Page authorized={authorized}/>;
 
-  if (isPublic) return <Page authorized={authorized}/>;
-
-  return authorized ? <Page authorized={authorized}/> : <Navigate to={ROUTES.EXPLORE.PATH}/>;
+  return authorized ? <Page authorized={authorized}/> : redirect(ROUTES.path);
 };
 
 PrivateRoute.propTypes = {

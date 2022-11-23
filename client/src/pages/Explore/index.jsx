@@ -1,9 +1,7 @@
 import React from "react";
-import PrimaryColumn from "@components/PrimaryColumn";
-import SidebarColumn from "@components/SidebarColumn";
-import PropTypes from "prop-types";
+import {SidebarColumn, PrimaryColumn} from "../../components";
 
-const Explore = ({authorized}) => {
+const Explore = () => {
   return (
     <>
       <PrimaryColumn>
@@ -14,10 +12,6 @@ const Explore = ({authorized}) => {
       </SidebarColumn>
     </>
   );
-}
-
-Explore.propTypes = {
-  authorized: PropTypes.bool,
 }
 
 export default Explore;

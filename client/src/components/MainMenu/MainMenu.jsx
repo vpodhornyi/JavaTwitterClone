@@ -1,40 +1,38 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
-import {NavLink, Route} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import MainMenuButton from "./MainMenuButton";
 import PropTypes from "prop-types";
-import {getMenuItems} from '../../routes';
 
-const MainMenu = ({authorized}) => {
-  const menuItems = getMenuItems(authorized);
+const MainMenu = ({authorized, menu}) => {
 
   return (
-    <MainMenuNav>
-      {menuItems.map(({path, text, iconName, iconActive}) => (
+    <MenuNav>
+      {menu?.map(({path, text, iconName, iconActive}) => (
         <NavLink key={path} to={path} style={{textDecoration: 'none'}}>
           {({isActive}) => (
-            <MainMenuItem>
+            <MenuItem>
               <MainMenuButton
                 isActive={isActive}
                 iconName={isActive ? iconActive : iconName}
                 text={text}/>
-            </MainMenuItem>
+            </MenuItem>
           )}
         </NavLink>
       ))}
       {authorized &&
-        <MainMenuItem>
+        <MenuItem>
           <MainMenuButton
             isActive={false}
             iconName='MoreHoriz'
             text='More'/>
-        </MainMenuItem>
+        </MenuItem>
       }
-    </MainMenuNav>
+    </MenuNav>
   );
 }
 
-export const MainMenuNav = styled('nav')(({theme}) => ({
+export const MenuNav = styled('nav')(({theme}) => ({
   display: 'flex',
   flexDirection: 'row',
 
@@ -44,7 +42,7 @@ export const MainMenuNav = styled('nav')(({theme}) => ({
   },
 }));
 
-export const MainMenuItem = styled('div')(({theme}) => ({
+export const MenuItem = styled('div')(({theme}) => ({
   display: 'flex',
   cursor: 'pointer',
   color: theme.palette.action.active,
@@ -57,6 +55,7 @@ export const MainMenuItem = styled('div')(({theme}) => ({
 
 MainMenu.propTypes = {
   authorized: PropTypes.bool,
+  menu: PropTypes.array,
 }
 
 export default MainMenu;

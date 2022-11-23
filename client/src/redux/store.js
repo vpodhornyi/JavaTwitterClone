@@ -1,6 +1,7 @@
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {getTokens, setAuthToken} from "@utils";
+import {createRoutes} from "../routes";
 import {API_ACTIONS as AUTH_ACTIONS} from "./auth/action";
 
 import authReducer from "./auth/reducer";
@@ -11,6 +12,7 @@ import snackBarReducer from "./snackBar/reducer";
 import logoIconReducer from "./business/logoIcon/reducer";
 import mainMenuReducer from "./business/menu/mainMenu/reducer";
 import themeReducer from "./business/theme/reducer";
+
 
 const {applyMiddleware, combineReducers, createStore} = require("redux");
 
@@ -31,6 +33,8 @@ export default () => {
     reducer,
     composeWithDevTools(applyMiddleware(thunk))
   );
+
+  createRoutes(store);
 
   if (accessToken) {
     setAuthToken(accessToken)
