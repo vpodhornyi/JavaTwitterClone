@@ -1,16 +1,16 @@
 import React from "react";
-import PrimaryColumn from "@components/PrimaryColumn";
-import SidebarColumn from "@components/SidebarColumn";
-import Box from "@mui/material/Box";
+import {Outlet} from "react-router-dom";
+import {PrimaryColumn, SidebarColumn} from "../../components";
 
 const Home = () => {
   return (
     <>
       <PrimaryColumn>
-        PROFILE
+        Profile
+        <Outlet/>
       </PrimaryColumn>
       <SidebarColumn>
-        SidebarColumn
+        SidebarColumn Profile
       </SidebarColumn>
     </>
   );

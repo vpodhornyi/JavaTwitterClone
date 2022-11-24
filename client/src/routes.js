@@ -1,11 +1,44 @@
 import {lazy} from 'react';
 import {ACTIONS} from './redux/auth/action';
 
+
+/*const foo = [
+  {
+    path: '/home',
+    element: lazy(() => import(`@pages/Home`)),
+  },
+  {
+    path: '/explore',
+    element: lazy(() => import(`@pages/Explore`)),
+  },
+  {
+    path: '/profile',
+    element: lazy(() => import(`@pages/Profile`)),
+    children: [
+      {
+        path: "/list",
+        element: lazy(() => import(`@pages/List`)),
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: lazy(() => import(`@pages/NoMatch`)),
+  },
+]*/
+
+
 const data = {
+  Root: {
+    route: {
+      path: '/',
+      isPublic: true,
+    }
+  },
   Home: {
     route: {
       path: '/home',
-      isPublic: true,
+      isPublic: false,
     },
     menu: {
       iconName: "HomeOutlined",
@@ -57,7 +90,7 @@ const data = {
   },
   List: {
     route: {
-      path: "/lists",
+      path: "/vpodhornyi/lists",
     },
     menu: {
       iconName: "ArticleOutlined",
@@ -67,7 +100,7 @@ const data = {
   },
   Profile: {
     route: {
-      path: "/:user_name",
+      path: "/vpodhornyi",
       isPublic: true,
     },
     menu: {
@@ -84,10 +117,10 @@ const resData = {
     page: data[key].route.page = lazy(() => import(`@pages/${key}`)),
   }),
   menu: key => ({
-    path: data[key].route.path,
-    iconName: data[key].menu.iconName,
-    iconActive: data[key].menu.iconActive,
-    text: data[key].menu.text,
+    path: data[key]?.route?.path,
+    iconName: data[key]?.menu?.iconName,
+    iconActive: data[key]?.menu?.iconActive,
+    text: data[key]?.menu?.text,
   })
 }
 
@@ -96,9 +129,9 @@ export const getRefData = (authorized, type) => {
     const res = resData[type](key);
 
     if (authorized) {
-      acc.push(res);
+      data[key][type] && acc.push(res);
     } else {
-      data[key][type].isPublic && acc.push(res);
+      data[key][type]?.isPublic && acc.push(res);
     }
 
     return acc;

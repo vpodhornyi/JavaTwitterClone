@@ -10,6 +10,7 @@ import SectionNavigation from "./SectionNavigation";
 import SectionDetails from "./SectionDetails";
 import SidebarColumn from "./SidebarColumn";
 import PrimaryColumn from "./PrimaryColumn";
+import NoMatches from "./NoMatches";
 import MainMenu from "./MainMenu/MainMenu";
 import {LogoIcon, IconByName,} from "./icons";
 import {CustomIconButton, CustomFabButton,} from "./buttons";
@@ -32,4 +33,5 @@ export {
   IconByName,
   CustomIconButton,
   CustomFabButton,
+  NoMatches,
 }

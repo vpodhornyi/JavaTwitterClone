@@ -34,7 +34,7 @@ export default () => {
     composeWithDevTools(applyMiddleware(thunk))
   );
 
-  createRoutes(store);
+  // createRoutes(store);
 
   if (accessToken) {
     setAuthToken(accessToken)

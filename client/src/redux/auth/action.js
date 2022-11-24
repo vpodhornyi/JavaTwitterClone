@@ -2,7 +2,7 @@ import {createActions} from '../utils';
 import API, {URLS} from "@service/API";
 import {setAuthToken, setHeaderAuthorization, setRefreshToken} from "../../utils";
 import {openDialog, closeDialog} from "@redux/dialog/action";
-import SingInSecondStep from '@pages/Auth/SingIn/SecondStep';
+import SingInSecondStep from '@pages/Root/SingIn/SecondStep';
 
 const {api, axios} = API;
 const actions = createActions(
