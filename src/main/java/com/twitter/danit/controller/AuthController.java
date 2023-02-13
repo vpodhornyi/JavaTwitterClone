@@ -34,12 +34,14 @@ public class AuthController {
   @PostMapping("/access")
   public ResponseEntity<JwtResponse> getNewAccessToken(@RequestBody RefreshJwtRequest request) {
     final JwtResponse jwtResponse = jwtAuthService.getAccessToken(request.getRefreshToken());
+
     return ResponseEntity.ok(jwtResponse);
   }
 
   @PostMapping("/refresh")
   public ResponseEntity<JwtResponse> getNewRefreshToken(@RequestBody RefreshJwtRequest request) {
     final JwtResponse jwtResponse = jwtAuthService.refresh(request.getRefreshToken());
+
     return ResponseEntity.ok(jwtResponse);
   }
 

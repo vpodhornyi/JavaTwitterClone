@@ -7,11 +7,9 @@ import PropTypes from "prop-types";
 import IconByName from "../icons/IconByName";
 
 const def = theme =>  ({
-  // width: '100%',
   textTransform: 'none',
   color: '#000000',
   boxShadow: 'none',
-  // border: '1px solid #DDDFE2',
   backgroundColor: theme.palette.primary.main,
   '&:hover': {
     backgroundColor: '#DBE7F0',

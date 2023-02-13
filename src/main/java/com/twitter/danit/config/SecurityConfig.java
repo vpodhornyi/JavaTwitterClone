@@ -20,15 +20,19 @@ public class SecurityConfig {
   private final String account;
   private final String login;
   private final String token;
+  private final String api;
 
   public SecurityConfig(JwtFilter jwtFilter,
                         @Value("${api.version}/auth/account") String account,
                         @Value("${api.version}/auth/authorization") String login,
-                        @Value("${api.version}/auth/access") String token) {
+                        @Value("${api.version}/auth/access") String token,
+                        @Value("/api-version") String api
+  ) {
     this.jwtFilter = jwtFilter;
     this.account = account;
     this.login = login;
     this.token = token;
+    this.api = api;
   }
 
   @Bean
@@ -40,7 +44,7 @@ public class SecurityConfig {
       .and()
       .authorizeHttpRequests(
         auth -> auth
-          .antMatchers(account, login, token).permitAll()
+          .antMatchers(account, login, token, api).permitAll()
           .anyRequest().authenticated()
           .and()
           .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)

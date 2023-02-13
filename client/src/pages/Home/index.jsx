@@ -1,18 +1,16 @@
 import React from "react";
-import PrimaryColumn from "@components/PrimaryColumn";
-import SidebarColumn from "@components/SidebarColumn";
-import Box from "@mui/material/Box";
+import {PrimaryColumn, SidebarColumn} from "../../components";
 
 const Home = () => {
   return (
-    <Box sx={{
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}>
-      <PrimaryColumn element={Box}/>
-      <SidebarColumn/>
-    </Box>
+    <>
+      <PrimaryColumn>
+        HOME
+      </PrimaryColumn>
+      <SidebarColumn>
+        SidebarColumn
+      </SidebarColumn>
+    </>
   );
 }
 
