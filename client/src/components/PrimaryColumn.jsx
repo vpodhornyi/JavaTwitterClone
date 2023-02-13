@@ -1,16 +1,13 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
-import Box from "@mui/material/Box";
 
-const styles = ({theme}) => ({
-  backgroundColor: '#ff7a00',
+export default styled('div')(({theme}) => ({
   width: '100%',
   height: '100%',
 
   [theme.breakpoints.up('sm')]: {
     width: 600,
+    borderLeft: `1px solid ${theme.palette.border.main}`,
+    borderRight: `1px solid ${theme.palette.border.main}`,
   },
-})
-
-export default styled(Box)(styles);
-
+}));

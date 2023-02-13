@@ -1,19 +1,14 @@
 package com.twitter.danit.domain.notification;
 
 import com.twitter.danit.domain.BaseEntity;
+import com.twitter.danit.domain.notification.NotificationType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "notifications")
@@ -23,7 +18,6 @@ import javax.persistence.JoinColumn;
 public class Notification extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 20)
   private NotificationType notificationType;
 
   @ManyToOne

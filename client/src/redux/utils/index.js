@@ -1,4 +1,4 @@
-import { createActions as createActionsNative } from "redux-actions";
+import { createActions as createActionsNative } from "redux-actions"
 
 export const createAction = (actionName, { async = false, ...options }) => {
   let actions = {}
@@ -23,7 +23,7 @@ export const createAction = (actionName, { async = false, ...options }) => {
     )
   }
 
-  return actions;
+  return actions
 }
 
 export const createActions = ({ actions = [], async = [] }, options) => {

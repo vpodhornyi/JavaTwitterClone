@@ -1,18 +1,21 @@
 package com.twitter.danit.filter;
 
-import com.twitter.danit.domain.auth.JwtAuthentication;
+import com.twitter.danit.dto.auth.JwtAuthentication;
 import com.twitter.danit.service.auth.JwtProvider;
 import com.twitter.danit.utils.auth.JwtUtils;
 import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -23,8 +26,7 @@ public class JwtFilter extends GenericFilterBean {
 
   private static final String AUTHORIZATION = "Authorization";
   @Value("${jwt.authorization.user.field}")
-  private  String userLoginField;
-
+  private String userLoginField;
   private final JwtProvider jwtProvider;
 
   @Override
@@ -48,7 +50,9 @@ public class JwtFilter extends GenericFilterBean {
   private String getTokenFromRequest(HttpServletRequest req) {
     final String bearer = req.getHeader(AUTHORIZATION);
 
-    if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) return bearer.substring(7);
+    if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+      return bearer.substring(7);
+    }
 
     return null;
   }

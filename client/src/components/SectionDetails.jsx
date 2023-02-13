@@ -1,15 +1,21 @@
+import React from "react";
 import {styled} from "@mui/material/styles";
 
-const SectionDetails = styled('section')(({theme}) => ({
-  position: 'relative',
-  height: '100%',
-  width: '100%',
+const StyledSection = styled('section')(({theme}) => ({
   display: 'none',
-  borderRight: '1px solid #DDDFE2',
+  flexGrow: 1,
+  height: '100vh',
+  position: 'sticky',
+  top: 0,
+
+  [theme.breakpoints.up('sm')]: {
+    borderRight: `1px solid ${theme.palette.border.main}`,
+  },
 
   [theme.breakpoints.up('md')]: {
-    display: 'block'
+    display: 'block',
+    width: 'auto'
   }
 }));
 
-export default SectionDetails;
+export default StyledSection;

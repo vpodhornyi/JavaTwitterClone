@@ -1,69 +1,136 @@
 package com.twitter.danit.service;
 
-import com.twitter.danit.dao.UserJpaDao;
+import com.twitter.danit.dao.UserRepository;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.exception.AccountAlreadyExistException;
 import com.twitter.danit.exception.CouldNotFindAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
-public class UserService implements BaseService<User> {
+public class UserService {
+  private final UserRepository userRepository;
 
-  private final UserJpaDao userJpaDao;
-
-  @Override
   public List<User> findAll() {
-    return null;
+    return userRepository.findAll();
   }
 
-  @Override
-  public List<User> getAllPageable(int size, int pageNumber) {
-    return null;
-  }
+  public User findById(Long id) {
+    Optional<User> optionalUser = userRepository.findById(id);
 
-  @Override
-  public User getById(Long userId) {
-    Optional<User> optionalUser = userJpaDao.findById(userId);
-
-    if (optionalUser.isPresent()) return optionalUser.get();
-
+    if (optionalUser.isPresent()) {
+      return optionalUser.get();
+    }
     throw new CouldNotFindAccountException();
   }
 
-  public User getByEmail(String email) {
-    Optional<User> optionalUser = userJpaDao.findByEmail(email);
+  /*  public boolean updateUserProfile(Long id, UserProfileUpdateRequestDto dto) {
+    Optional<User> user = userRepository.findById(id);
 
-    if (optionalUser.isPresent()) return optionalUser.get();
+    String dtoName = dto.getName();
+    String dtoBio = dto.getBio();
+    String dtoLocation = dto.getLocation();
+    String dtoBirth = dto.getBirth();
+    String dtoHeaderImgUrl = dto.getHeaderImgUrl();
 
+    if (user.isPresent()) {
+      if (dtoName != null && dtoName.length() > 0) {
+        user.get().setName(dtoName);
+      }
+      if (dtoBio != null && dtoBio.length() > 0) {
+        user.get().setBio(dtoBio);
+      }
+      if (dtoLocation != null && dtoLocation.length() > 0) {
+        user.get().setLocation(dtoLocation);
+      }
+
+      if (dtoBirth != null && dtoBirth.length() > 4) {
+        LocalDate date = LocalDate.parse(dtoBirth);
+        user.get().setBirthDate(date);
+      }
+
+      if (dtoHeaderImgUrl != null && dtoHeaderImgUrl.length() == 0) {
+        user.get().setHeaderImgUrl("");
+      }
+
+      userRepository.save(user.get());
+      return true;
+    }
+
+    return false;
+  }*/
+
+  public void updateUserHeader(Long id, String headerImgUrl) {
+    Optional<User> user = userRepository.findById(id);
+
+    if (user.isPresent()) {
+      user.get().setHeaderImgUrl(headerImgUrl);
+      userRepository.save(user.get());
+    }
+  }
+
+  public void updateUserAvatar(Long id, String avatarImgUrl) {
+    Optional<User> user = userRepository.findById(id);
+
+    if (user.isPresent()) {
+      user.get().setAvatarImgUrl(avatarImgUrl);
+      userRepository.save(user.get());
+    }
+  }
+
+  public User createNewUser(User user) {
+    Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+
+    if (optionalUser.isEmpty()) {
+      return userRepository.save(user);
+    }
+
+    throw new AccountAlreadyExistException(user.getEmail());
+  }
+
+  public User save(User user) {
+    return userRepository.save(user);
+  }
+
+  public List<User> getAll() {
+    return userRepository.findAll();
+  }
+
+  public User updateUser(User user) {
+    return userRepository.save(user);
+  }
+
+  public Boolean deleteUserById(Long id) {
+    userRepository.deleteById(id);
+    return true;
+  }
+
+  public User findByUserTagTrowException(String userTag) {
+    Optional<User> optionalUser = userRepository.findByUserTag(userTag);
+
+    if (optionalUser.isPresent()) {
+      return optionalUser.get();
+    }
     throw new CouldNotFindAccountException();
   }
 
-  public User getByUserTag(String userTag) {
-    Optional<User> optionalUser = userJpaDao.findByUserTag(userTag);
+  public User findByUserEmailTrowException(String email) {
+    Optional<User> optionalUser = userRepository.findByEmail(email);
 
-    if (optionalUser.isPresent()) return optionalUser.get();
-
+    if (optionalUser.isPresent()) {
+      return optionalUser.get();
+    }
     throw new CouldNotFindAccountException();
   }
 
-  @Override
-  public void update(User obj) {
+  public List<User> findByMatchesInNameOrUserTag(String text) {
+    Optional<List<User>> optionalUsers = userRepository.findTop10ByMatchingNameOrUserTag(text);
 
-  }
-
-  @Override
-  public void create(User obj) {
-    userJpaDao.save(obj);
-  }
-
-  @Override
-  public void delete(Integer id) {
-
+    return optionalUsers.orElse(Collections.emptyList());
   }
 }

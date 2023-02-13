@@ -11,5 +11,4 @@ public class TwitterCloneApplication {
   public static void main(String[] args) {
     SpringApplication.run(TwitterCloneApplication.class, args);
   }
-
 }

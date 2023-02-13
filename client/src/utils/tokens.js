@@ -1,6 +1,8 @@
-import API from "@service/API"
+import api from "@service/API";
 
-const {api} = API;
+const ACCESS_TOKEN = 'accessToken';
+const REFRESH_TOKEN = 'refreshToken';
+const TOKEN_TYPE = 'tokenType';
 
 export const setHeaderAuthorization = (token, type) => {
   if (token) {
@@ -12,27 +14,38 @@ export const setHeaderAuthorization = (token, type) => {
 
 export const setAuthToken = (token) => {
   if (token) {
-    localStorage.setItem("accessToken", token);
+    localStorage.setItem(ACCESS_TOKEN, token)
   } else {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(ACCESS_TOKEN)
   }
 }
 
 export const setRefreshToken = (token) => {
   if (token) {
-    localStorage.setItem("refreshToken", token);
+    localStorage.setItem(REFRESH_TOKEN, token)
   } else {
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem(REFRESH_TOKEN)
+  }
+}
+
+export const setTokenType = (type) => {
+  if (type) {
+    localStorage.setItem(TOKEN_TYPE, type)
+  } else {
+    localStorage.removeItem(TOKEN_TYPE)
   }
 }
 
 export const getTokens = () => {
   return {
-    accessToken: localStorage.getItem("accessToken"),
-    refreshToken: localStorage.getItem("refreshToken"),
+    accessToken: localStorage.getItem(ACCESS_TOKEN),
+    refreshToken: localStorage.getItem(REFRESH_TOKEN),
+    tokenType: localStorage.getItem(TOKEN_TYPE),
   }
 }
 
-export const isRefreshTokenExpired = refreshToken => {
-  return false;
+export const deleteTokens = () => {
+  localStorage.removeItem(ACCESS_TOKEN);
+  localStorage.removeItem(REFRESH_TOKEN);
+  localStorage.removeItem(TOKEN_TYPE);
 }

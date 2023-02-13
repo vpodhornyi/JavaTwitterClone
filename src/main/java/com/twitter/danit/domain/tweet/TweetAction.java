@@ -1,28 +1,24 @@
 package com.twitter.danit.domain.tweet;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.twitter.danit.domain.BaseEntity;
 import com.twitter.danit.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tweet_actions")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class TweetAction extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 20)
   private ActionType actionType;
 
   @ManyToOne
@@ -30,5 +26,14 @@ public class TweetAction extends BaseEntity {
   private Tweet tweet;
 
   @ManyToOne
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private User user;
+
+  @Override
+  public String toString() {
+    return "TweetAction{" +
+            "actionType=" + actionType +
+            ", user=" + user +
+            '}';
+  }
 }

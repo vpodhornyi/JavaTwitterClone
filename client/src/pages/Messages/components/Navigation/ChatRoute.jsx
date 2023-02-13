@@ -1,77 +1,124 @@
 import React from "react";
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams, useNavigate} from 'react-router-dom';
 import {styled} from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import {Avatar, Typography} from "@mui/material";
+import {Avatar, Typography, Box, Badge} from "@mui/material";
 import PropTypes from "prop-types";
-import {getConversation} from "@redux/message/action";
-import More from './More';
 
-const ChatRoute = ({chat, activeId}) => {
+import {ACTIONS} from '@redux/chat/action';
+import More from './More';
+import {PATH} from "@utils/constants";
+import {moment} from "@utils";
+
+const ChatRoute = ({chat, toggleModal}) => {
+  const {authUser} = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {id} = useParams();
+
+  const handleChatClick = (chat) => {
+    dispatch(ACTIONS.setChatId({chatId: chat?.id}));
+    navigate(PATH.MESSAGES.chat(chat?.id));
+  }
+
+  const getText = (text) => {
+    const ln = text?.length;
+    return ln && ln > 30 ? text.slice(0, 30) + '...' : text;
+  }
 
   return (
-    <BoxWrapper
-      onClick={() => dispatch(getConversation({id: chat.id}))}
-      sx={activeId !== -1 && activeId === chat.id ? {
-        backgroundColor: 'rgb(239, 243, 244)',
-        borderRight: '2px blue solid',
-      } : {}}>
-      <Box sx={{display: 'flex'}}>
-        <Avatar sx={{mr: '10px', width: '3rem', height: '3rem'}} src={chat.avatarImgUrl}/>
-        <Box>
-          <Box sx={{display: 'flex'}}>
-            <Typography sx={{fontWeight: 600}}>{chat.title}</Typography>
-            <Typography sx={{ml: '5px'}}>{chat.userTag}</Typography>
-            <Typography sx={{
-              '&:before': {
-                content: '"·"',
-                marginLeft: '5px',
-                marginRight: '5px',
+    <BoxWrapper onClick={() => handleChatClick(chat)}>
+      <Box
+        className={id && (id == chat.id) ? `ChatRoutWrapperActive` : chat?.lastMessage?.countUnreadMessages ? 'NotReadMessagesExist' : ''}>
+        <Box sx={{display: 'flex'}}>
+          <Avatar sx={{mr: '10px', width: '3.3rem', height: '3.3rem'}} src={chat.avatarImgUrl}/>
+          <Box>
+            <Box sx={{display: 'flex'}}>
+              <Typography sx={{fontWeight: 600}}>{chat.title}</Typography>
+
+              {chat.isPrivate && <Typography variant='body2' sx={{ml: '5px'}}>@{chat.userTag}</Typography>}
+              {chat?.lastMessage &&
+                <Typography variant='body2' sx={{
+                  '&:before': {
+                    content: '"·"',
+                    marginLeft: '5px',
+                    marginRight: '5px',
+                  }
+                }}>{moment(chat?.lastMessage?.createdAt).fromNow(true)}</Typography>
               }
-            }}>{'1h'}</Typography>
-          </Box>
-          <Box sx={{display: 'flex'}}>
-            <Box><Typography>You reacted with {':-)'}:</Typography></Box>
-            <Box><Typography>{' message text'}</Typography></Box>
+            </Box>
+            <Box sx={{display: 'flex'}}>
+              {authUser?.id !== chat?.lastMessage?.user.id && chat?.lastMessage?.user.name &&
+                <Typography variant='body2' sx={{mr: 1}}>{chat?.lastMessage?.user.name}:</Typography>}
+              <Typography variant='body2'>{getText(chat?.lastMessage?.text)}</Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box className='MoreIcon' sx={{
-        display: 'none',
-        position: 'absolute',
-        top: '5px',
-        right: '5px',
-        zIndex: 1000,
-      }}>
-        {/*<CustomIconButton name='MoreHorizOutlined' title='More'/>*/}
-        <More/>
+        <Badge
+          badgeContent={chat?.lastMessage?.countUnreadMessages}
+          color="primary"
+          max={99}
+          // variant="dot"
+        >
+          <Box className='MoreIcon'>
+            <More toggleModal={toggleModal} chat={chat}/>
+          </Box>
+        </Badge>
       </Box>
     </BoxWrapper>);
 }
 
-const styles = ({theme}) => ({
+const BoxWrapper = styled(Box)(({theme}) => ({
   position: 'relative',
-  padding: '14px',
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between',
-  cursor: 'pointer',
+  marginBottom: 2,
 
-  '&:hover': {
-    backgroundColor: 'rgb(247, 249, 249)'
+  '& .MuiBadge-badge': {
+    color: theme.palette.common.white
   },
 
-  '&:hover > .MoreIcon': {
-    display: 'block'
-  }
-});
+  '& .ChatRoutWrapperActive': {
+    backgroundColor: theme.palette.background[2],
+    borderRight: `2px ${theme.palette.primary.main} solid`,
+  },
 
-const BoxWrapper = styled(Box)(styles);
+  '& > .NotReadMessagesExist': {
+    backgroundColor: theme.palette.background[1],
+  },
+
+  '& > .MuiBox-root': {
+    position: 'relative',
+    padding: '14px',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    cursor: 'pointer',
+
+    '&:hover': {
+      backgroundColor: theme.palette.background[1],
+    },
+
+    '& .MoreIcon': {
+      opacity: 1,
+
+      position: 'absolute',
+      top: '5px',
+      right: '5px',
+      zIndex: 998,
+
+      [theme.breakpoints.up('xs')]: {
+        opacity: 0,
+      }
+    },
+
+    '&:hover  .MoreIcon': {
+      opacity: 1,
+    }
+  }
+}));
 
 ChatRoute.propTypes = {
   chat: PropTypes.object,
-  activeId: PropTypes.number,
+  toggleModal: PropTypes.func,
 }
 
 export default ChatRoute;

@@ -1,10 +1,14 @@
 package com.twitter.danit.service.auth;
 
 import com.twitter.danit.domain.user.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +34,8 @@ public class JwtProvider {
   private final SecretKey jwtAccessSecret;
   private final SecretKey jwtRefreshSecret;
 
-  public JwtProvider(@Value("${jwt.secret.access}") String jwtAccessSecret, @Value("${jwt.secret.refresh}") String jwtRefreshSecret) {
+  public JwtProvider(@Value("${jwt.secret.access}") String jwtAccessSecret,
+                     @Value("${jwt.secret.refresh}") String jwtRefreshSecret) {
     this.jwtAccessSecret = getSecretKey(jwtAccessSecret);
     this.jwtRefreshSecret = getSecretKey(jwtRefreshSecret);
   }

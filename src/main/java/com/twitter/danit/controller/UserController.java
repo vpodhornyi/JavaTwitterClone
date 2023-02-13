@@ -1,40 +1,75 @@
 package com.twitter.danit.controller;
 
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.user.UserResponse;
+import com.twitter.danit.facade.user.UserResponseMapper;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.websocket.OnClose;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@CrossOrigin("*")
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("${api.version}/user")
-@Validated
+@AllArgsConstructor
+@RequestMapping("${api.version}/users")
 public class UserController {
 
-  private final UserService userService;
   private final JwtAuthService jwtAuthService;
+  private final UserService userService;
+  private final UserResponseMapper userResponseMapper;
 
   @GetMapping
-  public ResponseEntity<Object> getUser() {
+  public UserResponse findAuthUser() {
     String userTag = (String) jwtAuthService.getAuthInfo().getPrincipal();
-    User user = userService.getByUserTag(userTag);
-
-    return ResponseEntity.ok(user);
+    User user = userService.findByUserTagTrowException(userTag);
+    return userResponseMapper.convertToDto(user);
   }
 
-  public ResponseEntity<Object> create(@Valid @RequestBody User user) {
-      userService.create(user);
-
-    return null;
+  @GetMapping("/all")
+  public List<UserResponse> findAll() {
+    return userService.findAll().stream()
+            .map(userResponseMapper::convertToDto)
+            .collect(Collectors.toList());
   }
 
+  @GetMapping("/{id}")
+  public UserResponse findById(@PathVariable(name = "id") Long id) {
+    User user = userService.findById(id);
+    return userResponseMapper.convertToDto(user);
+  }
 
+  @GetMapping("/search")
+  public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text) {
+    List<User> users = userService.findByMatchesInNameOrUserTag(text.trim());
+
+    return ResponseEntity.ok(users.stream().map(userResponseMapper::convertToDto).collect(Collectors.toList()));
+  }
+
+  @GetMapping("/")
+  public UserResponse findByUserTag(
+          @RequestParam(name = "userTag") String userTag
+  ) {
+    User user = userService.findByUserTagTrowException(userTag);
+    return userResponseMapper.convertToDto(user);
+  }
+
+  //@PutMapping("/{id}")
+  //public boolean updateUserProfile(
+  //  @Valid
+  //  @PathVariable(name = "id") Long id,
+  //  @RequestBody UserProfileUpdateRequestDto dto
+  //) {
+  //  return userService.updateUserProfile(id, dto);
+  //}
+
+  @ExceptionHandler({Exception.class, MethodArgumentNotValidException.class})
+  public ResponseEntity<Object> handleException(Exception ex) {
+    return new ResponseEntity<>(ex.getCause(), HttpStatus.BAD_REQUEST);
+  }
 }
