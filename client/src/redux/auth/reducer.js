@@ -10,7 +10,6 @@ const init = {
   newUser: {
     name: "",
     email: "",
-    password: "",
     birthDate: ""
   }
 };
@@ -22,7 +21,6 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         newUser: {
           name: payload.name,
           email: payload.email,
-          password: payload.password,
           birthDate: payload.birthDate
         }
       };
@@ -45,7 +43,6 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         newUser: {
           name: "",
           email: "",
-          password: "",
           birthDate: ""
         }
       };

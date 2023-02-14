@@ -10,6 +10,7 @@ import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.dto.user.UserResponse;
 import com.twitter.danit.facade.user.NewUserResponseMapper;
 import com.twitter.danit.facade.user.UserRequestMapper;
+import com.twitter.danit.service.EmailService;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
 
@@ -36,6 +37,7 @@ public class AuthController {
   private final UserRequestMapper userRequestMapper;
   private final NewUserResponseMapper newUserResponseMapper;
   private final UserService userService;
+  private final EmailService emailService;
 
   @PostMapping("/account")
   public ResponseEntity<AccountCheckResponse> account(@Valid @RequestBody AccountCheckRequest authRequest) {
@@ -71,6 +73,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest) {
+    emailService.sendSimpleMessage();
     User user = userService.createNewUser(userRequestMapper.convertToEntity(userRequest));
     return ResponseEntity.ok(newUserResponseMapper.convertToDto(user));
   }

@@ -59,15 +59,6 @@ public class UserController {
     return userResponseMapper.convertToDto(user);
   }
 
-  //@PutMapping("/{id}")
-  //public boolean updateUserProfile(
-  //  @Valid
-  //  @PathVariable(name = "id") Long id,
-  //  @RequestBody UserProfileUpdateRequestDto dto
-  //) {
-  //  return userService.updateUserProfile(id, dto);
-  //}
-
   @ExceptionHandler({Exception.class, MethodArgumentNotValidException.class})
   public ResponseEntity<Object> handleException(Exception ex) {
     return new ResponseEntity<>(ex.getCause(), HttpStatus.BAD_REQUEST);

@@ -17,13 +17,11 @@ const SingUpSecondStep = () => {
     name: savedName,
     email: savedEmail,
     birthDate: savedBirthDate,
-    password: savePassword
   } = useSelector(state => state.auth.newUser);
   const navigate = useNavigate();
   const [name, setName] = useState(savedName);
   const [email, setEmail] = useState(savedEmail);
   const [birthDate, setBirthDate] = useState(savedBirthDate);
-  const [password, setPassword] = useState(savePassword);
 
   const onChangeLogin = e => {
     setName(() => e.target.value);
@@ -35,12 +33,8 @@ const SingUpSecondStep = () => {
     setBirthDate(() => e.target.value);
   };
 
-  const onChangePassword = e => {
-    setPassword(() => e.target.value);
-  };
-
   const submit = async () => {
-    await dispatch(createNewUser({name, email, password, birthDate}));
+    await dispatch(createNewUser({name, email, birthDate}));
     navigate(`${PATH.HOME}`);
   };
 
@@ -64,16 +58,6 @@ const SingUpSecondStep = () => {
             sx={{width: "100%"}}
             label='Email'
             variant='outlined'
-          />
-          <TextField
-            value={password}
-            onChange={e => onChangePassword(e)}
-            label='Password'
-            type='password'
-            sx={{width: "100%"}}
-            InputLabelProps={{
-              shrink: true
-            }}
           />
           <TextField
             value={birthDate}

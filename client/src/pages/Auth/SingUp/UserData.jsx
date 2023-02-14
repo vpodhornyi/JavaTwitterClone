@@ -2,21 +2,12 @@ import React, {useContext, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Typography, TextField, Stack, Box} from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
 import {styled} from "@mui/material/styles";
 
 import {Container, ButtonWrapper} from "../components";
 import {CustomFabButton} from "../../../components";
 import {BackgroundContext} from "../../../utils/context";
 import {runSingUpSecondStep} from "@redux/auth/action";
-import {ACTIONS} from '@redux/auth/action';
 
 const UserData = () => {
   const newUser = useSelector(state => state.auth.newUser)
@@ -26,8 +17,6 @@ const UserData = () => {
   const [name, setName] = useState(newUser.name);
   const [email, setEmail] = useState(newUser.email);
   const [birthDate, setBirthDate] = useState(newUser.birthDate);
-  const [password, setPassword] = useState(newUser.password);
-  const [showPassword, setShowPassword] = useState(false);
 
   const onChangeLogin = e => {
     setName(() => e.target.value);
@@ -39,27 +28,16 @@ const UserData = () => {
     setBirthDate(() => e.target.value);
   };
 
-  const onChangePassword = e => {
-    setPassword(() => e.target.value);
-  };
-
   const submit = () => {
     dispatch(
         runSingUpSecondStep({
           name,
           email,
-          password,
           birthDate,
           navigate,
           background
         })
     );
-  };
-
-  const handleClickShowPassword = () => setShowPassword(show => !show);
-
-  const handleMouseDownPassword = event => {
-    event.preventDefault();
   };
 
   return (
@@ -83,28 +61,6 @@ const UserData = () => {
                 label='Email'
                 variant='outlined'
             />
-            <FormControl sx={{m: 1, width: "100%"}} variant='outlined'>
-              <InputLabel htmlFor='outlined-adornment-password'>
-                Password
-              </InputLabel>
-              <OutlinedInput
-                  id='standard-adornment-password'
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={e => onChangePassword(e)}
-                  endAdornment={
-                    <InputAdornment position='end'>
-                      <IconButton
-                          aria-label='toggle password visibility'
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? <VisibilityOff/> : <Visibility/>}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-              />
-            </FormControl>
             <DateWrapper>
               <Typography className='title' variant='body1'>
                 Date of birth
@@ -130,7 +86,7 @@ const UserData = () => {
           <CustomFabButton
               className='NextStepBtn'
               disabled={
-                  name === "" || email === "" || password === "" || birthDate === ""
+                  name === "" || email === "" || birthDate === ""
               }
               onClick={() => submit()}
               name='Next'
