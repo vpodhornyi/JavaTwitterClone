@@ -13,8 +13,8 @@ import {themeStyles} from "../utils/theme";
 
 const BREAKPOINTS_VALUES = themeStyles().breakpoints.values;
 const lazyLoading = (path) => {
-  const LazyElement = lazy(() => import(path));
-  return (<LazyElement/>);
+  // const LazyElement = lazy(() => import(path));
+  // return (<LazyElement/>);
 }
 
 export const mainRoutes = (width, authorized) => {
