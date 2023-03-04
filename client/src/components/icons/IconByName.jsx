@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 const Default = () => <Box fontSize={20}>☺</Box>;
 
 const IconByName = ({iconName, iconStyle, color}) => {
+  console.log(MuiIcons);
   const Icon = MuiIcons[iconName];
   return Icon ? <Icon color={color} className='IconByName' sx={iconStyle}/> : <Default/>;
 };
