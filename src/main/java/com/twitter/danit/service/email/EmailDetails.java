@@ -1,15 +1,22 @@
 package com.twitter.danit.service.email;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EmailDetails {
-  private String recipient;
-  private String msgBody;
+public class EmailDetails implements Serializable {
+  private List<String> to;
+  private String from;
   private String subject;
-  private String attachment;
+  private String html;
+
+
+  public EmailDetails(List<String> to, String from, String subject, String html) {
+    this.to = to;
+    this.from = from;
+    this.subject = subject;
+    this.html = html;
+  }
 }

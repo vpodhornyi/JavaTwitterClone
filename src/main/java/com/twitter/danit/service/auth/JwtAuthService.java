@@ -25,32 +25,18 @@ public class JwtAuthService implements AuthService {
 
   @Override
   public AccountCheckResponse account(@NonNull AccountCheckRequest req) {
-    try {
-      userService.findByUserTagTrowException(req.getLogin());
-    } catch (Exception e) {
-      userService.findByUserEmailTrowException(req.getLogin());
-    }
+    userService.findUser(req.getLogin());
 
     return new AccountCheckResponse(req.getLogin());
   }
 
   @Override
   public JwtResponse login(@NonNull JwtRequest req) {
-    return login(req.getLogin(), req.getPassword());
-  }
+    String login = req.getLogin();
+    String password = req.getPassword();
+    User user = userService.findUser(login);
 
-  public JwtResponse login(String login, String password) {
-    User user;
-
-    try {
-      user = userService.findByUserTagTrowException(login);
-    } catch (Exception e) {
-      user = userService.findByUserEmailTrowException(password);
-    }
-
-    if (passwordEncoder.matches(password, user.getPassword())) {
-      return getJwtResponse(user);
-    }
+    if (passwordEncoder.matches(password, user.getPassword())) return getJwtResponse(user);
 
     throw new WrongPasswordException();
   }

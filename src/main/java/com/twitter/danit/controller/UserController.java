@@ -59,6 +59,10 @@ public class UserController {
     return userResponseMapper.convertToDto(user);
   }
 
+  public void updateCustomize(){
+
+  }
+
   @ExceptionHandler({Exception.class, MethodArgumentNotValidException.class})
   public ResponseEntity<Object> handleException(Exception ex) {
     return new ResponseEntity<>(ex.getCause(), HttpStatus.BAD_REQUEST);

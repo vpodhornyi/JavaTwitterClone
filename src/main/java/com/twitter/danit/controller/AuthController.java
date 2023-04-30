@@ -1,5 +1,6 @@
 package com.twitter.danit.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.twitter.danit.dto.auth.AccountCheckResponse;
 import com.twitter.danit.dto.auth.AccountCheckRequest;
 import com.twitter.danit.dto.auth.JwtResponse;
@@ -10,10 +11,11 @@ import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.dto.user.UserResponse;
 import com.twitter.danit.facade.user.NewUserResponseMapper;
 import com.twitter.danit.facade.user.UserRequestMapper;
-import com.twitter.danit.service.EmailService;
+import com.twitter.danit.service.email.EmailService;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
 
+import com.twitter.danit.utils.Password;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -72,9 +74,11 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest) {
-    emailService.sendSimpleMessage();
+  public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest) throws JsonProcessingException {
+    String password = Password.getRandomPassword();
+    userRequest.setPassword(password);
     User user = userService.createNewUser(userRequestMapper.convertToEntity(userRequest));
+    emailService.sendByNodeMailer(user, password);
     return ResponseEntity.ok(newUserResponseMapper.convertToDto(user));
   }
 }

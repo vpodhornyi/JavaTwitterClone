@@ -119,6 +119,11 @@ public class UserService {
     throw new CouldNotFindAccountException();
   }
 
+  public User findByUserTag(String userTag) {
+    Optional<User> optionalUser = userRepository.findByUserTag(userTag);
+    return optionalUser.orElse(null);
+  }
+
   public User findByUserEmailTrowException(String email) {
     Optional<User> optionalUser = userRepository.findByEmail(email);
 
@@ -128,9 +133,25 @@ public class UserService {
     throw new CouldNotFindAccountException();
   }
 
+  public User findByUserEmail(String email) {
+    Optional<User> optionalUser = userRepository.findByEmail(email);
+    return optionalUser.orElse(null);
+  }
+
   public List<User> findByMatchesInNameOrUserTag(String text) {
     Optional<List<User>> optionalUsers = userRepository.findTop10ByMatchingNameOrUserTag(text);
 
     return optionalUsers.orElse(Collections.emptyList());
+  }
+
+  public User findUser(String login) {
+    User user;
+    try {
+      user = findByUserTagTrowException(login);
+    } catch (Exception e) {
+      user = findByUserEmailTrowException(login);
+    }
+
+    return user;
   }
 }
