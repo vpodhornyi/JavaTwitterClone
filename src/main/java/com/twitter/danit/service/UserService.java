@@ -1,7 +1,10 @@
 package com.twitter.danit.service;
 
+import com.twitter.danit.dao.CustomStyleRepository;
 import com.twitter.danit.dao.UserRepository;
+import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.user.CustomStyleRequest;
 import com.twitter.danit.exception.AccountAlreadyExistException;
 import com.twitter.danit.exception.CouldNotFindAccountException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
+  private final CustomStyleRepository customStyleRepository;
 
   public List<User> findAll() {
     return userRepository.findAll();
@@ -87,7 +91,8 @@ public class UserService {
     Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
 
     if (optionalUser.isEmpty()) {
-      return userRepository.save(user);
+      User newUser = userRepository.save(user);
+      return newUser;
     }
 
     throw new AccountAlreadyExistException(user.getEmail());
@@ -153,5 +158,13 @@ public class UserService {
     }
 
     return user;
+  }
+
+  public CustomStyle updateCustomStyle(CustomStyle customStyle, CustomStyleRequest customStyleRequest){
+    customStyle.setColor(customStyleRequest.getColor());
+    customStyle.setBackgroundColor(customStyleRequest.getBackgroundColor());
+    customStyle.setFontSize(customStyleRequest.getFontSize());
+
+    return customStyleRepository.save(customStyle);
   }
 }

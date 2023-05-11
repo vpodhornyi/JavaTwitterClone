@@ -31,7 +31,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   },
 
   '& .Disabled': {
-    opacity: 0.5
+    opacity: 0.6
   },
 }));
 

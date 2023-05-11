@@ -5,9 +5,9 @@ const init = {
   authUser: {},
   error: "",
   customize: {
-    fontSize: 14,
     color: 'blue',
-    background: 'default'
+    background: 'default',
+    fontSize: 14
   }
 }
 
@@ -31,6 +31,7 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         error: payload
       }
     case String(ACTIONS.setCustomize):
+      state.authUser.customize = {...payload};
       return {
         ...state,
         customize: {...state.customize, ...payload}

@@ -26,6 +26,7 @@ export const getAuthUser = () => async (dispatch) => {
     dispatch(ACTIONS.getAuthUser.request());
     const data = await api.get(URLS.USERS.ROOT);
     dispatch(ACTIONS.getAuthUser.success(data));
+    dispatch(ACTIONS.setCustomize(data?.customize));
     return data;
 
   } catch (e) {
@@ -38,6 +39,7 @@ export const getAuthUser = () => async (dispatch) => {
 export const updateCustomize = body => async (dispatch) => {
   try {
     const data = await api.put(URLS.USERS.CUSTOMIZE, body);
+    console.log(data);
     dispatch(ACTIONS.setCustomize(data));
 
   } catch (err) {

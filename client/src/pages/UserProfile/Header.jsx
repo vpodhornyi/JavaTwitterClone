@@ -8,7 +8,7 @@ const Header = ({user}) => {
   return (
     <BoxWrapper>
       <Typography className='HeaderTitle' variant='h2'>{user.name}</Typography>
-      <Typography variant='body2'>0 Tweets</Typography>
+      <Typography className="" variant='body2'>0 Tweets</Typography>
     </BoxWrapper>
   );
 }

@@ -43,7 +43,7 @@ const MenuNav = styled('nav')(({theme}) => ({
 }));
 
 const MenuItem = styled('div')(({theme}) => ({
-  margin: '4px 0',
+  margin: '8px 0',
   display: 'flex',
   cursor: 'pointer',
   // color: theme.palette.action.active,

@@ -20,9 +20,16 @@ export const PATH = {
   },
   BOOKMARKS: '/i/bookmarks',
   LISTS: `/:user_tag/lists`,
-  lists: userTag =>  `/${userTag}/lists`,
+  lists: userTag => `/${userTag}/lists`,
   USER_PROFILE: '/:user_tag',
-  userProfile: userTag =>  `/${userTag}`,
+  USER: {
+    PROFILE: '/:user_tag',
+    profile: userTag => `/${userTag}`,
+    PHOTO: '/:user_tag/photo',
+    photo: userTag => `/${userTag}/photo`,
+    HEADER_PHOTO: '/:user_tag/photo',
+    header_photo: userTag => `/${userTag}/header_photo`,
+  },
   AUTH: {
     ROOT: '/auth',
     SING_IN: {
@@ -38,13 +45,14 @@ export const PATH = {
   },
   NO_MATCHES: '/:user_tag/*',
   SETTINGS: {
-    DISPLAY: '/settings/display'
+    DISPLAY: '/settings/display',
+    PROFILE: '/settings/profile',
   },
   TWEET: {
-    ROOT:"/tweet",
+    ROOT: "/tweet",
     DELETE: '/tweet/:id',
-    REPLY:'/tweet/reply/:id',
-    IMG:'/tweet/img',
+    REPLY: '/tweet/reply/:id',
+    IMG: '/tweet/img',
   },
   ALL: '*',
 };

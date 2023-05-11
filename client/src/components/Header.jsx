@@ -2,7 +2,6 @@ import {styled} from "@mui/material/styles";
 
 const Header = styled('header')(({theme}) => ({
   display: 'none',
-
   [theme.breakpoints.up('xs')]: {
     flexGrow: 0,
     // height: '100%',

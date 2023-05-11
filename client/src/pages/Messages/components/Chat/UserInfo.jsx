@@ -10,7 +10,7 @@ const UserInfo = () => {
   const {selectedChat} = useSelector(getChatsData);
 
   return (
-    <Link to={PATH.userProfile(selectedChat.userTag)} style={{textDecoration: 'none', color: '#000000'}}>
+    <Link to={PATH.USER.profile(selectedChat.userTag)} style={{textDecoration: 'none', color: '#000000'}}>
       <BoxWrapper>
         <Avatar sx={{width: '5rem', height: '5rem'}} src={selectedChat.avatarImgUrl}/>
         <Typography sx={{fontWeight: 600}}>{selectedChat.title}</Typography>

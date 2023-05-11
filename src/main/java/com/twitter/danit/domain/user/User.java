@@ -64,6 +64,9 @@ public class User extends BaseEntity {
   @JsonIgnore
   private transient Set<Chat> chats;
 
+  @OneToOne(cascade = CascadeType.ALL)
+  private CustomStyle customStyle;
+
   @Override
   public String toString() {
     return "User{" +

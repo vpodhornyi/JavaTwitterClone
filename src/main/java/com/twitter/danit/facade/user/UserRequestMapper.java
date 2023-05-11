@@ -1,6 +1,9 @@
 package com.twitter.danit.facade.user;
 
 import com.twitter.danit.dao.UserRepository;
+import com.twitter.danit.domain.user.BackgroundColor;
+import com.twitter.danit.domain.user.Color;
+import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.facade.GeneralFacade;
@@ -37,5 +40,6 @@ public class UserRequestMapper extends GeneralFacade<User, UserRequest> {
 
     entity.setUserTag(userTagGenerate);
     entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+    entity.setCustomStyle(new CustomStyle());
   }
 }

@@ -108,6 +108,7 @@ export const authorize =
         dispatch(ACTIONS.authorize.success());
         dispatch(getAuthUser());
         navigate(`${PATH.HOME}`);
+
       } catch (err) {
         setTimeout(() => {
           dispatch(ACTIONS.disableLoading());

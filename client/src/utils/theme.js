@@ -45,11 +45,15 @@ export const BACKGROUND = {
         color: grey[900],
       },
       body2: {
-        fontSize: '0.95rem',
+        fontSize: '0.90rem',
         color: grey[700],
       },
       body3: {
         fontSize: '0.8rem',
+        color: grey[700],
+      },
+      subtitle1: {
+        fontSize: '1.1rem',
         color: grey[700],
       },
     }
@@ -98,11 +102,15 @@ export const BACKGROUND = {
         color: blueGrey[50],
       },
       body2: {
-        fontSize: '0.95rem',
+        fontSize: '1rem',
         color: blueGrey[300],
       },
       body3: {
         fontSize: '0.8rem',
+        color: blueGrey[300],
+      },
+      subtitle1: {
+        fontSize: '1.1rem',
         color: blueGrey[300],
       },
     }
@@ -145,16 +153,24 @@ export const BACKGROUND = {
         fontSize: '2.2rem',
         color: grey[50],
       },
+      h3: {
+        fontSize: '2rem',
+        color: grey[50],
+      },
       body1: {
         fontSize: '1rem',
         color: grey[50],
       },
       body2: {
-        fontSize: '0.95rem',
+        fontSize: '0.9rem',
         color: grey[300],
       },
       body3: {
         fontSize: '0.8rem',
+        color: grey[300],
+      },
+      subtitle1: {
+        fontSize: '1.1rem',
         color: grey[300],
       },
     }

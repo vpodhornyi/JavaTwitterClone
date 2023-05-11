@@ -4,17 +4,18 @@ import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField, Typography, Fab} from "@mui/material";
 
-import {BackgroundContext} from "../../../utils/context";
-import {ModalPage, CustomIconButton, FollowButton, IconByName, CircularLoader} from "../../../components";
+import {BackgroundContext} from "@utils/context";
+import {ModalPage, CustomIconButton, FollowButton, IconByName, CircularLoader} from "../../../../components";
 import {getChatsData} from '@redux/chat/selector';
 import {editGroupChat} from '@redux/chat/action';
 import {PATH} from '@utils/constants';
 
-const GroupEditPage = () => {
+const UserProfileEditPage = () => {
   const {background} = useContext(BackgroundContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {selectedChat: chat} = useSelector(getChatsData);
+  const {authUser: user} = useSelector(state => state.user);
   const [name, setName] = useState(chat.title);
   const [disabled, setDisabled] = useState(true);
   const [imageUrl, setImageUrl] = useState('');
@@ -55,52 +56,79 @@ const GroupEditPage = () => {
   }
 
   return (
-    <BoxWrapper>
-      <Box className='EditHeader'>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          onClick={() => navigate(background?.pathname || PATH.ROOT)}>
-          <CustomIconButton name='Close' color='text'/>
-          <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit</Typography>
+      <BoxWrapper>
+        <Box className='EditHeader'>
+          <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              onClick={() => navigate(background?.pathname || PATH.ROOT)}>
+            <CustomIconButton name='Close' color='text'/>
+            <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit
+              profile</Typography>
+          </Box>
+          <Box onClick={save}>
+            <FollowButton name='Save' disabled={disabled}/>
+          </Box>
         </Box>
-        <Box onClick={save}>
-          <FollowButton name='Save' disabled={disabled}/>
+        <Box className='AddPhoto'>
+          {loader && <CircularLoader/>}
+          <Avatar sx={{width: '6rem', height: '6rem'}} src={user?.avatarImgUrl}/>
+          <Fab className='AddPhotoButton' onClick={() => inputFileRef.current.click()}>
+            <input
+                ref={inputFileRef}
+                type="file"
+                multiple
+                hidden
+                id="file-upload"
+                onChange={handleFileUploader}
+            />
+            <IconByName iconStyle={{fontSize: '1.3rem'}} iconName='AddAPhotoOutlined'/>
+          </Fab>
         </Box>
-      </Box>
-      <Box className='AddPhoto'>
-        {loader && <CircularLoader/>}
-        <Avatar sx={{width: '6rem', height: '6rem'}} src={imageUrl}/>
-        <Fab className='AddPhotoButton' onClick={() => inputFileRef.current.click()}>
-          <input
-            ref={inputFileRef}
-            type="file"
-            multiple
-            hidden
-            id="file-upload"
-            onChange={handleFileUploader}
-          />
-          <IconByName iconStyle={{fontSize: '1.3rem'}} iconName='AddAPhotoOutlined'/>
-        </Fab>
-      </Box>
-      <Box className='GroupNameFieldWrapper'>
-        <TextField
-          color='primary'
-          sx={{width: '100%'}}
-          onChange={e => onChangeName(e)}
-          value={name}
-          id="groupName"
-          label="Group name"
-          variant="outlined"/>
-      </Box>
-    </BoxWrapper>
+        <Box className='GroupNameFieldWrapper'>
+          <TextField
+              color='primary'
+              sx={{width: '100%', mb: 4}}
+              onChange={e => onChangeName(e)}
+              value={name}
+              id="name"
+              label="Name"
+              variant="outlined"/>
+          <TextField
+              color='primary'
+              sx={{width: '100%', mb: 4}}
+              onChange={e => onChangeName(e)}
+              value={name}
+              id="bio"
+              multiline={true}
+              rows={3}
+              label="Bio"
+              variant="outlined"/>
+          <TextField
+              color='primary'
+              sx={{width: '100%', mb: 4}}
+              onChange={e => onChangeName(e)}
+              value={name}
+              id="bio"
+              label="Location"
+              variant="outlined"/>
+          <TextField
+              color='primary'
+              sx={{width: '100%', mb: 4}}
+              onChange={e => onChangeName(e)}
+              value={name}
+              id="bio"
+              label="Website"
+              variant="outlined"/>
+        </Box>
+      </BoxWrapper>
   );
 }
 
-const Foo = () => <ModalPage element={<GroupEditPage/>}/>;
+const Foo = () => <ModalPage element={<UserProfileEditPage/>}/>;
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
@@ -163,19 +191,24 @@ const BoxWrapper = styled(Box)(({theme}) => ({
       color: theme.palette.text.main,
     },
 
-    '& .MuiInputBase-root': {
-      color: theme.palette.text.main,
+    '& .MuiFormLabel-root': {
+      color: theme.typography.subtitle1.color,
+    },
 
+    '& .MuiInputBase-root': {
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: theme.palette.text.main,
+        borderColor: theme.typography.subtitle1.color,
       }
     },
 
     '& .Mui-focused': {
+      color: theme.palette.primary.main,
+
       '& .MuiOutlinedInput-notchedOutline': {
         borderColor: theme.palette.primary.main,
       }
     },
+
   }
 }));
 

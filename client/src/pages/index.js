@@ -12,6 +12,7 @@ import GroupEditPage from './Messages/components/GroupEditPage';
 import Bookmarks from './Bookmarks/Bookmarks';
 import Lists from './Lists/Lists';
 import UserProfile from './UserProfile/UserProfile';
+import UserProfileEdit from './UserProfile/components/editProfile/UserProfileEditPage';
 import Auth from './Auth/Auth';
 import Login from './Auth/SingIn/Login';
 import Password from './Auth/SingIn/Password';
@@ -48,4 +49,5 @@ export {
   Bookmarks,
   Lists,
   UserProfile,
+  UserProfileEdit,
 }

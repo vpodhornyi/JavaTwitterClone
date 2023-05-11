@@ -3,7 +3,7 @@ import {Link, useLocation} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
-import {PATH} from "../../../../utils/constants";
+import {PATH} from "@utils/constants";
 
 
 const GroupEdit = ({chat}) => {

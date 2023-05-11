@@ -1,16 +1,19 @@
 package com.twitter.danit.controller;
 
+import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.user.CustomStyleResponse;
+import com.twitter.danit.dto.user.CustomStyleRequest;
 import com.twitter.danit.dto.user.UserResponse;
+import com.twitter.danit.facade.user.CustomStyleResponseMapper;
 import com.twitter.danit.facade.user.UserResponseMapper;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,7 @@ public class UserController {
   private final JwtAuthService jwtAuthService;
   private final UserService userService;
   private final UserResponseMapper userResponseMapper;
+  private final CustomStyleResponseMapper customStyleResponseMapper;
 
   @GetMapping
   public UserResponse findAuthUser() {
@@ -34,8 +38,8 @@ public class UserController {
   @GetMapping("/all")
   public List<UserResponse> findAll() {
     return userService.findAll().stream()
-            .map(userResponseMapper::convertToDto)
-            .collect(Collectors.toList());
+        .map(userResponseMapper::convertToDto)
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
@@ -52,19 +56,16 @@ public class UserController {
   }
 
   @GetMapping("/")
-  public UserResponse findByUserTag(
-          @RequestParam(name = "userTag") String userTag
-  ) {
+  public ResponseEntity<UserResponse> findByUserTag(@RequestParam(name = "userTag") String userTag) {
     User user = userService.findByUserTagTrowException(userTag);
-    return userResponseMapper.convertToDto(user);
+    return ResponseEntity.ok(userResponseMapper.convertToDto(user));
   }
 
-  public void updateCustomize(){
-
-  }
-
-  @ExceptionHandler({Exception.class, MethodArgumentNotValidException.class})
-  public ResponseEntity<Object> handleException(Exception ex) {
-    return new ResponseEntity<>(ex.getCause(), HttpStatus.BAD_REQUEST);
+  @PutMapping("/customize")
+  public ResponseEntity<CustomStyleResponse> updateCustomize(@RequestBody CustomStyleRequest customStyleRequest, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    CustomStyle customStyle = authUser.getCustomStyle();
+    CustomStyle savwdCustomStyle = userService.updateCustomStyle(customStyle, customStyleRequest);
+    return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
   }
 }

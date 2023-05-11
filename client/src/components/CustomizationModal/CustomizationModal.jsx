@@ -57,12 +57,12 @@ const CustomizationModal = () => {
     dispatch(ACTIONS.setCustomize({background}));
   };
   const submit = async () => {
-    if (customize.fontSize !== fontSize || customize.color !== color || customize.background !== backgroundColor) {
+    if (customize?.fontSize !== fontSize || customize?.color !== color || customize?.background !== backgroundColor) {
       setLoading(true);
       await dispatch(updateCustomize({
         fontSize,
         color: color.toUpperCase(),
-        background: backgroundColor.toUpperCase(),
+        backgroundColor: backgroundColor.toUpperCase(),
       }));
       setLoading(false);
     }
