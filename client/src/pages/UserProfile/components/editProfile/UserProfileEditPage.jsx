@@ -1,11 +1,12 @@
-import React, {useContext, useState, useRef, useEffect} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
-import {Avatar, Box, TextField, Typography, Fab} from "@mui/material";
+import {Box, TextField, Typography} from "@mui/material";
 
 import {BackgroundContext} from "@utils/context";
-import {ModalPage, CustomIconButton, FollowButton, IconByName, CircularLoader} from "../../../../components";
+import {ModalPage, CustomIconButton, FollowButton} from "../../../../components";
+import FormElement from "./FormElement";
 import {getChatsData} from '@redux/chat/selector';
 import {editGroupChat} from '@redux/chat/action';
 import {PATH} from '@utils/constants';
@@ -17,33 +18,25 @@ const UserProfileEditPage = () => {
   const {selectedChat: chat} = useSelector(getChatsData);
   const {authUser: user} = useSelector(state => state.user);
   const [name, setName] = useState(chat.title);
-  const [disabled, setDisabled] = useState(true);
-  const [imageUrl, setImageUrl] = useState('');
   const [loader, setLoader] = useState(false);
   const [file, setFile] = useState(null);
-  const inputFileRef = useRef();
+
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    setImageUrl(chat?.avatarImgUrl);
+    setFormData({
+      name: user?.name,
+      bio: user?.bio,
+      location: user?.location,
+      website: user?.website,
+      headerImageUrl: user?.headerImgUrl,
+      avatarImageUrl: user?.avatarImgUrl,
+      disabled: true,
+    })
   }, [])
 
-  const onChangeName = e => {
-    setName(() => e.target.value);
-    const text = e.target.value.trim();
-    setDisabled(text === chat.title || text === '');
-  }
-
-  const handleFileUploader = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImageUrl(URL.createObjectURL(file));
-      setFile(file);
-      setDisabled(false);
-    }
-  }
-
   const save = async () => {
-    if (!disabled) {
+    if (!formData.disabled) {
       setLoader(true);
       const formData = new FormData();
       formData.append('uploadFile', file);
@@ -70,65 +63,13 @@ const UserProfileEditPage = () => {
               profile</Typography>
           </Box>
           <Box onClick={save}>
-            <FollowButton name='Save' disabled={disabled}/>
+            <FollowButton name='Save' disabled={formData.disabled}/>
           </Box>
         </Box>
-        <Box className='AddPhoto'>
-          {loader && <CircularLoader/>}
-          <Avatar sx={{width: '6rem', height: '6rem'}} src={user?.avatarImgUrl}/>
-          <Fab className='AddPhotoButton' onClick={() => inputFileRef.current.click()}>
-            <input
-                ref={inputFileRef}
-                type="file"
-                multiple
-                hidden
-                id="file-upload"
-                onChange={handleFileUploader}
-            />
-            <IconByName iconStyle={{fontSize: '1.3rem'}} iconName='AddAPhotoOutlined'/>
-          </Fab>
-        </Box>
-        <Box className='GroupNameFieldWrapper'>
-          <TextField
-              color='primary'
-              sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
-              value={name}
-              id="name"
-              label="Name"
-              variant="outlined"/>
-          <TextField
-              color='primary'
-              sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
-              value={name}
-              id="bio"
-              multiline={true}
-              rows={3}
-              label="Bio"
-              variant="outlined"/>
-          <TextField
-              color='primary'
-              sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
-              value={name}
-              id="bio"
-              label="Location"
-              variant="outlined"/>
-          <TextField
-              color='primary'
-              sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
-              value={name}
-              id="bio"
-              label="Website"
-              variant="outlined"/>
-        </Box>
+        <FormElement user={user} formData={formData} setFormData={setFormData}/>
       </BoxWrapper>
   );
 }
-
-const Foo = () => <ModalPage element={<UserProfileEditPage/>}/>;
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
@@ -182,34 +123,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
       },
     }
   },
-
-  '& > .GroupNameFieldWrapper': {
-    width: '100%',
-    padding: '11px 15px',
-
-    '& .MuiInputBase-input': {
-      color: theme.palette.text.main,
-    },
-
-    '& .MuiFormLabel-root': {
-      color: theme.typography.subtitle1.color,
-    },
-
-    '& .MuiInputBase-root': {
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: theme.typography.subtitle1.color,
-      }
-    },
-
-    '& .Mui-focused': {
-      color: theme.palette.primary.main,
-
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: theme.palette.primary.main,
-      }
-    },
-
-  }
 }));
 
-export default Foo;
+// eslint-disable-next-line react/display-name
+export default () => <ModalPage element={<UserProfileEditPage/>}/>;

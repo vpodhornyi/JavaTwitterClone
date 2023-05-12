@@ -1,11 +1,12 @@
-import React, {useContext, useState, useRef, useEffect} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
-import {Avatar, Box, TextField, Typography, Fab} from "@mui/material";
+import {Avatar, Box, TextField, Typography} from "@mui/material";
 
 import {BackgroundContext} from "../../../utils/context";
-import {ModalPage, CustomIconButton, FollowButton, IconByName, CircularLoader} from "../../../components";
+import {ModalPage, CustomIconButton, FollowButton, CircularLoader,
+  AddPhotoButton} from "../../../components";
 import {getChatsData} from '@redux/chat/selector';
 import {editGroupChat} from '@redux/chat/action';
 import {PATH} from '@utils/constants';
@@ -20,7 +21,6 @@ const GroupEditPage = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [loader, setLoader] = useState(false);
   const [file, setFile] = useState(null);
-  const inputFileRef = useRef();
 
   useEffect(() => {
     setImageUrl(chat?.avatarImgUrl);
@@ -30,15 +30,6 @@ const GroupEditPage = () => {
     setName(() => e.target.value);
     const text = e.target.value.trim();
     setDisabled(text === chat.title || text === '');
-  }
-
-  const handleFileUploader = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImageUrl(URL.createObjectURL(file));
-      setFile(file);
-      setDisabled(false);
-    }
   }
 
   const save = async () => {
@@ -74,17 +65,7 @@ const GroupEditPage = () => {
       <Box className='AddPhoto'>
         {loader && <CircularLoader/>}
         <Avatar sx={{width: '6rem', height: '6rem'}} src={imageUrl}/>
-        <Fab className='AddPhotoButton' onClick={() => inputFileRef.current.click()}>
-          <input
-            ref={inputFileRef}
-            type="file"
-            multiple
-            hidden
-            id="file-upload"
-            onChange={handleFileUploader}
-          />
-          <IconByName iconStyle={{fontSize: '1.3rem'}} iconName='AddAPhotoOutlined'/>
-        </Fab>
+        <AddPhotoButton setFile={setFile} setImageUrl={setImageUrl} setDisabled={setDisabled}/>
       </Box>
       <Box className='GroupNameFieldWrapper'>
         <TextField
