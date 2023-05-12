@@ -7,13 +7,13 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 
 
 const actions = createActions(
-  {
-    actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
-    async: ['GET_AUTH_USER'],
-  },
-  {
-    prefix: "user",
-  }
+    {
+      actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
+      async: ['GET_AUTH_USER'],
+    },
+    {
+      prefix: "user",
+    }
 );
 
 export const ACTIONS = {
@@ -42,6 +42,15 @@ export const updateCustomize = body => async (dispatch) => {
     console.log(data);
     dispatch(ACTIONS.setCustomize(data));
 
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+}
+
+export const updateUserProfile = body => async dispatch => {
+  try {
+    const data = await api.put(URLS.USERS.PROFILE, body);
+    console.log('user - ', data);
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
@@ -95,5 +104,13 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     });
   } catch (err) {
     console.log('chatSubscribes error - ', err);
+  }
+}
+
+export const uploadImage = (body) => async dispatch => {
+  try {
+    return await api.post(URLS.CLOUD.IMAGE, body);
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }

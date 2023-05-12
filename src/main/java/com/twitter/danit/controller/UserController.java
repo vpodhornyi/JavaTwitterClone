@@ -4,6 +4,7 @@ import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.CustomStyleResponse;
 import com.twitter.danit.dto.user.CustomStyleRequest;
+import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.dto.user.UserResponse;
 import com.twitter.danit.facade.user.CustomStyleResponseMapper;
 import com.twitter.danit.facade.user.UserResponseMapper;
@@ -48,10 +49,16 @@ public class UserController {
     return userResponseMapper.convertToDto(user);
   }
 
+  @PutMapping("/profile")
+  public ResponseEntity<UserResponse> editUserProfile(@RequestBody UserRequest userRequest, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User updatedUser = userService.updateUser(authUser, userRequest);
+    return ResponseEntity.ok(userResponseMapper.convertToDto(updatedUser));
+  }
+
   @GetMapping("/search")
   public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text) {
     List<User> users = userService.findByMatchesInNameOrUserTag(text.trim());
-
     return ResponseEntity.ok(users.stream().map(userResponseMapper::convertToDto).collect(Collectors.toList()));
   }
 

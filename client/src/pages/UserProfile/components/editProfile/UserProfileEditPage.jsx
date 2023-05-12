@@ -8,7 +8,7 @@ import {BackgroundContext} from "@utils/context";
 import {ModalPage, CustomIconButton, FollowButton} from "../../../../components";
 import FormElement from "./FormElement";
 import {getChatsData} from '@redux/chat/selector';
-import {editGroupChat} from '@redux/chat/action';
+import {updateUserProfile, uploadImage} from '@redux/user/action';
 import {PATH} from '@utils/constants';
 
 const UserProfileEditPage = () => {
@@ -17,20 +17,24 @@ const UserProfileEditPage = () => {
   const navigate = useNavigate();
   const {selectedChat: chat} = useSelector(getChatsData);
   const {authUser: user} = useSelector(state => state.user);
-  const [name, setName] = useState(chat.title);
   const [loader, setLoader] = useState(false);
-  const [file, setFile] = useState(null);
 
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    name: '',
+    bio: '',
+    location: '',
+    headerImgUrl: '',
+    avatarImgUrl: '',
+    disabled: true,
+  });
 
   useEffect(() => {
     setFormData({
       name: user?.name,
       bio: user?.bio,
       location: user?.location,
-      website: user?.website,
-      headerImageUrl: user?.headerImgUrl,
-      avatarImageUrl: user?.avatarImgUrl,
+      headerImgUrl: user?.headerImgUrl,
+      avatarImgUrl: user?.avatarImgUrl,
       disabled: true,
     })
   }, [])
@@ -38,11 +42,22 @@ const UserProfileEditPage = () => {
   const save = async () => {
     if (!formData.disabled) {
       setLoader(true);
-      const formData = new FormData();
-      formData.append('uploadFile', file);
-      formData.append('name', name);
-      formData.append('chatId', chat.id);
-      await dispatch(editGroupChat(formData));
+
+      if (user.headerImgUrl !== formData.headerImgUrl) {
+        const data = new FormData();
+        data.append('uploadFile', formData.headerImgFile);
+        formData.headerImgUrl = await dispatch(uploadImage(data));
+        delete formData.headerImgFile;
+      }
+
+      if (user.avatarImgUrl !== formData.avatarImgUrl) {
+        const data = new FormData();
+        data.append('uploadFile', formData.avatarImgFile);
+        formData.avatarImgUrl = await dispatch(uploadImage(data));
+        delete formData.avatarImgFile;
+      }
+
+      await dispatch(updateUserProfile(formData));
       setLoader(false);
       navigate(background?.pathname || PATH.ROOT);
     }

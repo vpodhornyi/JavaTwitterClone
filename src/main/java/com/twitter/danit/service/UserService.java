@@ -5,6 +5,7 @@ import com.twitter.danit.dao.UserRepository;
 import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.CustomStyleRequest;
+import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.exception.AccountAlreadyExistException;
 import com.twitter.danit.exception.CouldNotFindAccountException;
 import lombok.RequiredArgsConstructor;
@@ -33,67 +34,32 @@ public class UserService {
     throw new CouldNotFindAccountException();
   }
 
-  /*  public boolean updateUserProfile(Long id, UserProfileUpdateRequestDto dto) {
-    Optional<User> user = userRepository.findById(id);
+  public User updateUser(User user, UserRequest userRequest) {
+    String name = userRequest.getName();
+    String bio = userRequest.getBio();
+    String location = userRequest.getLocation();
+    String headerImgUrl = userRequest.getHeaderImgUrl();
+    String avatarImgUrl = userRequest.getAvatarImgUrl();
 
-    String dtoName = dto.getName();
-    String dtoBio = dto.getBio();
-    String dtoLocation = dto.getLocation();
-    String dtoBirth = dto.getBirth();
-    String dtoHeaderImgUrl = dto.getHeaderImgUrl();
+//    if (!user.getName().equals(name)) user.setName(name);
+//    if (!user.getBio().equals(bio)) user.setBio(bio);
+//    if (!user.getLocation().equals(location)) user.setLocation(location);
+//    if (!user.getHeaderImgUrl().equals(headerImgUrl)) user.setHeaderImgUrl(headerImgUrl);
+//    if (!user.getAvatarImgUrl().equals(avatarImgUrl)) user.setAvatarImgUrl(avatarImgUrl);
 
-    if (user.isPresent()) {
-      if (dtoName != null && dtoName.length() > 0) {
-        user.get().setName(dtoName);
-      }
-      if (dtoBio != null && dtoBio.length() > 0) {
-        user.get().setBio(dtoBio);
-      }
-      if (dtoLocation != null && dtoLocation.length() > 0) {
-        user.get().setLocation(dtoLocation);
-      }
+    user.setName(name);
+    user.setBio(bio);
+    user.setLocation(location);
+    user.setHeaderImgUrl(headerImgUrl);
+    user.setAvatarImgUrl(avatarImgUrl);
 
-      if (dtoBirth != null && dtoBirth.length() > 4) {
-        LocalDate date = LocalDate.parse(dtoBirth);
-        user.get().setBirthDate(date);
-      }
-
-      if (dtoHeaderImgUrl != null && dtoHeaderImgUrl.length() == 0) {
-        user.get().setHeaderImgUrl("");
-      }
-
-      userRepository.save(user.get());
-      return true;
-    }
-
-    return false;
-  }*/
-
-  public void updateUserHeader(Long id, String headerImgUrl) {
-    Optional<User> user = userRepository.findById(id);
-
-    if (user.isPresent()) {
-      user.get().setHeaderImgUrl(headerImgUrl);
-      userRepository.save(user.get());
-    }
-  }
-
-  public void updateUserAvatar(Long id, String avatarImgUrl) {
-    Optional<User> user = userRepository.findById(id);
-
-    if (user.isPresent()) {
-      user.get().setAvatarImgUrl(avatarImgUrl);
-      userRepository.save(user.get());
-    }
+    return userRepository.save(user);
   }
 
   public User createNewUser(User user) {
     Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
 
-    if (optionalUser.isEmpty()) {
-      User newUser = userRepository.save(user);
-      return newUser;
-    }
+    if (optionalUser.isEmpty()) return userRepository.save(user);
 
     throw new AccountAlreadyExistException(user.getEmail());
   }
@@ -104,10 +70,6 @@ public class UserService {
 
   public List<User> getAll() {
     return userRepository.findAll();
-  }
-
-  public User updateUser(User user) {
-    return userRepository.save(user);
   }
 
   public Boolean deleteUserById(Long id) {
@@ -160,7 +122,7 @@ public class UserService {
     return user;
   }
 
-  public CustomStyle updateCustomStyle(CustomStyle customStyle, CustomStyleRequest customStyleRequest){
+  public CustomStyle updateCustomStyle(CustomStyle customStyle, CustomStyleRequest customStyleRequest) {
     customStyle.setColor(customStyleRequest.getColor());
     customStyle.setBackgroundColor(customStyleRequest.getBackgroundColor());
     customStyle.setFontSize(customStyleRequest.getFontSize());

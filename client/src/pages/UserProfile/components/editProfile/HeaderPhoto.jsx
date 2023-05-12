@@ -7,10 +7,10 @@ import {AddPhotoButton} from "../../../../components";
 const HeaderPhoto = ({formData, setFormData}) => {
   return (
       <BoxWrapper>
-        {formData.headerImageUrl && <img className="HeaderImg" src={formData.headerImageUrl} alt=""/>}
+        {formData.headerImgUrl && <img className="HeaderImg" src={formData.headerImgUrl} alt=""/>}
         <Box className="HeaderButtonsWrapper">
           <AddPhotoButton
-              fieldUrlName={'headerImageUrl'}
+              fieldUrlName={'headerImgUrl'}
               fieldFileName={'headerImgFile'}
               formData={formData}
               setFormData={setFormData}/>

@@ -23,6 +23,11 @@ public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
     dto.setCountUnreadMessages(messageService.getCountAllUnreadChatMessagesByUserId(entity.getId()));
     CustomStyle customStyle = entity.getCustomStyle();
 
+    if(entity.getBio() == null) dto.setBio("");
+    if(entity.getLocation() == null) dto.setLocation("");
+    if(entity.getHeaderImgUrl() == null) dto.setHeaderImgUrl("");
+    if(entity.getAvatarImgUrl() == null) dto.setAvatarImgUrl("");
+
     if (customStyle != null) {
       dto.setCustomize(customStyleDtoMapper.convertToDto(customStyle));
     }

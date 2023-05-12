@@ -13,7 +13,9 @@ const UserInfo = () => {
 
   return (
       <BoxWrapper>
-        <Box className="HeaderPhotoWrapper"></Box>
+        <Box className="HeaderPhotoWrapper">
+          {user.headerImgUrl !== '' && <img className="HeaderImg" src={user.headerImgUrl} alt=""/>}
+        </Box>
         <Box className="UserInfoBlock" sx={{p: 2}}>
           <UserPhotoBlock user={user}/>
           <Typography fontWeight='bold' variant="h2">{user.name}</Typography>
@@ -43,7 +45,12 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
   '& .HeaderPhotoWrapper': {
     height: '200px',
-    backgroundColor: theme.palette.background[2]
+    backgroundColor: theme.palette.background[2],
+
+    '& .HeaderImg': {
+      height: '200px',
+      width: '100%'
+    },
   },
 
   '& .UserInfoBlock': {

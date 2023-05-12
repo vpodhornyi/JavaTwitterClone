@@ -13,10 +13,10 @@ const PhotosEditor = ({formData, setFormData}) => {
         <Box className='AddPhoto'>
           <Box sx={{position: 'absolute', left: 15, bottom: -10}}>
             <Box className="AvatarWrapper">
-              <Avatar className="Avatar" src={formData.avatarImageUrl}/>
+              <Avatar className="Avatar" src={formData.avatarImgUrl}/>
               <Box sx={{position: 'absolute'}}>
                 <AddPhotoButton
-                    fieldUrlName={'avatarImageUrl'}
+                    fieldUrlName={'avatarImgUrl'}
                     fieldFileName={'avatarImgFile'}
                     formData={formData}
                     setFormData={setFormData}

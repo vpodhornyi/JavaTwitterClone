@@ -46,14 +46,6 @@ const FormElement = ({formData, setFormData}) => {
               id="location"
               label="Location"
               variant="outlined"/>
-          <TextField
-              color='primary'
-              sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
-              value={formData.website}
-              id="website"
-              label="Website"
-              variant="outlined"/>
         </Box>
       </BoxWrapper>);
 }

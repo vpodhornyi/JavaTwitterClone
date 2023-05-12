@@ -17,6 +17,7 @@ public class UserResponse {
   private String userTag;
   private String email;
   private String bio;
+  private String location;
   private String avatarImgUrl;
   private String headerImgUrl;
   private CustomStyleResponse customize;
