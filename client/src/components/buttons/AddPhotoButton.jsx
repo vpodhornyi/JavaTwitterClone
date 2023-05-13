@@ -4,16 +4,20 @@ import {Fab} from "@mui/material";
 import PropTypes from "prop-types";
 import {IconByName} from "../icons";
 
-const AddPhotoButton = ({setFile, setImageUrl, setDisabled, fieldUrlName, fieldFileName,  formData, setFormData}) => {
-  const inputFileRef = useRef();
+const AddPhotoButton = ({
+                          setFile, setImageUrl, setDisabled,
+                          fieldUrlName, fieldFileName, inputFileRef,
+                          formData, setFormData
+                        }) => {
 
   const handleFileUploader = (event) => {
     const file = event.target.files[0];
+
     if (file) {
       // setFile(file);
       // setImageUrl(URL.createObjectURL(file));
       // setDisabled(false);
-      setFormData && setFormData({
+      setFormData({
         ...formData,
         [fieldUrlName]: URL.createObjectURL(file),
         [fieldFileName]: file,
@@ -63,6 +67,7 @@ AddPhotoButton.propTypes = {
   setDisabled: PropTypes.func,
   fieldUrlName: PropTypes.string,
   fieldFileName: PropTypes.string,
+  inputFileRef: PropTypes.object,
   formData: PropTypes.object,
   setFormData: PropTypes.func,
 }

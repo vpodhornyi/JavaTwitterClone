@@ -3,7 +3,7 @@ import {Navigate} from "react-router-dom";
 import {
   Home, Explore, Notifications, Messages, Chat, ChatInfo, Bookmarks, CreateAccount, SelectMessage,
   Lists, UserProfile, UserSearch, Auth, Login, Password, ForgotPassword, SingUp, UserData, Participants,
-  GroupEditPage, Navigation, UserProfileEdit
+  GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage
 } from "../pages";
 import {PATH} from "../utils/constants";
 import {Display, DeleteTweet} from "../components";
@@ -136,6 +136,14 @@ export const modalRoutes = authorized => {
         {
           path: PATH.SETTINGS.PROFILE,
           element: <UserProfileEdit/>,
+        },
+        {
+          path: PATH.USER.HEADER_PHOTO,
+          element: <HeaderPhotoPage/>,
+        },
+        {
+          path: PATH.USER.PHOTO,
+          element: <UserPhotoPage/>,
         },
         {
           path: PATH.MESSAGES.COMPOSE,

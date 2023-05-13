@@ -12,7 +12,10 @@ const UserPhotoBlock = ({user}) => {
 
   return (
       <BoxWrapper>
-        <Link className="UserPhotoLink" to={PATH.USER.photo(user.userTag)}>
+        <Link
+            className="UserPhotoLink"
+            to={PATH.USER.photo(user.userTag)}
+            state={{background: location}}>
           <Avatar className="Avatar" src={user.avatarImgUrl}/>
         </Link>
         <Link

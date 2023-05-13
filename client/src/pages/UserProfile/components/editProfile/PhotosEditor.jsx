@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box} from "@mui/material";
 import PropTypes from "prop-types";
@@ -6,6 +6,7 @@ import {AddPhotoButton} from "../../../../components";
 import HeaderPhoto from "./HeaderPhoto";
 
 const PhotosEditor = ({formData, setFormData}) => {
+  const inputFileRef = useRef();
 
   return (
       <BoxWrapper>
@@ -18,6 +19,7 @@ const PhotosEditor = ({formData, setFormData}) => {
                 <AddPhotoButton
                     fieldUrlName={'avatarImgUrl'}
                     fieldFileName={'avatarImgFile'}
+                    inputFileRef={inputFileRef}
                     formData={formData}
                     setFormData={setFormData}
                 />

@@ -5,7 +5,7 @@ import {styled} from "@mui/material/styles";
 import {Box, TextField, Typography} from "@mui/material";
 
 import {BackgroundContext} from "@utils/context";
-import {ModalPage, CustomIconButton, FollowButton} from "../../../../components";
+import {ModalPage, CustomIconButton, FollowButton, CircularLoader} from "../../../../components";
 import FormElement from "./FormElement";
 import {getChatsData} from '@redux/chat/selector';
 import {updateUserProfile, uploadImage} from '@redux/user/action';
@@ -43,14 +43,14 @@ const UserProfileEditPage = () => {
     if (!formData.disabled) {
       setLoader(true);
 
-      if (user.headerImgUrl !== formData.headerImgUrl) {
+      if (user.headerImgUrl !== formData.headerImgUrl && formData.headerImgUrl !== '') {
         const data = new FormData();
         data.append('uploadFile', formData.headerImgFile);
         formData.headerImgUrl = await dispatch(uploadImage(data));
         delete formData.headerImgFile;
       }
 
-      if (user.avatarImgUrl !== formData.avatarImgUrl) {
+      if (user.avatarImgUrl !== formData.avatarImgUrl && formData.avatarImgUrl !== '') {
         const data = new FormData();
         data.append('uploadFile', formData.avatarImgFile);
         formData.avatarImgUrl = await dispatch(uploadImage(data));
@@ -66,13 +66,12 @@ const UserProfileEditPage = () => {
   return (
       <BoxWrapper>
         <Box className='EditHeader'>
-          <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onClick={() => navigate(background?.pathname || PATH.ROOT)}>
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+               onClick={() => navigate(background?.pathname || PATH.ROOT)}>
             <CustomIconButton name='Close' color='text'/>
             <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit
               profile</Typography>
@@ -81,7 +80,10 @@ const UserProfileEditPage = () => {
             <FollowButton name='Save' disabled={formData.disabled}/>
           </Box>
         </Box>
-        <FormElement user={user} formData={formData} setFormData={setFormData}/>
+        <Box sx={{position: 'relative', mb: 2}}>
+          {loader && <CircularLoader/>}
+          <FormElement user={user} formData={formData} setFormData={setFormData}/>
+        </Box>
       </BoxWrapper>
   );
 }

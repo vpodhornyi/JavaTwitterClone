@@ -27,7 +27,7 @@ export const PATH = {
     profile: userTag => `/${userTag}`,
     PHOTO: '/:user_tag/photo',
     photo: userTag => `/${userTag}/photo`,
-    HEADER_PHOTO: '/:user_tag/photo',
+    HEADER_PHOTO: '/:user_tag/header_photo',
     header_photo: userTag => `/${userTag}/header_photo`,
   },
   AUTH: {

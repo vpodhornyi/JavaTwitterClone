@@ -46,6 +46,11 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         preloader: false,
         error: payload
       }
+    case String(ACTIONS.updateUserProfile.success):
+      state.authUser = {...payload};
+      return {
+        ...state,
+      };
     case String(ACTIONS.resetData):
       state = init;
       return {

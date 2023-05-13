@@ -21,10 +21,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   alignItems: 'flex-start',
   color: 'inherit',
 
-  '& .Spacer': {
-    padding: '10px',
-  },
-
   '& .IconByName': {
     color: theme.typography.subtitle1.color,
   }

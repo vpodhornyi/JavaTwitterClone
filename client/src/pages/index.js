@@ -13,6 +13,8 @@ import Bookmarks from './Bookmarks/Bookmarks';
 import Lists from './Lists/Lists';
 import UserProfile from './UserProfile/UserProfile';
 import UserProfileEdit from './UserProfile/components/editProfile/UserProfileEditPage';
+import HeaderPhotoPage from './UserProfile/HeaderPhotoPage';
+import UserPhotoPage from './UserProfile/UserPhotoPage';
 import Auth from './Auth/Auth';
 import Login from './Auth/SingIn/Login';
 import Password from './Auth/SingIn/Password';
@@ -50,4 +52,6 @@ export {
   Lists,
   UserProfile,
   UserProfileEdit,
+  HeaderPhotoPage,
+  UserPhotoPage,
 }

@@ -9,7 +9,7 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 const actions = createActions(
     {
       actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
-      async: ['GET_AUTH_USER'],
+      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE'],
     },
     {
       prefix: "user",
@@ -39,7 +39,6 @@ export const getAuthUser = () => async (dispatch) => {
 export const updateCustomize = body => async (dispatch) => {
   try {
     const data = await api.put(URLS.USERS.CUSTOMIZE, body);
-    console.log(data);
     dispatch(ACTIONS.setCustomize(data));
 
   } catch (err) {
@@ -49,8 +48,17 @@ export const updateCustomize = body => async (dispatch) => {
 
 export const updateUserProfile = body => async dispatch => {
   try {
-    const data = await api.put(URLS.USERS.PROFILE, body);
-    console.log('user - ', data);
+    const user = await api.put(URLS.USERS.PROFILE, body);
+    dispatch(ACTIONS.updateUserProfile.success(user));
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+}
+
+export const uploadImage = (body) => async dispatch => {
+  try {
+    return await api.post(URLS.CLOUD.IMAGE, body);
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
@@ -104,13 +112,5 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     });
   } catch (err) {
     console.log('chatSubscribes error - ', err);
-  }
-}
-
-export const uploadImage = (body) => async dispatch => {
-  try {
-    return await api.post(URLS.CLOUD.IMAGE, body);
-  } catch (err) {
-    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
