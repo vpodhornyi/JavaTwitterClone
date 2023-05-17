@@ -35,6 +35,7 @@ const UserProfileEditPage = () => {
       location: user?.location,
       headerImgUrl: user?.headerImgUrl,
       avatarImgUrl: user?.avatarImgUrl,
+      birthDate: user?.birthDate,
       disabled: true,
     })
   }, [])

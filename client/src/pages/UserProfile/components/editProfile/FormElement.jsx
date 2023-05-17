@@ -1,13 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import {styled} from "@mui/material/styles";
 import {Box, TextField} from "@mui/material";
 import PropTypes from "prop-types";
 
+import BirthDate from "./BirthDate";
 import PhotosEditor from "./PhotosEditor";
 
-const FormElement = ({formData, setFormData}) => {
+const FormElement = ({user, formData, setFormData}) => {
+  const [editBirthDate, setEditBirthDate] = useState(false);
 
-  const onChangeName = e => {
+
+  const onChange = e => {
     const text = e.target.value.trim();
     setFormData({
       ...formData,
@@ -23,7 +26,7 @@ const FormElement = ({formData, setFormData}) => {
           <TextField
               color='primary'
               sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
+              onChange={e => onChange(e)}
               value={formData.name}
               id="name"
               label="Name"
@@ -31,21 +34,29 @@ const FormElement = ({formData, setFormData}) => {
           <TextField
               color='primary'
               sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
+              onChange={e => onChange(e)}
               value={formData.bio}
               id="bio"
               multiline={true}
               rows={3}
-              label="Bio"
+              label="Bio"33
               variant="outlined"/>
           <TextField
               color='primary'
               sx={{width: '100%', mb: 4}}
-              onChange={e => onChangeName(e)}
+              onChange={e => onChange(e)}
               value={formData.location}
               id="location"
               label="Location"
               variant="outlined"/>
+          <BirthDate
+              date={user.birthDate}
+              formData={formData}
+              setFormData={setFormData}
+              editBirthDate={editBirthDate}
+              setEditBirthDate={setEditBirthDate}
+              onChangeDate={onChange}
+          />
         </Box>
       </BoxWrapper>);
 }
@@ -82,6 +93,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 }));
 
 FormElement.propTypes = {
+  user: PropTypes.object,
   formData: PropTypes.object,
   setFormData: PropTypes.func,
 }

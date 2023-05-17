@@ -11,6 +11,7 @@ import com.twitter.danit.exception.CouldNotFindAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class UserService {
     String name = userRequest.getName();
     String bio = userRequest.getBio();
     String location = userRequest.getLocation();
+    LocalDate birthDate = userRequest.getBirthDate();
     String headerImgUrl = userRequest.getHeaderImgUrl();
     String avatarImgUrl = userRequest.getAvatarImgUrl();
 
@@ -50,6 +52,7 @@ public class UserService {
     user.setName(name);
     user.setBio(bio);
     user.setLocation(location);
+    user.setBirthDate(birthDate);
     user.setHeaderImgUrl(headerImgUrl);
     user.setAvatarImgUrl(avatarImgUrl);
 
