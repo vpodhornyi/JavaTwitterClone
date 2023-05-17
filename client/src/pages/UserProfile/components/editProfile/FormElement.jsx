@@ -39,7 +39,7 @@ const FormElement = ({user, formData, setFormData}) => {
               id="bio"
               multiline={true}
               rows={3}
-              label="Bio"33
+              label="Bio"
               variant="outlined"/>
           <TextField
               color='primary'
