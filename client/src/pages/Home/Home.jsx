@@ -2,6 +2,7 @@ import React, {lazy, Suspense} from "react";
 
 import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader, TweetForm} from '../../components';
 import Loading from "../../components/Loader/Loading";
+import TwitForma from "./components/twitForm/TwitForma";
 import HomeHeader from "./Header";
 
 const Tweets = lazy(() => import('./Tweets'));
@@ -12,9 +13,9 @@ const Home = () => {
     <ColumnWrapper>
       <PrimaryColumn>
         <PrimaryHeader pageElement={HomeHeader}/>
-        <TweetForm/>
+        <TwitForma/>
         <Suspense fallback={<Loading/>}>
-          <Tweets/>
+          {/*<Tweets/>*/}
         </Suspense>
       </PrimaryColumn>
       <SitebarColumn>

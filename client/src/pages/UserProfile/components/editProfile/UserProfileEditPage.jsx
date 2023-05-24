@@ -5,7 +5,7 @@ import {styled} from "@mui/material/styles";
 import {Box, TextField, Typography} from "@mui/material";
 
 import {BackgroundContext} from "@utils/context";
-import {ModalPage, CustomIconButton, FollowButton, CircularLoader} from "../../../../components";
+import {ModalPage, CustomIconButton, FollowButton, CircularLoader, StickyHeader} from "../../../../components";
 import FormElement from "./FormElement";
 import {getChatsData} from '@redux/chat/selector';
 import {updateUserProfile, uploadImage} from '@redux/user/action';
@@ -66,7 +66,7 @@ const UserProfileEditPage = () => {
 
   return (
       <BoxWrapper>
-        <Box className='EditHeader'>
+        <StickyHeader className='EditHeader'>
           <Box sx={{
             display: 'flex',
             alignItems: 'center',
@@ -80,7 +80,7 @@ const UserProfileEditPage = () => {
           <Box onClick={save}>
             <FollowButton name='Save' disabled={formData.disabled}/>
           </Box>
-        </Box>
+        </StickyHeader>
         <Box sx={{position: 'relative', mb: 2}}>
           {loader && <CircularLoader/>}
           <FormElement user={user} formData={formData} setFormData={setFormData}/>
@@ -90,6 +90,7 @@ const UserProfileEditPage = () => {
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
+  overflow: "auto",
   display: 'flex',
   flexDirection: 'column',
   backgroundColor: theme.palette.background.main,
@@ -99,6 +100,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     width: 600,
     maxWidth: '80vw',
     minWidth: '600px',
+    maxHeight: "90vh",
     borderRadius: '16px',
   },
 
@@ -108,7 +110,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-
+    // position: 'fixed',
   },
 
   '& > .AddPhoto': {

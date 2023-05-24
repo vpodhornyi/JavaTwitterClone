@@ -50,5 +50,4 @@ public class Tweet extends BaseEntity {
     return "Tweet{" + "tweetType=" + tweetType + ", body='" + body + '\'' + ", user=" + user + ", images=" + images
             + ", notifications=" + notifications + ", actions=" + actions + '}';
   }
-
 }

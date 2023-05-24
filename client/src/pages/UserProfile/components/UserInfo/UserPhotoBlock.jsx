@@ -29,7 +29,7 @@ const UserPhotoBlock = ({user}) => {
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
-  height: '70px',
+  paddingBottom: '25px',
   display: 'flex',
   justifyContent: 'flex-end',
   position: 'relative',
