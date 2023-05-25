@@ -1,13 +1,10 @@
 import React from "react";
-import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
-import {Box, IconButton} from "@mui/material";
-import PropTypes from "prop-types";
+import {Box} from "@mui/material";
 
-import {CustomFabButton, CustomIconButton, IconByName} from "../../../../components"
+import {CustomFabButton, CustomIconButton} from "../../../../components"
 
-const TweetFormFooter = ({item}) => {
-  const dispatch = useDispatch();
+const TweetFormFooter = () => {
 
   return (
       <BoxWrapper>
@@ -23,7 +20,7 @@ const TweetFormFooter = ({item}) => {
           </Box>
         </Box>
 
-        <CustomFabButton disabled={false} className='TweetButton' name='Tweet'/>
+        <CustomFabButton disabled={true} className='TweetButton' name='Tweet'/>
       </BoxWrapper>);
 }
 
@@ -32,7 +29,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
   justifyContent: 'space-between',
   padding: '10px 0',
-  borderTop: `1px solid ${theme.palette.border.main}`,
 
   '& .IconsBox': {
     display: 'flex'
@@ -49,7 +45,4 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   }
 }));
 
-TweetFormFooter.propTypes = {
-  item: PropTypes.object,
-}
 export default TweetFormFooter;

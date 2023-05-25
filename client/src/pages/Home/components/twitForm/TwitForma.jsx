@@ -1,15 +1,31 @@
-import React from "react";
+import React, {useState, useRef} from "react";
+import {Link} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
-import {Avatar, Box} from "@mui/material";
+import {Avatar, Box, TextField} from "@mui/material";
 import PropTypes from "prop-types";
 
 import TweetFormFooter from "./TweetFormFooter";
-import {Link} from "react-router-dom";
 import {PATH} from "../../../../utils/constants";
+import WhoCanReplyButton from "./WhoCanReplyButton";
 
 const TwitForma = ({item}) => {
   const {authUser: user} = useSelector(state => state.user);
+  const inputRef = useRef();
+  const [text, setText] = useState('');
+  const [focused, setFocused] = useState(false);
+
+
+  const handleChangeInputText = (e) => {
+    const text = e.target.value;
+    if (text[text.length - 1] !== '\n') {
+      setText(() => e.target.value);
+    }
+  }
+
+  const handleFocus = () => {
+    !focused && setFocused(true);
+  }
 
   return (
       <BoxWrapper>
@@ -20,8 +36,17 @@ const TwitForma = ({item}) => {
           <Avatar className="Avatar" src={user.avatarImgUrl}/>
         </Link>
         <Box className="TweetFormWrapper">
-          <Box>
-            Twit forma
+          <Box className={focused ? 'TextFieldBox TextFieldBox_focused' : 'TextFieldBox'}>
+            <TextFieldWrapper
+                inputRef={inputRef}
+                onChange={handleChangeInputText}
+                onFocus={handleFocus}
+                placeholder='What is happening?!'
+                multiline
+                variant="filled"
+                size='medium'
+            />
+            {focused && <WhoCanReplyButton/>}
           </Box>
           <TweetFormFooter/>
         </Box>
@@ -31,7 +56,9 @@ const TwitForma = ({item}) => {
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'flex',
-  padding: '0 16px',
+  padding: '12px 16px 0 16px',
+  borderTop: `1px solid ${theme.palette.border.main}`,
+  borderBottom: `1px solid ${theme.palette.border.main}`,
 
   '& .AvatarLink': {
     marginRight: '12px',
@@ -43,14 +70,50 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     height: '50px',
   },
 
-  '& .TweetFormWrapper' : {
+  '& .TextFieldBox': {
+    paddingBottom: '12px',
+
+    '&_focused': {
+      borderBottom: `1px solid ${theme.palette.border.main}`,
+    }
+  },
+
+  '& .TweetFormWrapper': {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
+  },
+}));
 
+const TextFieldWrapper = styled(TextField)(({theme}) => ({
+  width: '100%',
+  paddingTop: '5px',
+  paddingBottom: '5px',
+
+  '& .MuiInputBase-input': {
+    overflow: 'overlay !important',
+    overflowX: 'hidden',
+    backgroundColor: theme.palette.background.main,
+    fontSize: '1.5rem',
+    color: theme.palette.text.main,
   },
 
-  borderBottom: `1px solid ${theme.palette.border.main}`,
+  '& .MuiFilledInput-root': {
+    backgroundColor: theme.palette.background.main,
+  },
+
+  '& .MuiInputBase-root': {
+    padding: 0, marginLeft: '10px', marginRight: '10px',
+    backgroundColor: theme.palette.background.main,
+  },
+
+  '& .MuiInputBase-root:before': {
+    content: 'none'
+  },
+
+  '& .MuiInputBase-root:after': {
+    content: 'none'
+  },
 }));
 
 TwitForma.propTypes = {

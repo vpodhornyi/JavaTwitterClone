@@ -17,6 +17,7 @@ const StartMessage = ({chatId, inputRef, sendMessage}) => {
   const debounced = useDebouncedCallback((text) => {
     dispatch(ACTIONS.setMessage({chatId, text}))
   }, 500);
+
   const handleChangeInputText = (e) => {
     const text = e.target.value;
     if (text[text.length - 1] !== '\n') {
@@ -41,37 +42,38 @@ const StartMessage = ({chatId, inputRef, sendMessage}) => {
   }
 
   return (
-    <BoxWrapper>
-      <ProgressWrapper>
-      </ProgressWrapper>
-      <ButtonsBoxWrapper>
-        <Box>
-          <CustomIconButton color='primary' name='PermMediaOutlined' iconSize='small'/>
-        </Box>
-        {/*<Box>*/}
-        {/*  <CustomIconButton color='primary' name='GifBoxOutlined' iconSize='small'/>*/}
-        {/*</Box>*/}
-        <Box>
-          <CustomIconButton color='primary' name='EmojiEmotionsOutlined' iconSize='small'/>
-        </Box>
-        <TextFieldWrapper
-          inputRef={inputRef}
-          onChange={handleChangeInputText}
-          onKeyDown={onKeyDown}
-          value={text}
-          placeholder='Start a new message'
-          multiline
-          id="messageText"
-          variant="filled"/>
-        <Box className='SendButton' onClick={() => onClickSend()}>
-          <CustomIconButton
-            color='primary'
-            name='SendOutlined'
-            iconSize='small'
-            disabled={!text || text?.trim() === ''}/>
-        </Box>
-      </ButtonsBoxWrapper>
-    </BoxWrapper>
+      <BoxWrapper>
+        <ProgressWrapper>
+        </ProgressWrapper>
+        <ButtonsBoxWrapper>
+          <Box>
+            <CustomIconButton color='primary' name='PermMediaOutlined' iconSize='small'/>
+          </Box>
+          {/*<Box>*/}
+          {/*  <CustomIconButton color='primary' name='GifBoxOutlined' iconSize='small'/>*/}
+          {/*</Box>*/}
+          <Box>
+            <CustomIconButton color='primary' name='EmojiEmotionsOutlined' iconSize='small'/>
+          </Box>
+          <TextFieldWrapper
+              inputRef={inputRef}
+              onChange={handleChangeInputText}
+              onKeyDown={onKeyDown}
+              value={text}
+              placeholder='Start a new message'
+              multiline
+              id="messageText"
+              variant="filled"
+          />
+          <Box className='SendButton' onClick={() => onClickSend()}>
+            <CustomIconButton
+                color='primary'
+                name='SendOutlined'
+                iconSize='small'
+                disabled={!text || text?.trim() === ''}/>
+          </Box>
+        </ButtonsBoxWrapper>
+      </BoxWrapper>
   );
 }
 
