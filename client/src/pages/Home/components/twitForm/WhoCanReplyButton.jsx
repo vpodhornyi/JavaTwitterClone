@@ -1,17 +1,35 @@
-import React from "react";
-import {useSelector, useDispatch} from "react-redux";
+import React, {useState} from "react";
 import {styled} from "@mui/material/styles";
 import {Box, MenuItem, Menu, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
+import {IconByName} from "../../../../components";
+
 const WhoCanReplyButton = ({item}) => {
-  const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const LIST_ITEMS = {
+    public: {
+      key: 'public',
+      name: 'Everyone can reply',
+      icon: 'Public',
+    },
+    peopleFollow: {
+      key: 'peopleFollow',
+      name: 'People you follow can reply',
+      icon: 'PeopleAlt',
+    }
+  }
+  const [selected, setSelected] = useState(LIST_ITEMS.public);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleItemClick = (fieldName) => {
+    fieldName && setSelected(LIST_ITEMS[fieldName]);
+    setAnchorEl(null);
+  };
+
+  const handleClose = (fieldName) => {
     setAnchorEl(null);
   };
 
@@ -24,7 +42,8 @@ const WhoCanReplyButton = ({item}) => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
         >
-          <Typography fontWeight='bold'>Everyone can reply</Typography>
+          <IconByName iconName={selected.icon}/>
+          <Typography fontWeight='bold'>{selected.name}</Typography>
         </FollowButton>
         <MenuWrapper
             id="basic-menu"
@@ -35,19 +54,39 @@ const WhoCanReplyButton = ({item}) => {
               'aria-labelledby': 'basic-button',
             }}
         >
-          <Box sx={{p: 2}}>
-            <Typography>
+          <Box className="TitleBox" sx={{p: 2}}>
+            <Typography fontWeight="Bold">
               Who can reply?
             </Typography>
-            <Typography>
+            <Typography variant="body2">
               Choose who can reply to this Tweet.
             </Typography>
-            <Typography>
+            <Typography variant="body2">
               Anyone mentioned can always reply.
             </Typography>
           </Box>
-          <MenuItem onClick={handleClose}>Everyone</MenuItem>
-          <MenuItem onClick={handleClose}>People you follow</MenuItem>
+          <MenuItem
+              onClick={() => handleItemClick('public')}
+              sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+              <IconByNameWrapper>
+                <IconByName iconName="Public"/>
+              </IconByNameWrapper>
+              <Typography fontWeight="Bold">Everyone</Typography>
+            </Box>
+            {(selected.key === 'public') && <IconByName iconName="CheckOutlined"/>}
+          </MenuItem>
+          <MenuItem
+              onClick={() => handleItemClick('peopleFollow')}
+              sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+              <IconByNameWrapper>
+                <IconByName iconName="PeopleAlt"/>
+              </IconByNameWrapper>
+              <Typography fontWeight="Bold">People you follow</Typography>
+            </Box>
+            {(selected.key === 'peopleFollow') && <IconByName iconName="CheckOutlined"/>}
+          </MenuItem>
         </MenuWrapper>
       </BoxWrapper>);
 }
@@ -55,16 +94,34 @@ const WhoCanReplyButton = ({item}) => {
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'flex',
+  marginTop: 10,
 
   '& .MuiPaper-root': {
     backgroundColor: theme.palette.background.main,
   }
 }));
 
+const IconByNameWrapper = styled(Box)(({theme}) => ({
+  width: '40px',
+  height: '40px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: '50%',
+  backgroundColor: theme.palette.primary.main,
+  marginRight: '12px',
+
+  '& > .IconByName': {
+    color: theme.palette.common.white,
+  }
+}));
+
 const FollowButton = styled(Box)(({theme}) => ({
-  padding: '2px 15px',
+  padding: '3px 10px',
   borderRadius: '16px',
   cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
 
   '&:hover': {
     backgroundColor: theme.palette.primary.alpha,
@@ -73,6 +130,11 @@ const FollowButton = styled(Box)(({theme}) => ({
 
   '& .MuiTypography-root': {
     color: theme.palette.primary.main,
+  },
+
+  '& .IconByName': {
+    color: theme.palette.primary.main,
+    marginRight: '5px',
   },
 }));
 
@@ -87,7 +149,10 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 
       '& .MuiButtonBase-root': {
         padding: '11px 15px',
-        // borderBottom: `1px solid ${theme.palette.border.main}`,
+
+        '& > .IconByName': {
+          color: theme.palette.primary.main,
+        },
 
         '&:last-child': {
           borderBottom: 'none',

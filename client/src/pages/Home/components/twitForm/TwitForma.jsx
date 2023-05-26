@@ -55,10 +55,14 @@ const TwitForma = ({item}) => {
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
-  display: 'flex',
+  display: 'none',
   padding: '12px 16px 0 16px',
   borderTop: `1px solid ${theme.palette.border.main}`,
   borderBottom: `1px solid ${theme.palette.border.main}`,
+
+  [theme.breakpoints.up('xs')]: {
+    display: 'flex',
+  },
 
   '& .AvatarLink': {
     marginRight: '12px',

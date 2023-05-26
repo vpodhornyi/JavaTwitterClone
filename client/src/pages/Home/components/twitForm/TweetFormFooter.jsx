@@ -19,7 +19,6 @@ const TweetFormFooter = () => {
             <CustomIconButton color='primary' name='SentimentSatisfiedAltOutlined' iconSize='small'/>
           </Box>
         </Box>
-
         <CustomFabButton disabled={true} className='TweetButton' name='Tweet'/>
       </BoxWrapper>);
 }
