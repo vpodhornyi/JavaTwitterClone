@@ -17,7 +17,7 @@ const styles = ({theme}) => ({
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.main,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

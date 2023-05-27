@@ -1,4 +1,5 @@
 import Home from './Home/Home';
+import TweetFormPage from './Home/TweetFormPage';
 import Explore from './Explore/Explore';
 import Notifications from './Notifications/Notifications';
 import Messages from './Messages/Messages';
@@ -35,6 +36,7 @@ export {
   CreateAccount,
 
   Home,
+  TweetFormPage,
   Explore,
   Notifications,
 

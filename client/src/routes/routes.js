@@ -3,7 +3,7 @@ import {Navigate} from "react-router-dom";
 import {
   Home, Explore, Notifications, Messages, Chat, ChatInfo, Bookmarks, CreateAccount, SelectMessage,
   Lists, UserProfile, UserSearch, Auth, Login, Password, ForgotPassword, SingUp, UserData, Participants,
-  GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage
+  GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage, TweetFormPage
 } from "../pages";
 import {PATH} from "../utils/constants";
 import {Display, DeleteTweet} from "../components";
@@ -169,7 +169,10 @@ export const modalRoutes = authorized => {
           element: <Display/>,
           children: [],
         },
-
+        {
+          path: PATH.COMPOSE.TWEET,
+          element: <TweetFormPage/>,
+        },
         {
           path: PATH.TWEET.DELETE,
           element: <DeleteTweet/>,
@@ -185,7 +188,6 @@ export const modalRoutes = authorized => {
           element: <ModalImg/>,
           children: [],
         },
-
         {
           path: PATH.ALL,
           element: <></>,

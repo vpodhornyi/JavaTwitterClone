@@ -48,6 +48,9 @@ export const PATH = {
     DISPLAY: '/settings/display',
     PROFILE: '/settings/profile',
   },
+  COMPOSE: {
+    TWEET: '/compose/tweet'
+  },
   TWEET: {
     ROOT: "/tweet",
     DELETE: '/tweet/:id',

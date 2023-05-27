@@ -11,25 +11,18 @@ import {LogoIcon} from "../.";
 import {PATH} from "../../utils/constants";
 
 const NavBar = ({user, authorized, menu}) => {
-  const navigate = useNavigate();
-  const location = useLocation();
 
   return (
-    <StyledBox>
-      <Box className='NavWrapper'>
-        <Link className='Logo' to={PATH.HOME}>
-          <LogoIcon/>
-        </Link>
-        <MainMenu user={user} authorized={authorized} menu={menu}/>
-        {
-          authorized &&
-          <Box onClick={() => navigate(PATH.TWEET.COMPOSE, {state: {background: location}})}>
-            <TweetButton/>
-          </Box>
-        }
-      </Box>
-      {authorized && <NavBarFooter user={user}/>}
-    </StyledBox>
+      <StyledBox>
+        <Box className='NavWrapper'>
+          <Link className='Logo' to={PATH.HOME}>
+            <LogoIcon/>
+          </Link>
+          <MainMenu user={user} authorized={authorized} menu={menu}/>
+          {authorized && <TweetButton/>}
+        </Box>
+        {authorized && <NavBarFooter user={user}/>}
+      </StyledBox>
   );
 }
 

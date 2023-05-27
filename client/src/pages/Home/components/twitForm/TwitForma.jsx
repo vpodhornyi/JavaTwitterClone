@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
@@ -11,9 +11,8 @@ import WhoCanReplyButton from "./WhoCanReplyButton";
 
 const TwitForma = ({item}) => {
   const {authUser: user} = useSelector(state => state.user);
-  const inputRef = useRef();
-  const [text, setText] = useState('');
   const [focused, setFocused] = useState(false);
+  const [text, setText] = useState('');
 
 
   const handleChangeInputText = (e) => {
@@ -38,7 +37,6 @@ const TwitForma = ({item}) => {
         <Box className="TweetFormWrapper">
           <Box className={focused ? 'TextFieldBox TextFieldBox_focused' : 'TextFieldBox'}>
             <TextFieldWrapper
-                inputRef={inputRef}
                 onChange={handleChangeInputText}
                 onFocus={handleFocus}
                 placeholder='What is happening?!'

@@ -71,8 +71,7 @@ public class UserController {
   @PutMapping("/customize")
   public ResponseEntity<CustomStyleResponse> updateCustomize(@RequestBody CustomStyleRequest customStyleRequest, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    CustomStyle customStyle = authUser.getCustomStyle();
-    CustomStyle savwdCustomStyle = userService.updateCustomStyle(customStyle, customStyleRequest);
+    CustomStyle savwdCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
     return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
   }
 }

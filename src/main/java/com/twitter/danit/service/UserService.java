@@ -1,7 +1,8 @@
 package com.twitter.danit.service;
 
-import com.twitter.danit.dao.CustomStyleRepository;
 import com.twitter.danit.dao.UserRepository;
+import com.twitter.danit.domain.user.BackgroundColor;
+import com.twitter.danit.domain.user.Color;
 import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.CustomStyleRequest;
@@ -20,7 +21,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
-  private final CustomStyleRepository customStyleRepository;
 
   public List<User> findAll() {
     return userRepository.findAll();
@@ -125,11 +125,22 @@ public class UserService {
     return user;
   }
 
-  public CustomStyle updateCustomStyle(CustomStyle customStyle, CustomStyleRequest customStyleRequest) {
-    customStyle.setColor(customStyleRequest.getColor());
-    customStyle.setBackgroundColor(customStyleRequest.getBackgroundColor());
-    customStyle.setFontSize(customStyleRequest.getFontSize());
+  public CustomStyle updateCustomStyle(User user, CustomStyleRequest customStyleRequest) {
+    Color color = customStyleRequest.getColor();
+    BackgroundColor backgroundColor = customStyleRequest.getBackgroundColor();
+    int fontSize = customStyleRequest.getFontSize();
+    CustomStyle customStyle = user.getCustomStyle();
 
-    return customStyleRepository.save(customStyle);
+    if (customStyle == null) {
+      customStyle = new CustomStyle(color, backgroundColor, fontSize);
+    } else {
+      customStyle.setColor(color);
+      customStyle.setBackgroundColor(backgroundColor);
+      customStyle.setFontSize(fontSize);
+    }
+
+    user.setCustomStyle(customStyle);
+
+    return userRepository.save(user).getCustomStyle();
   }
 }

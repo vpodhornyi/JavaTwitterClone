@@ -5,15 +5,19 @@ import PropTypes from "prop-types";
 
 import MainMenu from "./MainMenu";
 import {mobileMenu} from '@utils/menu';
+import TweetButton from './TweetButton';
 
 const MobileNavBar = ({user, isChatSelected, countUnreadMessages, chatId}) => {
   const isDrawer = false;
   const menu = mobileMenu(user.userTag, isDrawer, isChatSelected, countUnreadMessages, chatId);
 
   return (
-    <BoxWrapper>
-      <MainMenu user={user} menu={menu}/>
-    </BoxWrapper>);
+      <BoxWrapper>
+        <MainMenu user={user} menu={menu}/>
+        <Box className='TweetMobileButton'>
+          <TweetButton/>
+        </Box>
+      </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -36,6 +40,16 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   '& .NavigationMenu': {
     width: '100%',
     justifyContent: 'space-around',
+  },
+
+  '& .TweetMobileButton': {
+    position: 'absolute',
+    right: '30px',
+    bottom: '70px',
+
+    [theme.breakpoints.up('xs')]: {
+      display: 'none',
+    },
   }
 }));
 
