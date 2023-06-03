@@ -36,7 +36,6 @@ const TweetFormPage = ({item}) => {
           <Box sx={{display: 'flex'}}>
             <Link
                 to={PATH.USER.profile(user.userTag)}
-                state={{background: location}}
                 className="AvatarLink">
               <Avatar className="Avatar" src={user.avatarImgUrl}/>
             </Link>
@@ -75,10 +74,11 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     marginTop: 10,
     borderTop: `1px solid ${theme.palette.border.main}`,
   },
-}));
 
-const Header = styled(Box)(({theme}) => ({
-  padding: '5px 0'
+  '& .Avatar': {
+    width: '50px',
+    height: '50px',
+  },
 }));
 
 const TextFieldWrapper = styled(TextField)(({theme}) => ({

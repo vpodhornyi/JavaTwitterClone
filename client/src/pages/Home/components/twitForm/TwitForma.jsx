@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {Link} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField} from "@mui/material";
 import PropTypes from "prop-types";
@@ -10,6 +10,7 @@ import {PATH} from "../../../../utils/constants";
 import WhoCanReplyButton from "./WhoCanReplyButton";
 
 const TwitForma = ({item}) => {
+  const inputRef = useRef();
   const {authUser: user} = useSelector(state => state.user);
   const [focused, setFocused] = useState(false);
   const [text, setText] = useState('');
@@ -17,36 +18,39 @@ const TwitForma = ({item}) => {
 
   const handleChangeInputText = (e) => {
     const text = e.target.value;
-    if (text[text.length - 1] !== '\n') {
-      setText(() => e.target.value);
-    }
+    setText(() => e.target.value);
   }
-
   const handleFocus = () => {
     !focused && setFocused(true);
+  }
+  const addEmoji = e => {
+    if (e.emoji) setText(() => text + e.emoji);
+    inputRef.current.focus();
+    handleFocus();
   }
 
   return (
       <BoxWrapper>
         <Link
             to={PATH.USER.profile(user.userTag)}
-            state={{background: location}}
             className="AvatarLink">
           <Avatar className="Avatar" src={user.avatarImgUrl}/>
         </Link>
         <Box className="TweetFormWrapper">
           <Box className={focused ? 'TextFieldBox TextFieldBox_focused' : 'TextFieldBox'}>
             <TextFieldWrapper
+                inputRef={inputRef}
                 onChange={handleChangeInputText}
                 onFocus={handleFocus}
                 placeholder='What is happening?!'
+                value={text}
                 multiline
                 variant="filled"
                 size='medium'
             />
             {focused && <WhoCanReplyButton/>}
           </Box>
-          <TweetFormFooter/>
+          <TweetFormFooter addEmoji={addEmoji}/>
         </Box>
       </BoxWrapper>);
 }
@@ -96,7 +100,8 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
     overflow: 'overlay !important',
     overflowX: 'hidden',
     backgroundColor: theme.palette.background.main,
-    fontSize: '1.5rem',
+    fontSize: '1.3rem',
+    lineHeight: '23px',
     color: theme.palette.text.main,
   },
 
