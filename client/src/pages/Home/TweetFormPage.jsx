@@ -1,8 +1,7 @@
-import React, {useContext, useState} from "react";
-import {useSelector} from "react-redux";
+import React, {useContext, useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField} from "@mui/material";
-import PropTypes from "prop-types";
 
 import {ModalPage, CustomIconButton} from "../../components";
 import TweetFormFooter from "./components/twitForm/TweetFormFooter";
@@ -10,50 +9,69 @@ import WhoCanReplyButton from "./components/twitForm/WhoCanReplyButton";
 import {Link, useNavigate} from "react-router-dom";
 import {PATH} from "../../utils/constants";
 import {BackgroundContext} from "../../utils/context";
+import {useDebouncedCallback} from "use-debounce";
+import {ACTIONS} from "@redux/tweet/action";
 
-const TweetFormPage = ({item}) => {
+const TweetFormPage = () => {
+  const form = useSelector(state => state.tweet.form);
+  const inputRef = useRef();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {background} = useContext(BackgroundContext);
   const {authUser: user} = useSelector(state => state.user);
   const [text, setText] = useState('');
 
-
+  const debounced = useDebouncedCallback((text) => {
+    dispatch(ACTIONS.setTweetFormText(text));
+  }, 400);
   const handleChangeInputText = (e) => {
-    const text = e.target.value;
-    if (text[text.length - 1] !== '\n') {
-      setText(() => e.target.value);
-    }
+    setText(() => e.target.value);
+    debounced(e.target.value);
   }
 
+  const addEmoji = e => {
+    if (e.emoji) {
+      setText(() => text + e.emoji);
+      debounced(text + e.emoji);
+    }
+    inputRef.current.focus();
+  }
+
+  useEffect(() => {
+    setText(form.text);
+  }, [form.text])
+
   return (
-      <BoxWrapper>
-        <Box sx={{pb: 2}}>
-          <Box onClick={() => navigate(background?.pathname || PATH.ROOT)}>
-            <CustomIconButton name='Close' color='text'/>
-          </Box>
+    <BoxWrapper>
+      <Box sx={{pb: 2}}>
+        <Box onClick={() => navigate(background?.pathname || PATH.ROOT)}>
+          <CustomIconButton name='Close' color='text'/>
         </Box>
-        <Box sx={{pl: 2, pr: 2}}>
-          <Box sx={{display: 'flex'}}>
-            <Link
-                to={PATH.USER.profile(user.userTag)}
-                className="AvatarLink">
-              <Avatar className="Avatar" src={user.avatarImgUrl}/>
-            </Link>
-            <TextFieldWrapper
-                onChange={handleChangeInputText}
-                placeholder='What is happening?!'
-                multiline
-                variant="filled"
-                size='medium'
-                rows={5}
-            />
-          </Box>
-          <WhoCanReplyButton/>
-          <Box className='FooterWrapper'>
-            <TweetFormFooter/>
-          </Box>
+      </Box>
+      <Box sx={{pl: 2, pr: 2}}>
+        <Box sx={{display: 'flex'}}>
+          <Link
+            to={PATH.USER.profile(user.userTag)}
+            className="AvatarLink">
+            <Avatar className="Avatar" src={user.avatarImgUrl}/>
+          </Link>
+          <TextFieldWrapper
+            inputRef={inputRef}
+            onChange={handleChangeInputText}
+            placeholder='What is happening?!'
+            value={text}
+            multiline
+            variant="filled"
+            size='medium'
+            rows={5}
+          />
         </Box>
-      </BoxWrapper>);
+        <WhoCanReplyButton form={form}/>
+        <Box className='FooterWrapper'>
+          <TweetFormFooter addEmoji={addEmoji} inputRef={inputRef}/>
+        </Box>
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -90,7 +108,8 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
     overflow: 'overlay !important',
     overflowX: 'hidden',
     backgroundColor: theme.palette.background.main,
-    fontSize: '1.5rem',
+    fontSize: '1.3rem',
+    lineHeight: '25px',
     color: theme.palette.text.main,
   },
 
@@ -112,8 +131,5 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
   },
 }));
 
-TweetFormPage.propTypes = {
-  item: PropTypes.object,
-}
 // eslint-disable-next-line react/display-name
 export default () => <ModalPage styles={{alignItems: 'start'}} element={<TweetFormPage/>}/>;

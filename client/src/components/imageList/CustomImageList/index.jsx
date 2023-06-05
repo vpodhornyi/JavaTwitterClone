@@ -26,7 +26,7 @@ function CustomImageList({itemData}) {
                             backgroundSize: "cover",
                             maxWidth:"100%",
                             borderRadius: "25px",
-                        }} onClick={()=> navigate(PATH.TWEET.IMG, {state: {background: location,url}})
+                        }} onClick={()=> navigate(PATH.TWEET.IMG, {state: {background: location.url}})
                            } src={url} key={i} alt={url}/>
                     );
                 })}

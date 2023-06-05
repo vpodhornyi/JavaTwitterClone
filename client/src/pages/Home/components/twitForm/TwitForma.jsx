@@ -1,58 +1,83 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField} from "@mui/material";
-import PropTypes from "prop-types";
+import {useDebouncedCallback} from "use-debounce";
 
 import TweetFormFooter from "./TweetFormFooter";
 import {PATH} from "../../../../utils/constants";
 import WhoCanReplyButton from "./WhoCanReplyButton";
+import {ACTIONS} from "@redux/tweet/action";
+import {uploadImage} from '@redux/user/action';
 
-const TwitForma = ({item}) => {
+const TwitForma = () => {
+  const form = useSelector(state => state.tweet.form);
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const {authUser: user} = useSelector(state => state.user);
   const [focused, setFocused] = useState(false);
   const [text, setText] = useState('');
 
+  const debounced = useDebouncedCallback((text) => {
+    dispatch(ACTIONS.setTweetFormText(text));
+  }, 400);
 
   const handleChangeInputText = (e) => {
-    const text = e.target.value;
     setText(() => e.target.value);
+    debounced(e.target.value);
   }
   const handleFocus = () => {
     !focused && setFocused(true);
   }
   const addEmoji = e => {
-    if (e.emoji) setText(() => text + e.emoji);
+    if (e.emoji) {
+      setText(() => text + e.emoji);
+      debounced(text + e.emoji);
+    }
     inputRef.current.focus();
     handleFocus();
   }
 
+  const handleUploadImage = async (ev) => {
+    console.log(ev.target.files[0]);
+    const data = new FormData();
+    data.append('uploadFile', ev.target.files[0]);
+   const imgUrl = await dispatch(uploadImage(data));
+    console.log(imgUrl);
+  }
+
+  useEffect(() => {
+    setText(form.text);
+  }, [form.text])
+
   return (
-      <BoxWrapper>
-        <Link
-            to={PATH.USER.profile(user.userTag)}
-            className="AvatarLink">
-          <Avatar className="Avatar" src={user.avatarImgUrl}/>
-        </Link>
-        <Box className="TweetFormWrapper">
-          <Box className={focused ? 'TextFieldBox TextFieldBox_focused' : 'TextFieldBox'}>
-            <TextFieldWrapper
-                inputRef={inputRef}
-                onChange={handleChangeInputText}
-                onFocus={handleFocus}
-                placeholder='What is happening?!'
-                value={text}
-                multiline
-                variant="filled"
-                size='medium'
-            />
-            {focused && <WhoCanReplyButton/>}
-          </Box>
-          <TweetFormFooter addEmoji={addEmoji}/>
+    <BoxWrapper>
+      <Link
+        to={PATH.USER.profile(user.userTag)}
+        className="AvatarLink">
+        <Avatar className="Avatar" src={user.avatarImgUrl}/>
+      </Link>
+      <Box className="TweetFormWrapper">
+        <Box className={focused ? 'TextFieldBox TextFieldBox_focused' : 'TextFieldBox'}>
+          <TextFieldWrapper
+            inputRef={inputRef}
+            onChange={handleChangeInputText}
+            onFocus={handleFocus}
+            placeholder='What is happening?!'
+            value={text}
+            multiline
+            variant="filled"
+            size='medium'
+          />
+          {focused && <WhoCanReplyButton form={form}/>}
         </Box>
-      </BoxWrapper>);
+        <TweetFormFooter
+          handleUploadImage={handleUploadImage}
+          addEmoji={addEmoji}
+          inputRef={inputRef}/>
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -101,7 +126,7 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
     overflowX: 'hidden',
     backgroundColor: theme.palette.background.main,
     fontSize: '1.3rem',
-    lineHeight: '23px',
+    lineHeight: '25px',
     color: theme.palette.text.main,
   },
 
@@ -122,9 +147,5 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
     content: 'none'
   },
 }));
-
-TwitForma.propTypes = {
-  item: PropTypes.object,
-}
 
 export default TwitForma;

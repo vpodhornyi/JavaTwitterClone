@@ -4,7 +4,7 @@ import {styled} from "@mui/material/styles";
 import {Box, TextField} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {CustomIconButton} from "../../../../components";
+import {CustomIconButton, EmojiPicker} from "../../../../components";
 import {useDebouncedCallback} from "use-debounce";
 import {ACTIONS} from "@redux/chat/action";
 import {getChatsData} from "@redux/chat/selector";
@@ -15,8 +15,8 @@ const StartMessage = ({chatId, inputRef, sendMessage}) => {
   const [text, setText] = useState('');
 
   const debounced = useDebouncedCallback((text) => {
-    dispatch(ACTIONS.setMessage({chatId, text}))
-  }, 500);
+    dispatch(ACTIONS.setMessage({chatId, text}));
+  }, 400);
 
   const handleChangeInputText = (e) => {
     const text = e.target.value;
@@ -34,11 +34,14 @@ const StartMessage = ({chatId, inputRef, sendMessage}) => {
     setText(() => '');
     sendMessage(text);
   }
-
   const onKeyDown = async (e) => {
     if (e.keyCode === 13) {
       await onClickSend();
     }
+  }
+  const addEmoji = e => {
+    if (e.emoji) setText(() => text + e.emoji);
+    inputRef.current.focus();
   }
 
   return (
@@ -52,9 +55,10 @@ const StartMessage = ({chatId, inputRef, sendMessage}) => {
           {/*<Box>*/}
           {/*  <CustomIconButton color='primary' name='GifBoxOutlined' iconSize='small'/>*/}
           {/*</Box>*/}
-          <Box>
-            <CustomIconButton color='primary' name='EmojiEmotionsOutlined' iconSize='small'/>
-          </Box>
+          {/*<Box>*/}
+          {/*  <CustomIconButton color='primary' name='EmojiEmotionsOutlined' iconSize='small'/>*/}
+          {/*</Box>*/}
+          <EmojiPicker addEmoji={addEmoji} inputRef={inputRef}/>
           <TextFieldWrapper
               inputRef={inputRef}
               onChange={handleChangeInputText}

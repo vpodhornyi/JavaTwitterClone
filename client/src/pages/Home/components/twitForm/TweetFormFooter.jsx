@@ -1,32 +1,32 @@
-import React, {useState} from "react";
+import React, {useRef} from "react";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
-
-import {CustomFabButton, CustomIconButton, EmojiPicker} from "../../../../components"
 import PropTypes from "prop-types";
 
-const TweetFormFooter = ({addEmoji}) => {
-  const [showEmoji, setShowEmoji] = useState(false);
-  const emojiHandler = () => setShowEmoji(!showEmoji);
+import {CustomFabButton, CustomIconButton, EmojiPicker} from "../../../../components"
+
+const TweetFormFooter = ({handleUploadImage, addEmoji, inputRef}) => {
+  const inputFiletRef = useRef();
+  const handleFileUploadClick = () => {
+    inputFiletRef.current.click();
+  };
 
   return (
-      <BoxWrapper>
-        <Box className="IconsBox">
-          <Box>
-            <CustomIconButton color='primary' name='InsertPhotoOutlined' iconSize='small'/>
-          </Box>
-          {/*<Box>*/}
-          {/*  <CustomIconButton color='primary' name='GifBoxOutlined' iconSize='small'/>*/}
-          {/*</Box>*/}
-          <EmojiBox>
-            <Box onClick={emojiHandler}>
-              <CustomIconButton color='primary' name='SentimentSatisfiedAltOutlined' iconSize='small'/>
-            </Box>
-            {showEmoji && <EmojiPicker addEmoji={addEmoji}/>}
-          </EmojiBox>
+    <BoxWrapper>
+      <Box className="IconsBox">
+        <Box onClick={handleFileUploadClick}>
+          <CustomIconButton color='primary' name='InsertPhotoOutlined' iconSize='small'/>
+          <input
+            style={{display: "none"}}
+            ref={inputFiletRef}
+            type="file"
+            onChange={handleUploadImage}
+          />
         </Box>
-        <CustomFabButton disabled={true} className='TweetButton' name='Tweet'/>
-      </BoxWrapper>);
+        <EmojiPicker addEmoji={addEmoji} inputRef={inputRef}/>
+      </Box>
+      <CustomFabButton disabled={true} className='TweetButton' name='Tweet'/>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -37,7 +37,12 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   position: 'relative',
 
   '& .IconsBox': {
-    display: 'flex'
+    display: 'flex',
+
+    ' .InputFile': {
+      visibility: 'hidden'
+      ,
+    }
   },
 
   '& .TweetButton': {
@@ -60,7 +65,9 @@ const EmojiBox = styled(Box)(({theme}) => ({
 }));
 
 TweetFormFooter.propTypes = {
+  handleUploadImage: PropTypes.func,
   addEmoji: PropTypes.func,
+  inputRef: PropTypes.object,
 }
 
 export default TweetFormFooter;

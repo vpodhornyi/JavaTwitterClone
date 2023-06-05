@@ -1,14 +1,31 @@
-import { ACTIONS, changeBookmark } from "./action";
-import { addOrFilterItem } from "../../utils/tweets";
+import {ACTIONS, changeBookmark} from "./action";
+import {addOrFilterItem} from "../../utils/tweets";
 
 const INITIAL_STATE = {
   loading: false,
+  form: {
+    text: '',
+    canReply: 'public',
+    photos: []
+  },
   tweets: [],
   bookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
 };
 
-export default (state = INITIAL_STATE, { payload, type }) => {
+export default (state = INITIAL_STATE, {payload, type}) => {
   switch (type) {
+    case String(ACTIONS.setTweetFormCanReply): {
+      state.form.canReply = payload;
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.setTweetFormText): {
+      state.form.text = payload;
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.getTweets.request):
       return {
         ...state,
@@ -51,7 +68,7 @@ export default (state = INITIAL_STATE, { payload, type }) => {
       return {
         ...state,
         tweets: state.tweets.map((currentTweet) => {
-          const { tweet, actionType, user } = payload;
+          const {tweet, actionType, user} = payload;
           if (currentTweet.id === tweet.id) {
             const findActionIndex = currentTweet.actions.findIndex((action) => {
               return (

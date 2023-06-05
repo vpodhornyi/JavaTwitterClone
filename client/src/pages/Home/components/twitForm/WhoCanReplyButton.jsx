@@ -1,11 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box, MenuItem, Menu, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {IconByName} from "../../../../components";
+import {ACTIONS} from "@redux/tweet/action";
 
-const WhoCanReplyButton = ({item}) => {
+
+const WhoCanReplyButton = ({form}) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const LIST_ITEMS = {
     public: {
@@ -19,12 +23,13 @@ const WhoCanReplyButton = ({item}) => {
       icon: 'PeopleAlt',
     }
   }
-  const [selected, setSelected] = useState(LIST_ITEMS.public);
+  const [selected, setSelected] = useState(LIST_ITEMS[form.canReply]);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleItemClick = (fieldName) => {
+    dispatch(ACTIONS.setTweetFormCanReply(fieldName));
     fieldName && setSelected(LIST_ITEMS[fieldName]);
     setAnchorEl(null);
   };
@@ -33,62 +38,66 @@ const WhoCanReplyButton = ({item}) => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    setSelected(LIST_ITEMS[form.canReply]);
+  }, [form.canReply])
+
   return (
-      <BoxWrapper>
-        <FollowButton
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-        >
-          <IconByName iconName={selected.icon}/>
-          <Typography fontWeight='bold'>{selected.name}</Typography>
-        </FollowButton>
-        <MenuWrapper
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-        >
-          <Box className="TitleBox" sx={{p: 2}}>
-            <Typography fontWeight="Bold">
-              Who can reply?
-            </Typography>
-            <Typography variant="body2">
-              Choose who can reply to this Tweet.
-            </Typography>
-            <Typography variant="body2">
-              Anyone mentioned can always reply.
-            </Typography>
+    <BoxWrapper>
+      <FollowButton
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <IconByName iconName={selected.icon}/>
+        <Typography fontWeight='bold'>{selected.name}</Typography>
+      </FollowButton>
+      <MenuWrapper
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <Box className="TitleBox" sx={{p: 2}}>
+          <Typography fontWeight="Bold">
+            Who can reply?
+          </Typography>
+          <Typography variant="body2">
+            Choose who can reply to this Tweet.
+          </Typography>
+          <Typography variant="body2">
+            Anyone mentioned can always reply.
+          </Typography>
+        </Box>
+        <MenuItem
+          onClick={() => handleItemClick('public')}
+          sx={{display: 'flex', justifyContent: 'space-between'}}>
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <IconByNameWrapper>
+              <IconByName iconName="Public"/>
+            </IconByNameWrapper>
+            <Typography fontWeight="Bold">Everyone</Typography>
           </Box>
-          <MenuItem
-              onClick={() => handleItemClick('public')}
-              sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-              <IconByNameWrapper>
-                <IconByName iconName="Public"/>
-              </IconByNameWrapper>
-              <Typography fontWeight="Bold">Everyone</Typography>
-            </Box>
-            {(selected.key === 'public') && <IconByName iconName="CheckOutlined"/>}
-          </MenuItem>
-          <MenuItem
-              onClick={() => handleItemClick('peopleFollow')}
-              sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
-              <IconByNameWrapper>
-                <IconByName iconName="PeopleAlt"/>
-              </IconByNameWrapper>
-              <Typography fontWeight="Bold">People you follow</Typography>
-            </Box>
-            {(selected.key === 'peopleFollow') && <IconByName iconName="CheckOutlined"/>}
-          </MenuItem>
-        </MenuWrapper>
-      </BoxWrapper>);
+          {(selected.key === 'public') && <IconByName iconName="CheckOutlined"/>}
+        </MenuItem>
+        <MenuItem
+          onClick={() => handleItemClick('peopleFollow')}
+          sx={{display: 'flex', justifyContent: 'space-between'}}>
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <IconByNameWrapper>
+              <IconByName iconName="PeopleAlt"/>
+            </IconByNameWrapper>
+            <Typography fontWeight="Bold">People you follow</Typography>
+          </Box>
+          {(selected.key === 'peopleFollow') && <IconByName iconName="CheckOutlined"/>}
+        </MenuItem>
+      </MenuWrapper>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -171,6 +180,6 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 }));
 
 WhoCanReplyButton.propTypes = {
-  item: PropTypes.object,
+  form: PropTypes.object,
 }
 export default WhoCanReplyButton;
