@@ -4,9 +4,10 @@ import {addOrFilterItem} from "../../utils/tweets";
 const INITIAL_STATE = {
   loading: false,
   form: {
+    MAX_IMAGES_COUNT: 4,
+    images: [],
     text: '',
     canReply: 'public',
-    photos: []
   },
   tweets: [],
   bookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
@@ -14,6 +15,12 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, {payload, type}) => {
   switch (type) {
+    case String(ACTIONS.setTweetFormImages): {
+      state.form.images.push(payload);
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.setTweetFormCanReply): {
       state.form.canReply = payload;
       return {

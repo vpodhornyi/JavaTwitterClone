@@ -10,6 +10,7 @@ import {PATH} from "../../../../utils/constants";
 import WhoCanReplyButton from "./WhoCanReplyButton";
 import {ACTIONS} from "@redux/tweet/action";
 import {uploadImage} from '@redux/user/action';
+import ImagesList from "./imagesList/ImagesList";
 
 const TwitForma = () => {
   const form = useSelector(state => state.tweet.form);
@@ -40,11 +41,12 @@ const TwitForma = () => {
   }
 
   const handleUploadImage = async (ev) => {
-    console.log(ev.target.files[0]);
-    const data = new FormData();
-    data.append('uploadFile', ev.target.files[0]);
-   const imgUrl = await dispatch(uploadImage(data));
-    console.log(imgUrl);
+    if (form.images.length <= form.MAX_IMAGES_COUNT) {
+      const data = new FormData();
+      data.append('uploadFile', ev.target.files[0]);
+      const imgUrl = await dispatch(uploadImage(data));
+      dispatch(ACTIONS.setTweetFormImages(imgUrl));
+    }
   }
 
   useEffect(() => {
@@ -70,6 +72,7 @@ const TwitForma = () => {
             variant="filled"
             size='medium'
           />
+          <ImagesList/>
           {focused && <WhoCanReplyButton form={form}/>}
         </Box>
         <TweetFormFooter

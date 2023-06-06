@@ -3,7 +3,7 @@ import api, { URLS } from "../../services/API";
 
 const actions = createActions(
   {
-    actions: ["CHANGE_BOOKMARK", 'SET_TWEET_FORM_CAN_REPLY', 'SET_TWEET_FORM_TEXT'],
+    actions: ["CHANGE_BOOKMARK", 'SET_TWEET_FORM_CAN_REPLY', 'SET_TWEET_FORM_TEXT', 'SET_TWEET_FORM_IMAGES'],
     async: [
       "DELETE_TWEET",
       "CREATE_TWEET",
