@@ -16,6 +16,7 @@ const TwitForma = () => {
   const form = useSelector(state => state.tweet.form);
   const dispatch = useDispatch();
   const inputRef = useRef();
+  const inputFiletRef = useRef();
   const {authUser: user} = useSelector(state => state.user);
   const [focused, setFocused] = useState(false);
   const [text, setText] = useState('');
@@ -41,11 +42,17 @@ const TwitForma = () => {
   }
 
   const handleUploadImage = async (ev) => {
-    if (form.images.length <= form.MAX_IMAGES_COUNT) {
+    if (form.images.length < form.MAX_IMAGES_COUNT) {
+      handleFocus();
       const data = new FormData();
       data.append('uploadFile', ev.target.files[0]);
+      inputFiletRef.current.value = null;
+      dispatch(ACTIONS.setTweetFormImages({
+        loading: true,
+        src: ''
+      }));
       const imgUrl = await dispatch(uploadImage(data));
-      dispatch(ACTIONS.setTweetFormImages(imgUrl));
+      dispatch(ACTIONS.setTweetFormImagesSrc(imgUrl));
     }
   }
 
@@ -78,7 +85,8 @@ const TwitForma = () => {
         <TweetFormFooter
           handleUploadImage={handleUploadImage}
           addEmoji={addEmoji}
-          inputRef={inputRef}/>
+          inputRef={inputRef}
+          inputFiletRef={inputFiletRef}/>
       </Box>
     </BoxWrapper>);
 }

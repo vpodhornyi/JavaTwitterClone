@@ -4,7 +4,7 @@ import {addOrFilterItem} from "../../utils/tweets";
 const INITIAL_STATE = {
   loading: false,
   form: {
-    MAX_IMAGES_COUNT: 4,
+    MAX_IMAGES_COUNT: 3,
     images: [],
     text: '',
     canReply: 'public',
@@ -17,6 +17,19 @@ export default (state = INITIAL_STATE, {payload, type}) => {
   switch (type) {
     case String(ACTIONS.setTweetFormImages): {
       state.form.images.push(payload);
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.setTweetFormDeleteImage): {
+      state.form.images.splice(payload, 1);
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.setTweetFormImagesSrc): {
+      state.form.images.at(-1).src = payload;
+      state.form.images.at(-1).loading = false;
       return {
         ...state,
       }

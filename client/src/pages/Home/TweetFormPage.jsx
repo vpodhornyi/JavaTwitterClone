@@ -11,10 +11,13 @@ import {PATH} from "../../utils/constants";
 import {BackgroundContext} from "../../utils/context";
 import {useDebouncedCallback} from "use-debounce";
 import {ACTIONS} from "@redux/tweet/action";
+import {uploadImage} from '@redux/user/action';
+import ImagesList from "./components/twitForm/imagesList/ImagesList";
 
 const TweetFormPage = () => {
   const form = useSelector(state => state.tweet.form);
   const inputRef = useRef();
+  const inputFiletRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {background} = useContext(BackgroundContext);
@@ -35,6 +38,20 @@ const TweetFormPage = () => {
       debounced(text + e.emoji);
     }
     inputRef.current.focus();
+  }
+
+  const handleUploadImage = async (ev) => {
+    if (form.images.length < form.MAX_IMAGES_COUNT) {
+      const data = new FormData();
+      data.append('uploadFile', ev.target.files[0]);
+      inputFiletRef.current.value = null;
+      dispatch(ACTIONS.setTweetFormImages({
+        loading: true,
+        src: ''
+      }));
+      const imgUrl = await dispatch(uploadImage(data));
+      dispatch(ACTIONS.setTweetFormImagesSrc(imgUrl));
+    }
   }
 
   useEffect(() => {
@@ -66,9 +83,14 @@ const TweetFormPage = () => {
             rows={5}
           />
         </Box>
+        <ImagesList/>
         <WhoCanReplyButton form={form}/>
         <Box className='FooterWrapper'>
-          <TweetFormFooter addEmoji={addEmoji} inputRef={inputRef}/>
+          <TweetFormFooter
+            handleUploadImage={handleUploadImage}
+            addEmoji={addEmoji}
+            inputRef={inputRef}
+            inputFiletRef={inputFiletRef}/>
         </Box>
       </Box>
     </BoxWrapper>);

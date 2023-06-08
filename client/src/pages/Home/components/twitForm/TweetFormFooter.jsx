@@ -4,18 +4,19 @@ import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {CustomFabButton, CustomIconButton, EmojiPicker} from "../../../../components"
+import {useSelector} from "react-redux";
 
-const TweetFormFooter = ({handleUploadImage, addEmoji, inputRef}) => {
-  const inputFiletRef = useRef();
+const TweetFormFooter = ({handleUploadImage, addEmoji, inputFiletRef, inputRef}) => {
+  const {images, MAX_IMAGES_COUNT} = useSelector(state => state.tweet.form);
   const handleFileUploadClick = () => {
-    inputFiletRef.current.click();
+    (images.length < MAX_IMAGES_COUNT) && inputFiletRef.current.click();
   };
 
   return (
     <BoxWrapper>
       <Box className="IconsBox">
         <Box onClick={handleFileUploadClick}>
-          <CustomIconButton color='primary' name='InsertPhotoOutlined' iconSize='small'/>
+          <CustomIconButton disabled={images.length >= MAX_IMAGES_COUNT} color='primary' name='InsertPhotoOutlined' iconSize='small'/>
           <input
             style={{display: "none"}}
             ref={inputFiletRef}
@@ -68,6 +69,7 @@ TweetFormFooter.propTypes = {
   handleUploadImage: PropTypes.func,
   addEmoji: PropTypes.func,
   inputRef: PropTypes.object,
+  inputFiletRef: PropTypes.object,
 }
 
 export default TweetFormFooter;
