@@ -15,43 +15,43 @@ const UserInfo = () => {
   const location = useLocation();
 
   return (
-      <BoxWrapper>
-        {
-          user.headerImgUrl === '' ? <Box className="HeaderPhotoWrapper"></Box> :
-              <Link
-                  to={PATH.USER.header_photo(user.userTag)}
-                  state={{background: location}}
-                  className="HeaderImgLink">
-                <img className="HeaderImg" src={user.headerImgUrl} alt=""/>
-              </Link>
-        }
-        <Box className="UserInfoBlock" sx={{p: 2}}>
-          <UserPhotoBlock user={user}/>
-          <Typography fontWeight='bold' variant="h2">{user.name}</Typography>
-          <Typography variant='subtitle1' sx={{pb: 1}}>@{user.userTag}</Typography>
-          <Box sx={{display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1}}>
-            {user?.location &&
-                <Box className="Location" sx={{mr: 2}}>
-                  <IconByName iconName={'LocationOn'}/>
-                  <Typography variant="subtitle1" sx={{ml: 0.5}}>{user?.location}</Typography>
-                </Box>
-            }
-            <DateInfo title="Born" date={user?.birthDate} icoName="Cake"/>
-            <DateInfo title="Joined" date={user?.createdAt} icoName="CalendarMonth"/>
-          </Box>
-          <Typography>{user?.bio}</Typography>
-          <Box sx={{display: 'flex'}}>
-            <Typography sx={{mr: 2}} variant='subtitle1'>
-              <span className='FollowCount'>{4}</span>
-              Following
-            </Typography>
-            <Typography variant='subtitle1'>
-              <span className='FollowCount'>{1}</span>
-              Follower
-            </Typography>
-          </Box>
+    <BoxWrapper>
+      {
+        user.headerImgUrl === '' ? <Box className="HeaderPhotoWrapper"></Box> :
+          <Link
+            to={PATH.USER.header_photo(user.userTag)}
+            state={{background: location}}
+            className="HeaderImgLink">
+            <img className="HeaderImg" src={user.headerImgUrl} alt=""/>
+          </Link>
+      }
+      <Box className="UserInfoBlock" sx={{p: 2}}>
+        <UserPhotoBlock user={user}/>
+        <Typography fontWeight='bold' variant="h2">{user.name}</Typography>
+        <Typography variant='subtitle1' sx={{pb: 1}}>@{user.userTag}</Typography>
+        <Box sx={{display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1}}>
+          {user?.location &&
+            <Box className="Location" sx={{mr: 2}}>
+              <IconByName iconName={'LocationOn'}/>
+              <Typography variant="subtitle1" sx={{ml: 0.5}}>{user?.location}</Typography>
+            </Box>
+          }
+          <DateInfo title="Born" date={user?.birthDate} icoName="Cake"/>
+          <DateInfo title="Joined" date={user?.createdAt} icoName="CalendarMonth"/>
         </Box>
-      </BoxWrapper>);
+        <Typography>{user?.bio}</Typography>
+        <Box sx={{display: 'flex'}}>
+          <Typography sx={{mr: 2}} variant='subtitle1'>
+            <span className='FollowCount'>{4}</span>
+            Following
+          </Typography>
+          <Typography variant='subtitle1'>
+            <span className='FollowCount'>{1}</span>
+            Follower
+          </Typography>
+        </Box>
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({

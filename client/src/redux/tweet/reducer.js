@@ -4,10 +4,11 @@ import {addOrFilterItem} from "../../utils/tweets";
 const INITIAL_STATE = {
   loading: false,
   form: {
+    loading: false,
     MAX_IMAGES_COUNT: 3,
     images: [],
     text: '',
-    canReply: 'public',
+    canReply: 'PUBLIC',
   },
   tweets: [],
   bookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
@@ -56,12 +57,18 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
         tweets: state.tweets.filter((el) => el.id !== payload),
       };
-    case String(ACTIONS.createTweet.success):
+    case String(ACTIONS.createTweet.request): {
+      state.form.loading = true;
+      return {
+        ...state,
+      };
+    }
+    case String(ACTIONS.createTweet.success): {
       return {
         ...state,
         tweets: [...state.tweets, payload],
       };
-
+    }
     case String(ACTIONS.getTweets.success):
       return {
         ...state,

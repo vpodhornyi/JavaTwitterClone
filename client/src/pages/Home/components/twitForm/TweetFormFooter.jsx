@@ -1,22 +1,29 @@
 import React, {useRef} from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {CustomFabButton, CustomIconButton, EmojiPicker} from "../../../../components"
-import {useSelector} from "react-redux";
+import {createTweet} from "@redux/tweet/action";
 
 const TweetFormFooter = ({handleUploadImage, addEmoji, inputFiletRef, inputRef}) => {
-  const {images, MAX_IMAGES_COUNT} = useSelector(state => state.tweet.form);
+  const dispatch = useDispatch();
+  const {images, MAX_IMAGES_COUNT, text} = useSelector(state => state.tweet.form);
   const handleFileUploadClick = () => {
     (images.length < MAX_IMAGES_COUNT) && inputFiletRef.current.click();
   };
+
+  const setDisabledTweetButton = () => {
+    return !(text.trim() !== '' || images.length > 0);
+  }
 
   return (
     <BoxWrapper>
       <Box className="IconsBox">
         <Box onClick={handleFileUploadClick}>
-          <CustomIconButton disabled={images.length >= MAX_IMAGES_COUNT} color='primary' name='InsertPhotoOutlined' iconSize='small'/>
+          <CustomIconButton disabled={images.length >= MAX_IMAGES_COUNT} color='primary' name='InsertPhotoOutlined'
+                            iconSize='small'/>
           <input
             style={{display: "none"}}
             ref={inputFiletRef}
@@ -26,7 +33,9 @@ const TweetFormFooter = ({handleUploadImage, addEmoji, inputFiletRef, inputRef})
         </Box>
         <EmojiPicker addEmoji={addEmoji} inputRef={inputRef}/>
       </Box>
-      <CustomFabButton disabled={true} className='TweetButton' name='Tweet'/>
+      <Box onClick={() => dispatch(createTweet())}>
+        <CustomFabButton disabled={setDisabledTweetButton()} className='TweetButton' name='Tweet'/>
+      </Box>
     </BoxWrapper>);
 }
 
@@ -49,6 +58,10 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   '& .TweetButton': {
     backgroundColor: theme.palette.primary.main,
     height: '38px',
+
+    '&:hover': {
+      backgroundColor: theme.palette.primary.custom[700],
+    },
 
     '& .CustomFabButtonName': {
       fontWeight: theme.typography.fontWeightBold,

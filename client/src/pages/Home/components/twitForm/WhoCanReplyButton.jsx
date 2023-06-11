@@ -12,13 +12,13 @@ const WhoCanReplyButton = ({form}) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const LIST_ITEMS = {
-    public: {
-      key: 'public',
+    PUBLIC: {
+      key: 'PUBLIC',
       name: 'Everyone can reply',
       icon: 'Public',
     },
-    peopleFollow: {
-      key: 'peopleFollow',
+    PEOPLE_FOLLOW: {
+      key: 'PEOPLE_FOLLOW',
       name: 'People you follow can reply',
       icon: 'PeopleAlt',
     }
@@ -75,7 +75,7 @@ const WhoCanReplyButton = ({form}) => {
           </Typography>
         </Box>
         <MenuItem
-          onClick={() => handleItemClick('public')}
+          onClick={() => handleItemClick('PUBLIC')}
           sx={{display: 'flex', justifyContent: 'space-between'}}>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <IconByNameWrapper>
@@ -83,10 +83,10 @@ const WhoCanReplyButton = ({form}) => {
             </IconByNameWrapper>
             <Typography fontWeight="Bold">Everyone</Typography>
           </Box>
-          {(selected.key === 'public') && <IconByName iconName="CheckOutlined"/>}
+          {(selected.key === 'PUBLIC') && <IconByName iconName="CheckOutlined"/>}
         </MenuItem>
         <MenuItem
-          onClick={() => handleItemClick('peopleFollow')}
+          onClick={() => handleItemClick('PEOPLE_FOLLOW')}
           sx={{display: 'flex', justifyContent: 'space-between'}}>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <IconByNameWrapper>
@@ -94,7 +94,7 @@ const WhoCanReplyButton = ({form}) => {
             </IconByNameWrapper>
             <Typography fontWeight="Bold">People you follow</Typography>
           </Box>
-          {(selected.key === 'peopleFollow') && <IconByName iconName="CheckOutlined"/>}
+          {(selected.key === 'PEOPLE_FOLLOW') && <IconByName iconName="CheckOutlined"/>}
         </MenuItem>
       </MenuWrapper>
     </BoxWrapper>);
@@ -109,7 +109,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     backgroundColor: theme.palette.background.main,
   }
 }));
-
 const IconByNameWrapper = styled(Box)(({theme}) => ({
   width: '40px',
   height: '40px',
@@ -124,7 +123,6 @@ const IconByNameWrapper = styled(Box)(({theme}) => ({
     color: theme.palette.common.white,
   }
 }));
-
 const FollowButton = styled(Box)(({theme}) => ({
   padding: '3px 10px',
   borderRadius: '16px',
@@ -146,7 +144,6 @@ const FollowButton = styled(Box)(({theme}) => ({
     marginRight: '5px',
   },
 }));
-
 const MenuWrapper = styled(Menu)(({theme}) => ({
   '& .MuiPaper-root': {
     boxShadow: 'rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px !important',

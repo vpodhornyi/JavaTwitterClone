@@ -11,6 +11,7 @@ import WhoCanReplyButton from "./WhoCanReplyButton";
 import {ACTIONS} from "@redux/tweet/action";
 import {uploadImage} from '@redux/user/action';
 import ImagesList from "./imagesList/ImagesList";
+import {LineLoader} from "@components";
 
 const TwitForma = () => {
   const form = useSelector(state => state.tweet.form);
@@ -62,6 +63,16 @@ const TwitForma = () => {
 
   return (
     <BoxWrapper>
+      {
+        form.loading && <Box sx={{
+          position: 'absolute',
+          top: -3,
+          left: 0,
+          width: '100%',
+        }}>
+          <LineLoader/>
+        </Box>
+      }
       <Link
         to={PATH.USER.profile(user.userTag)}
         className="AvatarLink">
@@ -94,6 +105,7 @@ const TwitForma = () => {
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'none',
+  position: 'relative',
   padding: '12px 16px 0 16px',
   borderTop: `1px solid ${theme.palette.border.main}`,
   borderBottom: `1px solid ${theme.palette.border.main}`,

@@ -16,7 +16,7 @@ const CustomFabButton = ({onClick, className, name, disabled}) => {
   );
 };
 
-const styles = ({theme}) => ({
+const FabWrapper = styled(Fab)(({theme}) => ({
   textTransform: 'none',
   boxShadow: 'none',
 
@@ -27,9 +27,7 @@ const styles = ({theme}) => ({
   '& .MuiTouchRipple-root': {
     display: 'none'
   },
-});
-
-const FabWrapper = styled(Fab)(styles);
+}));
 
 CustomFabButton.propTypes = {
   onClick: PropTypes.func,

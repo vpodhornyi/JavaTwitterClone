@@ -58,7 +58,7 @@ export const URLS = {
     PROFILE: "/users/profile"
   },
   TWEET: {
-    _ROOT: "/tweets/",
+    ROOT: "/tweets",
     CREATE_TWEET: "/tweets/create",
     CHANGE_ACTIONS: "/tweets/change_actions",
     BOOKMARKS: "/tweets/bookmarks",

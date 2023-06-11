@@ -31,7 +31,7 @@ export const ACTIONS = {
 export const getTweets = () => async (dispatch) => {
   try {
     dispatch(ACTIONS.getTweets.request());
-    const data = await api.get(URLS.TWEET._ROOT);
+    const data = await api.get(URLS.TWEET.ROOT);
     dispatch(ACTIONS.getTweets.success(data));
 
     return data;
@@ -41,12 +41,20 @@ export const getTweets = () => async (dispatch) => {
     console.log("getTweets error - ", err);
   }
 };
-export const createTweet = (obj) => async (dispatch) => {
+export const createTweet = (obj) => async (dispatch, getState) => {
   try {
     dispatch(ACTIONS.createTweet.request());
-    const data = await api.post(URLS.TWEET.CREATE_TWEET, obj);
-
-    dispatch(ACTIONS.createTweet.success(data));
+    const {tweet: {form}} = getState();
+    const body = {
+      tweetType: 'TWEET',
+      canReply: form.canReply,
+      images: form.images,
+      body: form.text,
+    }
+    const data = await api.post(URLS.TWEET.ROOT, body);
+    console.log(data);
+    //
+    // dispatch(ACTIONS.createTweet.success(data));
   } catch (err) {
     //TODO show error
     dispatch(ACTIONS.createTweet.fail());

@@ -52,13 +52,13 @@ public class TweetService {
   ;
 
   public void update(TweetRequest tweetUpdate) {
-    System.out.println(tweetUpdate.getId());
-    Tweet tweet = tweetDao.findById(tweetUpdate.getId()).get();
-    tweet.setTweetType(tweetUpdate.getTweetType());
-    tweet.setBody(tweetUpdate.getBody());
-    tweet.setUser(tweetUpdate.getUser());
+//    System.out.println(tweetUpdate.getId());
+//    Tweet tweet = tweetDao.findById(tweetUpdate.getId()).get();
+//    tweet.setTweetType(tweetUpdate.getTweetType());
+//    tweet.setBody(tweetUpdate.getBody());
+//    tweet.setUser(tweetUpdate.getUser());
 
-    tweetDao.save(tweet);
+//    tweetDao.save(tweet);
   }
 
   public Tweet findById(Long userId) {

@@ -44,6 +44,13 @@ public class TweetController {
     return tweets.stream().map(tweetResponseMapper::convertToDto).collect(Collectors.toList());
   }
 
+  @PostMapping
+  public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest dto) {
+    List<Tweet> tweets = tweetService.getAll();
+    System.out.println(dto);
+    return null;
+  }
+
   @GetMapping("/bookmarks")
   public List<Long> getBookmarks() {
     return tweetService.getBookmarks();
@@ -55,7 +62,6 @@ public class TweetController {
     Tweet tweet = tweetService.findById(Long.parseLong(userId));
     if (tweet.equals(new Tweet())) {
       throw new NullPointerException("There is no tweet with this id ");
-
     }
     return tweetResponseMapper.convertToDto(tweet);
   }
