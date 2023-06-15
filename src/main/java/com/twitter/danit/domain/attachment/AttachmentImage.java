@@ -19,7 +19,6 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class AttachmentImage extends BaseEntity {
 
   private String imgUrl;
@@ -29,4 +28,3 @@ public class AttachmentImage extends BaseEntity {
   @JsonIgnore
   private Tweet tweet;
 }
-

@@ -27,6 +27,9 @@ public class Tweet extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private TweetType tweetType;
 
+  @Enumerated(EnumType.STRING)
+  private TweetCanReply tweetCanReply;
+
   private String body;
 
   @LazyCollection(LazyCollectionOption.EXTRA)

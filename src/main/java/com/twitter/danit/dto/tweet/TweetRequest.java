@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Data
 public class TweetRequest {
   private TweetType tweetType;
-  private TweetCanReply canReply;
+  private TweetCanReply tweetCanReply;
   private ArrayList<String> images;
   private String body;
 }

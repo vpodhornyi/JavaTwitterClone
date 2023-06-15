@@ -12,4 +12,5 @@ import lombok.Setter;
 public class AttachmentResponse {
   private Long id;
   private String imgUrl;
+  private String key;
 }

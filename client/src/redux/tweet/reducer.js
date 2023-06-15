@@ -64,6 +64,13 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       };
     }
     case String(ACTIONS.createTweet.success): {
+      state.form = {
+        ...state.form, ...{
+          loading: false,
+          images: [],
+          text: '',
+        }
+      };
       return {
         ...state,
         tweets: [...state.tweets, payload],

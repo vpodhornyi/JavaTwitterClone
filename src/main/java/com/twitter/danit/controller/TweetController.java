@@ -9,6 +9,7 @@ import com.twitter.danit.dto.action.TweetActionResponseAllData;
 import com.twitter.danit.facade.tweet.TweetRequestMapper;
 import com.twitter.danit.facade.tweet.TweetResponseMapper;
 import com.twitter.danit.service.TweetService;
+import com.twitter.danit.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +27,18 @@ import java.util.stream.Collectors;
 @RequestMapping("${api.version}/tweets")
 @Slf4j
 public class TweetController {
+  private final UserService userService;
   private final TweetService tweetService;
   private final TweetRequestMapper tweetRequestMapper;
   private final TweetResponseMapper tweetResponseMapper;
 
-  public TweetController(TweetService tweetService, TweetRequestMapper tweetRequestMapper,
+  public TweetController(UserService userService, TweetService tweetService, TweetRequestMapper tweetRequestMapper,
                          TweetResponseMapper tweetResponseMapper) {
+    this.userService = userService;
     this.tweetService = tweetService;
     this.tweetRequestMapper = tweetRequestMapper;
     this.tweetResponseMapper = tweetResponseMapper;
   }
-
 
   @GetMapping
   public List<TweetResponse> getAll() {
@@ -45,10 +47,10 @@ public class TweetController {
   }
 
   @PostMapping
-  public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest dto) {
-    List<Tweet> tweets = tweetService.getAll();
-    System.out.println(dto);
-    return null;
+  public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest tweetRequest, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    Tweet savedTweet = tweetService.save(tweetRequestMapper.convertToEntity(tweetRequest, authUser));
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet));
   }
 
   @GetMapping("/bookmarks")
