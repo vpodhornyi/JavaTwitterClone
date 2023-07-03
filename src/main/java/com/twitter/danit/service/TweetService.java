@@ -10,8 +10,10 @@ import com.twitter.danit.dto.action.TweetActionRequest;
 import com.twitter.danit.dto.action.TweetActionResponseAllData;
 import com.twitter.danit.dto.tweet.TweetRequest;
 import com.twitter.danit.facade.action.TweetActionResponseMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -21,23 +23,20 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 @Slf4j
 public class TweetService {
-  @Autowired
-  private TweetRepository tweetDao;
-  @Autowired
-  private TweetActionRepository tweetActionRepository;
-  @Autowired
-  private TweetActionResponseMapper tweetActionResponseMapper;
-  @Autowired
-  private UserDao userDao;
+  private final TweetRepository tweetRepository;
+  private final TweetActionRepository tweetActionRepository;
+  private final TweetActionResponseMapper tweetActionResponseMapper;
+  private final UserDao userDao;
 
-  public List<Tweet> getAll() {
-    return (List<Tweet>) tweetDao.findAll();
+  public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
+    return tweetRepository.findAllTweets(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
   public Tweet save(Tweet tweet) {
-    return tweetDao.save(tweet);
+    return tweetRepository.save(tweet);
   }
 
   public List<Long> getBookmarks() {
@@ -49,26 +48,24 @@ public class TweetService {
     return tweetActionRepository.findBookmarks(user.getId(), "BOOKMARK");
   }
 
-  ;
-
   public void update(TweetRequest tweetUpdate) {
 //    System.out.println(tweetUpdate.getId());
-//    Tweet tweet = tweetDao.findById(tweetUpdate.getId()).get();
+//    Tweet tweet = tweetRepository.findById(tweetUpdate.getId()).get();
 //    tweet.setTweetType(tweetUpdate.getTweetType());
 //    tweet.setBody(tweetUpdate.getBody());
 //    tweet.setUser(tweetUpdate.getUser());
 
-//    tweetDao.save(tweet);
+//    tweetRepository.save(tweet);
   }
 
   public Tweet findById(Long userId) {
 
-    return tweetDao.findById(userId).orElse(new Tweet());
+    return tweetRepository.findById(userId).orElse(new Tweet());
 
   }
 
   public void deleteById(Long id) {
-    tweetDao.deleteById(id);
+    tweetRepository.deleteById(id);
 
 
   }
@@ -79,7 +76,7 @@ public class TweetService {
             ? ((UserDetails) principal).getUsername()
             : principal.toString();
 
-    Tweet tweet = tweetDao.findById(tweetActionRequest.getTweetId()).orElse(new Tweet());
+    Tweet tweet = tweetRepository.findById(tweetActionRequest.getTweetId()).orElse(new Tweet());
     User user = userDao.findByUserTag(username);
     TweetAction newTweetAction = new TweetAction(tweetActionRequest.getActionType(), tweet, user);
 

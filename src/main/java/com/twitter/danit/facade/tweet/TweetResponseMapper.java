@@ -10,11 +10,4 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
   public TweetResponseMapper() {
     super(Tweet.class, TweetResponse.class);
   }
-
-  @Override
-  public void decorateEntity(Tweet entity, TweetResponse dto) {
-
-  }
-
-
 }

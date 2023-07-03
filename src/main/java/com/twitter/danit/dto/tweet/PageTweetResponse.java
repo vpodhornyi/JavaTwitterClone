@@ -1,4 +1,4 @@
-package com.twitter.danit.dto.chat.response.chat;
+package com.twitter.danit.dto.tweet;
 
 import com.twitter.danit.dto.PageAbstract;
 import lombok.Getter;
@@ -8,5 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PageChatResponse extends PageAbstract<ChatResponseAbstract> {
+public class PageTweetResponse extends PageAbstract<TweetResponse> {
 }

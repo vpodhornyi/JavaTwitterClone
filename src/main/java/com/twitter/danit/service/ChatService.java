@@ -3,7 +3,6 @@ package com.twitter.danit.service;
 import com.twitter.danit.dao.ChatDeletedRepository;
 import com.twitter.danit.dao.ChatRepository;
 import com.twitter.danit.dao.MessageRepository;
-import com.twitter.danit.dao.MessageSeenRepository;
 import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.chat.ChatType;
 import com.twitter.danit.domain.chat.Message;
@@ -13,12 +12,9 @@ import com.twitter.danit.exception.CouldNotFindChatException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,10 +40,7 @@ public class ChatService {
   }
 
   public Page<Chat> findAlLByUserId(Long userId, int pageNumber, int pageSize) {
-    Pageable pageable = PageRequest.of(pageNumber, pageSize);
-    Optional<Page<Chat>> optionalChats = chatRepository.findByUsersId(userId, pageable);
-
-    return optionalChats.orElse(Page.empty());
+    return chatRepository.findByUsersId(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
   public Chat findPrivateChatByUsersIds(Long authUserId, Long guestUserId) {

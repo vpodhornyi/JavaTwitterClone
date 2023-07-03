@@ -86,7 +86,7 @@ export default (state = init, {payload, type}) => {
         loading: true,
       };
     case String(ACTIONS.getChats.success):
-      const newChats = payload.chats.filter(ch => !state.chats.find(c => ch.id === c.id));
+      const newChats = payload.elements.filter(ch => !state.chats.find(c => ch.id === c.id));
       return {
         ...state,
         loading: false,

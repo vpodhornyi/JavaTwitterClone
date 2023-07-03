@@ -1,7 +1,6 @@
 package com.twitter.danit.dto.tweet;
 
 import com.twitter.danit.domain.tweet.TweetType;
-import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.attachment.AttachmentResponse;
 import com.twitter.danit.dto.action.TweetActionResponse;
 import lombok.Data;
@@ -17,6 +16,5 @@ public class TweetResponse {
   private Set<AttachmentResponse> images;
   private Set<TweetActionResponse> actions;
   private String body;
-  private User user;
-
+  private TweetUser user;
 }

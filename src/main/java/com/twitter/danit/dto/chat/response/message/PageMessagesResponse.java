@@ -1,23 +1,14 @@
 package com.twitter.danit.dto.chat.response.message;
 
+import com.twitter.danit.dto.PageAbstract;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class PageMessagesResponse {
+public class PageMessagesResponse extends PageAbstract<MessageResponseAbstract> {
   private Long chatId;
-  private int totalPages;
-  private long totalElements;
   private Long lastSeenChatMessageId;
-  private List<MessageResponseAbstract> messages = new ArrayList<>();
-
-  public void addMessage(MessageResponseAbstract message) {
-    messages.add(message);
-  }
 }

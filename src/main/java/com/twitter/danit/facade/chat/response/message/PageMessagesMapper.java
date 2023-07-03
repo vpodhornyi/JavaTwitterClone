@@ -49,9 +49,9 @@ public class PageMessagesMapper {
       if (type.equals(ChatType.PRIVATE)) {
         messages.forEach(m -> {
           if (user.equals(m.getUser())) {
-            dto.addMessage(privateMessageOwnerResponseMapper.convertToDto(m, user));
+            dto.addElement(privateMessageOwnerResponseMapper.convertToDto(m, user));
           } else {
-            dto.addMessage(privateForeignerMessageResponseMapper.convertToDto(m, user));
+            dto.addElement(privateForeignerMessageResponseMapper.convertToDto(m, user));
           }
         });
       }
@@ -59,14 +59,14 @@ public class PageMessagesMapper {
       if (type.equals(ChatType.GROUP)) {
         messages.forEach(m -> {
           if (user.equals(m.getUser())) {
-            dto.addMessage(groupMessageOwnerResponseMapper.convertToDto(m, user));
+            dto.addElement(groupMessageOwnerResponseMapper.convertToDto(m, user));
           } else {
-            dto.addMessage(groupForeignerMessageResponseMapper.convertToDto(m, user));
+            dto.addElement(groupForeignerMessageResponseMapper.convertToDto(m, user));
           }
         });
       }
 
-      Collections.reverse(dto.getMessages());
+      Collections.reverse(dto.getElements());
     }
     return dto;
   }
