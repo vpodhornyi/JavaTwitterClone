@@ -18,6 +18,10 @@ const TweetFormFooter = ({handleUploadImage, addEmoji, inputFiletRef, inputRef})
     return !(text.trim() !== '' || images.length > 0);
   }
 
+  const submit = () => {
+    !setDisabledTweetButton() &&  dispatch(createTweet());
+  }
+
   return (
     <BoxWrapper>
       <Box className="IconsBox">
@@ -33,7 +37,7 @@ const TweetFormFooter = ({handleUploadImage, addEmoji, inputFiletRef, inputRef})
         </Box>
         <EmojiPicker addEmoji={addEmoji} inputRef={inputRef}/>
       </Box>
-      <Box onClick={() => dispatch(createTweet())}>
+      <Box onClick={submit}>
         <CustomFabButton disabled={setDisabledTweetButton()} className='TweetButton' name='Tweet'/>
       </Box>
     </BoxWrapper>);

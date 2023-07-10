@@ -10,6 +10,8 @@ const INITIAL_STATE = {
     text: '',
     canReply: 'PUBLIC',
   },
+  pageNumber: 0,
+  pageSize: 7,
   tweets: [],
   bookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
 };
@@ -79,7 +81,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
     case String(ACTIONS.getTweets.success):
       return {
         ...state,
-        tweets: payload,
+        tweets: payload.elements,
         loading: false,
       };
     case String(ACTIONS.getTweets.fail):

@@ -28,10 +28,12 @@ export const ACTIONS = {
   ...actions.actions,
   ...actions.async,
 };
-export const getTweets = () => async (dispatch) => {
+export const getTweets = () => async (dispatch, getState) => {
   try {
+    const {tweet: {pageNumber, pageSize}} = getState();
     dispatch(ACTIONS.getTweets.request());
-    const data = await api.get(URLS.TWEET.ROOT);
+    const data = await api.get(URLS.TWEET.ROOT, {params: {pageNumber, pageSize}});
+    console.log(data);
     dispatch(ACTIONS.getTweets.success(data));
 
     return data;
