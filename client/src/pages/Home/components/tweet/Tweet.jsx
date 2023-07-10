@@ -17,7 +17,7 @@ const Tweet = ({tweet}) => {
         className="AvatarLink">
         <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
       </Link>
-      <Box>
+      <Box sx={{width: '100%'}}>
         <Box sx={{display: 'flex'}}>
           <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
           <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
