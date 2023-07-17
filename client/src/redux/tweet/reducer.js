@@ -75,7 +75,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       };
       return {
         ...state,
-        tweets: [...state.tweets, payload],
+        tweets: [payload, ...state.tweets],
       };
     }
     case String(ACTIONS.getTweets.success):

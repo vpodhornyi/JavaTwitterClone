@@ -13,7 +13,7 @@ const IconByName = ({iconName, iconStyle, color}) => {
 IconByName.propTypes = {
   iconName: PropTypes.string,
   iconStyle: PropTypes.object,
-  color: PropTypes.string
+  color: PropTypes.string,
 };
 
 export default IconByName;
