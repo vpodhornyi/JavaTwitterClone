@@ -9,7 +9,7 @@ const CounterButton = ({name, count, showCounter = true}) => {
 
   return (
     <BoxWrapper>
-      <CustomIconButton size='small' iconSize='small' name={name}/>
+      <CustomIconButton sizeButton='small' iconSize='small' name={name}/>
       {showCounter && <Typography variant="body2" sx={{ml: '2px'}}>{count}</Typography>}
     </BoxWrapper>);
 }

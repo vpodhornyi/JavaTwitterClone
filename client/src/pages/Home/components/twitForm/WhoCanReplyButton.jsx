@@ -34,7 +34,7 @@ const WhoCanReplyButton = ({form}) => {
     setAnchorEl(null);
   };
 
-  const handleClose = (fieldName) => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -55,7 +55,6 @@ const WhoCanReplyButton = ({form}) => {
         <Typography fontWeight='bold'>{selected.name}</Typography>
       </FollowButton>
       <MenuWrapper
-        id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}

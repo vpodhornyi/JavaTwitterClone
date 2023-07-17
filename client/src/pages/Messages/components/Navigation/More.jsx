@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {styled} from "@mui/material/styles";
-import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer} from "@mui/material";
+import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer, IconButton} from "@mui/material";
 import PropTypes from "prop-types";
 
-import CustomIconButton from "@components/buttons/CustomIconButton";
 import IconByName from "@components/icons/IconByName";
 import LeaveChatConfirm from "../confirms/LeaveChatConfirm";
+import MoreHorizOutlined from "@mui/icons-material/MoreHorizOutlined";
 
 const More = ({toggleModal, chat}) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -23,7 +23,7 @@ const More = ({toggleModal, chat}) => {
   }
 
   return (
-    <Box onClick={e => e.stopPropagation()}>
+    <BoxWrapper onClick={e => e.stopPropagation()}>
       <Box
         id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
@@ -31,7 +31,14 @@ const More = ({toggleModal, chat}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <CustomIconButton name='MoreHorizOutlined' title='More' size='middle' iconSize='middle' color='text'/>
+        <IconButton
+          color='action'
+          name='MoreHorizOutlined'
+          title='More'
+          size='small'
+        >
+          <MoreHorizOutlined/>
+        </IconButton>
       </Box>
       <Box>
         <MenuWrapper
@@ -52,7 +59,7 @@ const More = ({toggleModal, chat}) => {
           <MenuList openLeaveChatConfirm={openLeaveChatConfirm}/>
         </MenuWrapper>
       </Box>
-    </Box>
+    </BoxWrapper>
   );
 }
 
@@ -62,7 +69,7 @@ const MenuList = ({openLeaveChatConfirm}) => (<>
       <IconByName iconName='PushPinOutlined' color='text'/>
     </ListItemIcon>
     <ListItemText>
-      <Typography variant='body1'>Pin conversation</Typography>
+      <Typography variant='body1' fontWeight='bold'>Pin conversation</Typography>
     </ListItemText>
   </MenuItem>
   <MenuItem>
@@ -70,7 +77,7 @@ const MenuList = ({openLeaveChatConfirm}) => (<>
       <IconByName iconName='NotificationsOffOutlined' color='text'/>
     </ListItemIcon>
     <ListItemText>
-      <Typography variant='body1'>Snooze conversation</Typography>
+      <Typography variant='body1' fontWeight='bold'>Snooze conversation</Typography>
     </ListItemText>
   </MenuItem>
   <MenuItem onClick={openLeaveChatConfirm}>
@@ -78,7 +85,7 @@ const MenuList = ({openLeaveChatConfirm}) => (<>
       <IconByName iconStyle={{color: 'red'}} iconName='DeleteOutlined'/>
     </ListItemIcon>
     <ListItemText>
-      <Typography color='red' variant='body1'>Delete conversation</Typography>
+      <Typography color='red' variant='body1' fontWeight='bold'>Delete conversation</Typography>
     </ListItemText>
   </MenuItem>
 </>)
@@ -112,9 +119,18 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
     }
   },
 }));
+const BoxWrapper = styled(Box)(({theme}) => ({
+  '& .MuiButtonBase-root:hover': {
+    transition: '0.5s',
+    color: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.alpha,
+  },
+
+  '& .MuiTouchRipple-root': {
+    display: 'none',
+  },
+}));
 const MobileBoxWrapper = styled(Box)(({theme}) => ({
-
-
   '& .MuiButtonBase-root': {
     borderBottom: `1px solid ${theme.palette.border.main}`,
 

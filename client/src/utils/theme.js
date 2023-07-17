@@ -34,6 +34,9 @@ export const BACKGROUND = {
       logo: {
         main: blue[500]
       },
+      tweetBackgroundColor: {
+        main: 'rgba(0,0,0, 0.03)'
+      }
     },
     typography: {
       h2: {
@@ -90,6 +93,9 @@ export const BACKGROUND = {
       logo: {
         main: blueGrey[50],
       },
+      tweetBackgroundColor: {
+        main: 'rgba(255, 255, 255, 0.03)'
+      }
     },
     typography: {
       h2: {
@@ -147,6 +153,9 @@ export const BACKGROUND = {
       logo: {
         main: grey[50],
       },
+      tweetBackgroundColor: {
+        main: 'rgba(255, 255, 255, 0.03)'
+      }
     },
     typography: {
       h2: {

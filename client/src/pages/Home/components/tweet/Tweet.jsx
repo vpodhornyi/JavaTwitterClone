@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import {PATH} from "../../../../utils/constants";
 import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
+import MoreTweetActionsButton from "./MoreTweetActionsButton";
 
 const Tweet = ({tweet}) => {
   return (
@@ -18,20 +19,27 @@ const Tweet = ({tweet}) => {
         <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
       </Link>
       <Box sx={{width: '100%'}}>
-        <Box sx={{display: 'flex'}}>
-          <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
-          <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
-          <Typography variant='body2' sx={{
-            '&:before': {
-              content: '"·"',
-              marginLeft: '5px',
-              marginRight: '5px',
-            }
-          }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <Box sx={{display: 'flex'}}>
+            <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
+            <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
+            <Typography variant='body2' sx={{
+              '&:before': {
+                content: '"·"',
+                marginLeft: '5px',
+                marginRight: '5px',
+              }
+            }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
+          </Box>
+          <MoreTweetActionsButton/>
         </Box>
         <Typography>{tweet.body}</Typography>
         <Box className="ImagesBox">
-          {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl}  alt=""/>)}
+          {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
         </Box>
         <TweetFooter/>
       </Box>
@@ -41,8 +49,15 @@ const Tweet = ({tweet}) => {
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'flex',
+  alignItems: 'flex-start',
   padding: '12px 16px 0 16px',
   borderBottom: `1px solid ${theme.palette.border.main}`,
+
+  '&:hover': {
+    cursor: 'pointer',
+    backgroundColor: theme.palette.tweetBackgroundColor.main,
+    transition: '0.5s',
+  },
 
   '& .AvatarLink': {
     marginRight: 12,
