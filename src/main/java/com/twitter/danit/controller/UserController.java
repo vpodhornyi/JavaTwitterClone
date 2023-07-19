@@ -1,19 +1,22 @@
 package com.twitter.danit.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
-import com.twitter.danit.dto.user.CustomStyleResponse;
-import com.twitter.danit.dto.user.CustomStyleRequest;
-import com.twitter.danit.dto.user.UserRequest;
-import com.twitter.danit.dto.user.UserResponse;
+import com.twitter.danit.dto.auth.AccountCheckRequest;
+import com.twitter.danit.dto.user.*;
 import com.twitter.danit.facade.user.CustomStyleResponseMapper;
 import com.twitter.danit.facade.user.UserResponseMapper;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
+import com.twitter.danit.service.email.EmailService;
+import com.twitter.danit.utils.Password;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +31,8 @@ public class UserController {
   private final UserService userService;
   private final UserResponseMapper userResponseMapper;
   private final CustomStyleResponseMapper customStyleResponseMapper;
+  private final EmailService emailService;
+  private final BCryptPasswordEncoder passwordEncoder;
 
   @GetMapping
   public UserResponse findAuthUser() {
@@ -73,5 +78,15 @@ public class UserController {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     CustomStyle savwdCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
     return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
+  }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<ResetPasswordResponse> signup(@Valid @RequestBody AccountCheckRequest authRequest) throws JsonProcessingException {
+    String password = Password.getRandomPassword();
+    User user = userService.findUser(authRequest.getLogin());
+    user.setPassword(passwordEncoder.encode(password));
+    userService.save(user);
+    emailService.sendByNodeMailer(user, password);
+    return ResponseEntity.ok(new ResetPasswordResponse());
   }
 }

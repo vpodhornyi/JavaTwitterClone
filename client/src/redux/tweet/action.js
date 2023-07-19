@@ -66,16 +66,12 @@ export const createTweet = (obj) => async (dispatch, getState) => {
 };
 export const deleteTweet = (tweetId) => async (dispatch) => {
   try {
-    dispatch(ACTIONS.deleteTweet.request());
     const data = await api.delete(`${URLS.TWEET.ROOT}/${tweetId}`);
-    console.log(data);
-    dispatch(SNACK_ACTIONS.open(data))
+    dispatch(SNACK_ACTIONS.open(data));
     dispatch(ACTIONS.deleteTweet.success(data));
 
   } catch (err) {
-    dispatch(SNACK_ACTIONS.open(err?.response?.data))
-    dispatch(ACTIONS.deleteTweet.fail());
-    alert("deleteTweet error - This is not your tweet");
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
 export const changeActionsTweet = (obj) => async (dispatch) => {

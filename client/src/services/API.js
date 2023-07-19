@@ -49,13 +49,14 @@ export const URLS = {
     IS_ACCOUNT_EXIST: `/auth/account`,
     AUTHORIZE: `/auth/login`,
     LOGOUT: `/auth/logout`,
-    CREATE_NEW_USER: `/auth/signup`
+    CREATE_NEW_USER: `/auth/signup`,
   },
   USERS: {
     ROOT: "/users",
     SEARCH: "/users/search",
     CUSTOMIZE: "/users/customize",
-    PROFILE: "/users/profile"
+    PROFILE: "/users/profile",
+    RESET_PASSWORD: `/users/reset-password`,
   },
   TWEET: {
     ROOT: "/tweets",

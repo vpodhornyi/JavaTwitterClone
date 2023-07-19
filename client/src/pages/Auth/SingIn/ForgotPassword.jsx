@@ -5,7 +5,7 @@ import {Box, TextField, Typography} from '@mui/material';
 
 import {CustomFabButton} from "../../../components";
 import {BackgroundContext} from "../../../utils/context";
-import {isAccountExist} from '@redux/auth/action';
+import {resetPassword} from '@redux/auth/action';
 import {Container, ButtonWrapper} from '../components';
 
 const ForgotPassword = () => {
@@ -33,9 +33,9 @@ const ForgotPassword = () => {
       </Box>
       <ButtonWrapper sx={{mb: 3}}>
         <CustomFabButton
-          onClick={() => dispatch(isAccountExist({login, navigate, background}))}
+          onClick={() => dispatch(resetPassword(login))}
           className='NextStepBtn'
-          name='Search'/>
+          name='Reset password'/>
       </ButtonWrapper>
     </Container>
   );
