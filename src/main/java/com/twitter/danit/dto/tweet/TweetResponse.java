@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
-
 public class TweetResponse {
   private Long id;
   private LocalDateTime createdAt;

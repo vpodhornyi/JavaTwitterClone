@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {styled} from "@mui/material/styles";
-import {IconButton, ListItemIcon, Box, Typography, MenuItem, Menu} from "@mui/material";
-import MoreHorizOutlined from '@mui/icons-material/MoreHorizOutlined';
+import {ListItemIcon, Box, Typography, MenuItem, Menu} from "@mui/material";
 import PropTypes from "prop-types";
-import {IconByName} from "../../../../components";
 import {useDispatch} from "react-redux";
 
-const MoreTweetActionsButton = ({item}) => {
+import {IconByName, MoreButton} from "../../../../components";
+import DeleteTweetConfirm from "./DeleteTweetConfirm";
+
+const MoreTweetActionsButton = ({tweet, toggleModal}) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -19,28 +20,20 @@ const MoreTweetActionsButton = ({item}) => {
     setAnchorEl(null);
   };
 
-  const deleteTweet = (fieldName) => {
-    // dispatch(ACTIONS.setTweetFormCanReply(fieldName));
-    // fieldName && setSelected(LIST_ITEMS[fieldName]);
+  const deleteTweet = () => {
+    toggleModal(<DeleteTweetConfirm toggleModal={toggleModal} tweet={tweet}/>, true);
     setAnchorEl(null);
   };
 
   return (
-    <BoxWrapper onClick={e => e.stopPropagation()}>
+    <Box onClick={e => e.stopPropagation()}>
       <Box
-        id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <IconButton
-          color='action'
-          name='MoreHorizOutlined'
-          title='More'
-          size='small'>
-          <MoreHorizOutlined/>
-        </IconButton>
+        <MoreButton/>
       </Box>
       <MenuWrapper
         anchorEl={anchorEl}
@@ -49,7 +42,7 @@ const MoreTweetActionsButton = ({item}) => {
         MenuListProps={{'aria-labelledby': 'basic-button'}}
       >
         <MenuItem
-          onClick={() => deleteTweet('PUBLIC')}
+          onClick={() => deleteTweet()}
           sx={{display: 'flex', justifyContent: 'space-between'}}>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <ListItemIcon>
@@ -68,34 +61,9 @@ const MoreTweetActionsButton = ({item}) => {
           </Box>
         </MenuItem>
       </MenuWrapper>
-    </BoxWrapper>);
+    </Box>);
 }
 
-const BoxWrapper = styled(Box)(({theme}) => ({
-  '& .MuiButtonBase-root:hover': {
-    transition: '0.5s',
-    color: theme.palette.primary.main,
-    backgroundColor: theme.palette.primary.alpha,
-  },
-
-  '& .MuiTouchRipple-root': {
-    display: 'none',
-  },
-}));
-const IconByNameWrapper = styled(Box)(({theme}) => ({
-  width: '40px',
-  height: '40px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: '50%',
-  backgroundColor: theme.palette.primary.main,
-  marginRight: '12px',
-
-  '& > .IconByName': {
-    color: theme.palette.common.white,
-  }
-}));
 const MenuWrapper = styled(Menu)(({theme}) => ({
   '& .MuiPaper-root': {
     boxShadow: 'rgb(101 119 134 / 20%) 0px 0px 15px, rgb(101 119 134 / 15%) 0px 0px 3px 1px !important',
@@ -129,6 +97,7 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 }));
 
 MoreTweetActionsButton.propTypes = {
-  item: PropTypes.object,
+  tweet: PropTypes.object,
+  toggleModal: PropTypes.func,
 }
 export default MoreTweetActionsButton;

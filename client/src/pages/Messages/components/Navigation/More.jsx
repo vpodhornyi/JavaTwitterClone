@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {styled} from "@mui/material/styles";
-import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer, IconButton} from "@mui/material";
+import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer} from "@mui/material";
 import PropTypes from "prop-types";
 
-import IconByName from "@components/icons/IconByName";
+import {MoreButton, IconByName} from "@components";
 import LeaveChatConfirm from "../confirms/LeaveChatConfirm";
-import MoreHorizOutlined from "@mui/icons-material/MoreHorizOutlined";
 
 const More = ({toggleModal, chat}) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,14 +30,7 @@ const More = ({toggleModal, chat}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        <IconButton
-          color='action'
-          name='MoreHorizOutlined'
-          title='More'
-          size='small'
-        >
-          <MoreHorizOutlined/>
-        </IconButton>
+        <MoreButton/>
       </Box>
       <Box>
         <MenuWrapper

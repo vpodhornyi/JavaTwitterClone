@@ -9,6 +9,8 @@ import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.action.TweetActionRequest;
 import com.twitter.danit.dto.action.TweetActionResponseAllData;
 import com.twitter.danit.dto.tweet.TweetRequest;
+import com.twitter.danit.exception.CouldNotFindTweetException;
+import com.twitter.danit.exception.NoTweetAuthorException;
 import com.twitter.danit.facade.action.TweetActionResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -42,8 +46,8 @@ public class TweetService {
   public List<Long> getBookmarks() {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String username = principal instanceof UserDetails
-            ? ((UserDetails) principal).getUsername()
-            : principal.toString();
+        ? ((UserDetails) principal).getUsername()
+        : principal.toString();
     User user = userDao.findByUserTag(username);
     return tweetActionRepository.findBookmarks(user.getId(), "BOOKMARK");
   }
@@ -58,32 +62,38 @@ public class TweetService {
 //    tweetRepository.save(tweet);
   }
 
-  public Tweet findById(Long userId) {
+  public Tweet findById(Long tweetId) {
+    Optional<Tweet> optionalTweet = tweetRepository.findById(tweetId);
 
-    return tweetRepository.findById(userId).orElse(new Tweet());
+    if (optionalTweet.isPresent()) {
+      return optionalTweet.get();
+    }
 
+    throw new CouldNotFindTweetException();
   }
 
-  public void deleteById(Long id) {
-    tweetRepository.deleteById(id);
+  public void deleteById(Long tweetId) {
+    tweetRepository.deleteById(tweetId);
+  }
 
-
+  public void isUserTweetAuthorException(Tweet tweet, User user) {
+    if (!Objects.equals(tweet.getUser(), user)) throw new NoTweetAuthorException();
   }
 
   public TweetActionResponseAllData changeAction(TweetActionRequest tweetActionRequest) {
     Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     String username = principal instanceof UserDetails
-            ? ((UserDetails) principal).getUsername()
-            : principal.toString();
+        ? ((UserDetails) principal).getUsername()
+        : principal.toString();
 
     Tweet tweet = tweetRepository.findById(tweetActionRequest.getTweetId()).orElse(new Tweet());
     User user = userDao.findByUserTag(username);
     TweetAction newTweetAction = new TweetAction(tweetActionRequest.getActionType(), tweet, user);
 
     TweetAction resultFilter =
-            tweet.getActions().stream().filter(action -> action.getActionType().equals(tweetActionRequest.getActionType())
-                    && action.getUser().getUserTag().equals(username)
-            ).findFirst().orElse(newTweetAction);
+        tweet.getActions().stream().filter(action -> action.getActionType().equals(tweetActionRequest.getActionType())
+            && action.getUser().getUserTag().equals(username)
+        ).findFirst().orElse(newTweetAction);
 
     if (!resultFilter.equals(newTweetAction)) {
       tweetActionRepository.deleteById(resultFilter.getId());

@@ -2,6 +2,7 @@ package com.twitter.danit.controller;
 
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.tweet.DeleteTweetResponse;
 import com.twitter.danit.dto.tweet.PageTweetResponse;
 import com.twitter.danit.dto.tweet.TweetRequest;
 import com.twitter.danit.dto.tweet.TweetResponse;
@@ -59,7 +60,6 @@ public class TweetController {
 
   @GetMapping("/{id}")
   public TweetResponse getById(@PathVariable("id") String userId, Principal principal) throws Exception {
-    System.out.println(principal.getName());
     Tweet tweet = tweetService.findById(Long.parseLong(userId));
     if (tweet.equals(new Tweet())) {
       throw new NullPointerException("There is no tweet with this id ");
@@ -67,17 +67,14 @@ public class TweetController {
     return tweetResponseMapper.convertToDto(tweet);
   }
 
-  @DeleteMapping("/{userId}/{tweetId}")
-  public void delete(@PathVariable(value = "userId") Long userId,
-                     @PathVariable(value = "tweetId") Long tweetId) throws Exception {
+  @DeleteMapping("/{id}")
+  public ResponseEntity<DeleteTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) throws Exception {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
-    if (tweet.equals(new Tweet())) {
-      throw new Exception("The list has no element with this id");
-    } else if (tweet.getUser().getId() != userId) {
-      throw new Exception("This is not this user's tweet ");
-    } else {
-      tweetService.deleteById(tweetId);
-    }
+    System.out.println(tweet);
+    tweetService.isUserTweetAuthorException(tweet, authUser);
+    tweetService.deleteById(tweetId);
+    return ResponseEntity.ok(new DeleteTweetResponse(tweetId));
   }
 
   @PutMapping("/update")
@@ -95,10 +92,5 @@ public class TweetController {
   public TweetActionResponseAllData changeAction(@RequestBody TweetActionRequest tweetActionRequest,
                                                  @AuthenticationPrincipal User user) {
     return tweetService.changeAction(tweetActionRequest);
-  }
-
-  @ExceptionHandler({Exception.class, MethodArgumentNotValidException.class})
-  public ResponseEntity<Object> handleException(Exception ex) {
-    return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
   }
 }

@@ -14,7 +14,7 @@ import NoMatches from "./NoMatches";
 import ColumnWrapper from "./ColumnWrapper";
 import {LogoIcon, IconByName,} from "./icons";
 import {Preloader, CircularLoader, LineLoader} from "./loaders";
-import {CustomIconButton, CustomFabButton, FollowButton, AddPhotoButton} from "./buttons";
+import {CustomIconButton, CustomFabButton, FollowButton, AddPhotoButton, MoreButton} from "./buttons";
 import StickyHeader from "./StickyHeader";
 import LoginPanel from "./LoginPanel";
 import Display from "./Display";
@@ -48,6 +48,7 @@ export {
   CustomFabButton,
   FollowButton,
   AddPhotoButton,
+  MoreButton,
   NoMatches,
   ColumnWrapper,
   StickyHeader,

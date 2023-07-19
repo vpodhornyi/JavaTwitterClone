@@ -10,7 +10,7 @@ import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
 
-const Tweet = ({tweet}) => {
+const Tweet = ({tweet, toggleModal}) => {
   return (
     <BoxWrapper>
       <Link
@@ -35,7 +35,7 @@ const Tweet = ({tweet}) => {
               }
             }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
           </Box>
-          <MoreTweetActionsButton/>
+          <MoreTweetActionsButton tweet={tweet} toggleModal={toggleModal}/>
         </Box>
         <Typography>{tweet.body}</Typography>
         <Box className="ImagesBox">
@@ -80,5 +80,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
 Tweet.propTypes = {
   tweet: PropTypes.object,
+  toggleModal: PropTypes.func,
 }
 export default Tweet;

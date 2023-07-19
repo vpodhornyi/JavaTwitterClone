@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import Tweet from "./components/tweet/Tweet";
 import {getTweets} from "@redux/tweet/action";
 
-const Tweets = ({bookmarksValue = false}) => {
+const Tweets = ({bookmarksValue = false, toggleModal}) => {
   const dispatch = useDispatch();
   const tweets = useSelector(state => state.tweet.tweets);
 
@@ -17,7 +17,7 @@ const Tweets = ({bookmarksValue = false}) => {
 
   return (
     <BoxWrapper>
-      {tweets.map(tweet => <Tweet key={tweet.key} tweet={tweet}/>)}
+      {tweets.map(tweet => <Tweet key={tweet.key} tweet={tweet} toggleModal={toggleModal}/>)}
     </BoxWrapper>
   );
 };
@@ -28,6 +28,7 @@ const BoxWrapper = styled(Box)({
 
 Tweets.propTypes = {
   bookmarksValue: PropTypes.bool,
+  toggleModal: PropTypes.func,
 };
 
 export default Tweets;
