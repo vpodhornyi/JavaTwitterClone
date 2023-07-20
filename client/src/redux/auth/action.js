@@ -14,7 +14,7 @@ const actions = createActions(
       "SET_NEW_USER_DATA",
       "RESET_DATA",
     ],
-    async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "CREATE_NEW_USER", "LOGOUT", "RESET_PASSWORD"]
+    async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "CREATE_NEW_USER", "LOGOUT"]
   },
   {
     prefix: "auth"
@@ -42,20 +42,6 @@ export const isAccountExist = (login, showErr = true) => async dispatch => {
   } catch (err) {
     showErr && dispatch(SNACK_ACTIONS.open(err?.response?.data));
     dispatch(ACTIONS.isAccountExist.fail());
-    return false;
-  }
-}
-
-export const resetPassword = (login) => async dispatch => {
-  try {
-    dispatch(ACTIONS.resetPassword.request());
-    const data = await api.post(URLS.AUTH.RESET_PASSWORD, {login});
-    dispatch(ACTIONS.resetPassword.success(data));
-
-    return true;
-  } catch (err) {
-    dispatch(SNACK_ACTIONS.open(err?.response?.data));
-    dispatch(ACTIONS.resetPassword.fail());
     return false;
   }
 }

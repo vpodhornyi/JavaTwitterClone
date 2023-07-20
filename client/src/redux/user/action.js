@@ -4,12 +4,13 @@ import {ACTIONS as AUTH_ACTIONS} from '../auth/action';
 import {ACTIONS as CHAT_ACTIONS} from "../chat/action";
 import {ACTIONS as MESSAGE_ACTIONS} from "../chat/message/action";
 import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
+import {PATH} from "../../utils/constants";
 
 
 const actions = createActions(
     {
       actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
-      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE'],
+      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
     },
     {
       prefix: "user",
@@ -112,5 +113,21 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     });
   } catch (err) {
     console.log('chatSubscribes error - ', err);
+  }
+}
+
+export const resetPassword = (login, navigate, background) => async dispatch => {
+  try {
+    // dispatch(ACTIONS.resetPassword.request());
+    const data = await api.post(URLS.USERS.RESET_PASSWORD, {login});
+    // dispatch(ACTIONS.resetPassword.success(data));
+    navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_IN.LOGIN}`, {
+      state: {background}
+    });
+    dispatch(SNACK_ACTIONS.open(data));
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+    dispatch(ACTIONS.resetPassword.fail());
   }
 }
