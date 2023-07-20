@@ -18,4 +18,5 @@ public class TweetResponse {
   private Set<TweetActionResponse> actions;
   private String body;
   private TweetUser user;
+  private boolean IsTweetOwner;
 }

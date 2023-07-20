@@ -35,7 +35,7 @@ const Tweet = ({tweet, toggleModal}) => {
               }
             }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
           </Box>
-          <MoreTweetActionsButton tweet={tweet} toggleModal={toggleModal}/>
+          {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet} toggleModal={toggleModal}/>}
         </Box>
         <Typography>{tweet.body}</Typography>
         <Box className="ImagesBox">

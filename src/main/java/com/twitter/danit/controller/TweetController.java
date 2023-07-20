@@ -43,7 +43,7 @@ public class TweetController {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Page<Tweet> tweets = tweetService.getTweetsPage(pageNumber, pageSize, authUser.getId());
 
-    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets));
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
   @PostMapping

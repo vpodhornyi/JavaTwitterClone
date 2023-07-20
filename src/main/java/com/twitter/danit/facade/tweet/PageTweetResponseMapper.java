@@ -1,6 +1,7 @@
 package com.twitter.danit.facade.tweet;
 
 import com.twitter.danit.domain.tweet.Tweet;
+import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.tweet.PageTweetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,7 @@ import java.util.List;
 public class PageTweetResponseMapper {
   private final TweetResponseMapper tweetResponseMapper;
 
-  public PageTweetResponse convertToDto(Page<Tweet> entity) {
+  public PageTweetResponse convertToDto(Page<Tweet> entity, User authUser) {
     PageTweetResponse dto = new PageTweetResponse();
     dto.setTotalPages(entity.getTotalPages());
     dto.setTotalElements(entity.getTotalElements());
@@ -21,7 +22,7 @@ public class PageTweetResponseMapper {
     List<Tweet> tweets = entity.getContent();
 
     if (tweets.size() > 0) {
-      dto.setElements(tweets.stream().map(tweetResponseMapper::convertToDto).toList());
+      dto.setElements(tweets.stream().map(t -> tweetResponseMapper.convertToDto(t, authUser)).toList());
     }
 
     return dto;
