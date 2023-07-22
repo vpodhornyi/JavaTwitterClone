@@ -22,8 +22,10 @@ import java.util.Optional;
 public class Chat extends BaseEntity {
   private String title;
   private String avatarImgUrl;
+
   @Enumerated(EnumType.STRING)
   private ChatType type;
+
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
   @JoinTable(name = "chats_users",

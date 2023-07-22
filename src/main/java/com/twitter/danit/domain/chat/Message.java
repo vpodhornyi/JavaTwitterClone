@@ -28,6 +28,7 @@ public class Message extends BaseEntity {
   }
 
   private String text;
+
   @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "message")
   private List<MessageSeen> seen = new ArrayList<>();
 

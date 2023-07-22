@@ -6,8 +6,14 @@ import PropTypes from "prop-types";
 
 import CounterButton from "./CounterButton";
 import {CustomIconButton} from "../../../../components";
+import {likeTweet} from "@redux/tweet/action";
 
-const Index = ({item}) => {
+const Index = ({tweet}) => {
+  const dispatch = useDispatch();
+
+  const like = () => {
+    dispatch(likeTweet(tweet.id));
+  }
 
   return (
     <BoxWrapper>
@@ -17,7 +23,7 @@ const Index = ({item}) => {
       <Box className="Retweet">
         <CounterButton name="FlipCameraAndroid" count={500}/>
       </Box>
-      <Box className="Like">
+      <Box className="Like" onClick={like}>
         <CounterButton name="FavoriteBorder" count={5000}/>
       </Box>
       <Box className="View">
@@ -123,7 +129,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 }));
 
 Index.propTypes = {
-  item: PropTypes.object,
+  tweet: PropTypes.object,
 }
 
 export default Index;

@@ -3,6 +3,7 @@ package com.twitter.danit.service;
 import com.twitter.danit.dao.TweetActionRepository;
 import com.twitter.danit.dao.TweetRepository;
 import com.twitter.danit.dao.UserDao;
+import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -39,6 +41,7 @@ public class TweetService {
     return tweetRepository.findAllTweets(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
+  @Transactional
   public Tweet save(Tweet tweet) {
     return tweetRepository.save(tweet);
   }
@@ -91,9 +94,10 @@ public class TweetService {
     TweetAction newTweetAction = new TweetAction(tweetActionRequest.getActionType(), tweet, user);
 
     TweetAction resultFilter =
-        tweet.getActions().stream().filter(action -> action.getActionType().equals(tweetActionRequest.getActionType())
-            && action.getUser().getUserTag().equals(username)
-        ).findFirst().orElse(newTweetAction);
+        tweet.getActions().stream()
+            .filter(action -> action.getActionType().equals(tweetActionRequest.getActionType())
+                && action.getUser().getUserTag().equals(username)
+            ).findFirst().orElse(newTweetAction);
 
     if (!resultFilter.equals(newTweetAction)) {
       tweetActionRepository.deleteById(resultFilter.getId());
@@ -101,5 +105,19 @@ public class TweetService {
       tweetActionRepository.save(newTweetAction);
     }
     return tweetActionResponseMapper.convertToDto(newTweetAction);
+  }
+
+  public Tweet likeTweet(Long tweetId, User user) {
+    Tweet tweet = findById(tweetId);
+    Optional<TweetAction> optionalTweetAction = findTweetAction(tweet, user, ActionType.LIKE);
+
+    if (optionalTweetAction.isEmpty()) tweet.addTweetAction(ActionType.LIKE, user);
+    else tweet.deleteTweetAction(optionalTweetAction.get());
+
+    return save(tweet);
+  }
+
+  private Optional<TweetAction> findTweetAction(Tweet tweet, User user, ActionType actionType) {
+    return tweetActionRepository.findFirstByTweetAndUserAndActionType(tweet, user, actionType);
   }
 }

@@ -58,10 +58,12 @@ export const URLS = {
     PROFILE: "/users/profile",
     RESET_PASSWORD: `/users/reset-password`,
   },
-  TWEET: {
+  TWEETS: {
     ROOT: "/tweets",
     CREATE_TWEET: "/tweets/create",
-    CHANGE_ACTIONS: "/tweets/change_actions",
+    ACTIONS: "/tweets/actions",
+    LIKE: "/tweets/id/like",
+    like: id => `/tweets/${id}/like`,
     BOOKMARKS: "/tweets/bookmarks",
   },
   CHATS: {

@@ -40,17 +40,26 @@ public class Tweet extends BaseEntity {
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
   private Set<AttachmentImage> images = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet")
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet")
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> actions = new HashSet<>();
+
+  public void addTweetAction(ActionType actionType, User user) {
+    actions.add(new TweetAction(actionType, this, user));
+  }
+
+  public void deleteTweetAction(TweetAction tweetAction) {
+    actions.remove(tweetAction);
+    tweetAction.setTweet(null);
+  }
 
   @Override
   public String toString() {
     return "Tweet{" + "tweetType=" + tweetType + ", body='" + body + '\'' + ", user=" + user + ", images=" + images
-            + ", notifications=" + notifications + ", actions=" + actions + '}';
+        + ", notifications=" + notifications + ", actions=" + actions + '}';
   }
 }

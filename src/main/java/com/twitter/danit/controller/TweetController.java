@@ -1,5 +1,6 @@
 package com.twitter.danit.controller;
 
+import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.tweet.DeleteTweetResponse;
@@ -62,7 +63,7 @@ public class TweetController {
   public TweetResponse getById(@PathVariable("id") String userId, Principal principal) throws Exception {
     Tweet tweet = tweetService.findById(Long.parseLong(userId));
     if (tweet.equals(new Tweet())) {
-      throw new NullPointerException("There is no tweet with this id ");
+      throw new NullPointerException("There is no tweet with this id");
     }
     return tweetResponseMapper.convertToDto(tweet);
   }
@@ -88,8 +89,17 @@ public class TweetController {
     return tweetResponseMapper.convertToDto(tweetService.save(tweet));
   }
 
-  @PostMapping("/change_actions")
+  @PostMapping("/actions")
   public TweetActionResponseAllData changeAction(@RequestBody TweetActionRequest tweetActionRequest, Principal principal) {
-    return tweetService.changeAction(tweetActionRequest);
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    System.out.println(tweetActionRequest);
+    return null;
+  }
+
+  @PostMapping("/{id}/like")
+  public ResponseEntity<TweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.likeTweet(tweetId, authUser)));
   }
 }

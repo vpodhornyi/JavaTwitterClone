@@ -100,7 +100,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
         bookmarks: addOrFilterItem(state.bookmarks, payload, "bookmarks"),
       };
-    case String(ACTIONS.changeActionsTweet.success):
+    case String(ACTIONS.actionsTweet.success):
       return {
         ...state,
         tweets: state.tweets.map((currentTweet) => {

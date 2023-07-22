@@ -27,7 +27,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import ImageListContainer from "../../imageList/ImageListContainer";
 import {
-  changeActionsTweet,
+  actionsTweet,
   changeBookmark,
 } from "../../../redux/tweet/action";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -134,7 +134,7 @@ const Tweet = ({ tweetInfo }) => {
               switch (itemData.tooltip) {
                 case "Bookmark":
                   dispatch(
-                    changeActionsTweet({
+                    actionsTweet({
                       actionType: "BOOKMARK",
                       tweetId: id,
                     })
@@ -149,11 +149,11 @@ const Tweet = ({ tweetInfo }) => {
                   });
                 case "Like":
                   return dispatch(
-                    changeActionsTweet({ actionType: "LIKE", tweetId: id })
+                    actionsTweet({ actionType: "LIKE", tweetId: id })
                   );
                 case "Retweet":
                   return dispatch(
-                    changeActionsTweet({ actionType: "RETWEET", tweetId: id })
+                    actionsTweet({ actionType: "RETWEET", tweetId: id })
                   );
               }
             };

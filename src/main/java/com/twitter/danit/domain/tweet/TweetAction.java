@@ -15,8 +15,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TweetAction extends BaseEntity {
+
+  public TweetAction(ActionType actionType, Tweet tweet, User user) {
+    this.actionType = actionType;
+    this.tweet = tweet;
+    this.user = user;
+    this.setCreatedBy(user.getEmail());
+    this.setUpdatedBy(user.getEmail());
+  }
 
   @Enumerated(EnumType.STRING)
   private ActionType actionType;
@@ -32,8 +39,8 @@ public class TweetAction extends BaseEntity {
   @Override
   public String toString() {
     return "TweetAction{" +
-            "actionType=" + actionType +
-            ", user=" + user +
-            '}';
+        "actionType=" + actionType +
+        ", user=" + user +
+        '}';
   }
 }

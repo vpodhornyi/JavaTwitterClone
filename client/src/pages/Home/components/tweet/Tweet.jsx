@@ -40,7 +40,7 @@ const Tweet = ({tweet}) => {
         <Box className="ImagesBox">
           {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
         </Box>
-        <TweetFooter/>
+        <TweetFooter tweet={tweet}/>
       </Box>
     </BoxWrapper>);
 }

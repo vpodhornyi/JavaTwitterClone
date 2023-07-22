@@ -16,7 +16,7 @@ const actions = createActions(
       "DELETE_TWEET",
       "CREATE_TWEET",
       "GET_TWEETS",
-      "CHANGE_ACTIONS_TWEET",
+      "ACTIONS_TWEET",
       "HANDLER_BOOKMARK",
     ],
   },
@@ -33,7 +33,7 @@ export const getTweets = () => async (dispatch, getState) => {
   try {
     const {tweet: {pageNumber, pageSize}} = getState();
     dispatch(ACTIONS.getTweets.request());
-    const data = await api.get(URLS.TWEET.ROOT, {params: {pageNumber, pageSize}});
+    const data = await api.get(URLS.TWEETS.ROOT, {params: {pageNumber, pageSize}});
     console.log(data);
     dispatch(ACTIONS.getTweets.success(data));
 
@@ -54,7 +54,7 @@ export const createTweet = (obj) => async (dispatch, getState) => {
       images: form.images.map(v => v.src),
       body: form.text,
     }
-    const data = await api.post(URLS.TWEET.ROOT, body);
+    const data = await api.post(URLS.TWEETS.ROOT, body);
     console.log(data);
     //
     dispatch(ACTIONS.createTweet.success(data));
@@ -66,7 +66,7 @@ export const createTweet = (obj) => async (dispatch, getState) => {
 };
 export const deleteTweet = (tweetId) => async (dispatch) => {
   try {
-    const data = await api.delete(`${URLS.TWEET.ROOT}/${tweetId}`);
+    const data = await api.delete(`${URLS.TWEETS.ROOT}/${tweetId}`);
     dispatch(SNACK_ACTIONS.open(data));
     dispatch(ACTIONS.deleteTweet.success(data));
 
@@ -74,14 +74,29 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-export const changeActionsTweet = (obj) => async (dispatch) => {
+export const actionsTweet = (obj) => async (dispatch) => {
   try {
-    dispatch(ACTIONS.changeActionsTweet.request());
-    const data = await api.post(URLS.TWEET.CHANGE_ACTIONS, obj);
-    dispatch(ACTIONS.changeActionsTweet.success(data));
+    dispatch(ACTIONS.actionsTweet.request());
+    const data = await api.post(URLS.TWEETS.ACTIONS, obj);
+    dispatch(ACTIONS.actionsTweet.success(data));
     return data;
+
   } catch (err) {
-    dispatch(ACTIONS.changeActionsTweet.fail());
+    dispatch(ACTIONS.actionsTweet.fail());
+    alert(err.message);
+  }
+};
+
+export const likeTweet = (id) => async (dispatch) => {
+  try {
+    // dispatch(ACTIONS.actionsTweet.request());
+    const data = await api.post(URLS.TWEETS.like(id));
+    // dispatch(ACTIONS.actionsTweet.success(data));
+    console.log(data);
+    return data;
+
+  } catch (err) {
+    dispatch(ACTIONS.actionsTweet.fail());
     alert(err.message);
   }
 };
@@ -91,7 +106,7 @@ export const changeBookmark = (id) => (dispatch) => {
 export const handlerBookmark = () => async (dispatch) => {
   try {
     dispatch(ACTIONS.handlerBookmark.request());
-    const bookmarksId = await api.get(URLS.TWEET.BOOKMARKS);
+    const bookmarksId = await api.get(URLS.TWEETS.BOOKMARKS);
     dispatch(ACTIONS.handlerBookmark.success(bookmarksId));
 
   } catch (err) {
