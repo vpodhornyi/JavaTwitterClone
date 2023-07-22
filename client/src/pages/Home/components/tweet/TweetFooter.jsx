@@ -23,8 +23,8 @@ const Index = ({tweet}) => {
       <Box className="Retweet">
         <CounterButton name="FlipCameraAndroid" count={500}/>
       </Box>
-      <Box className="Like" onClick={like}>
-        <CounterButton name="FavoriteBorder" count={5000}/>
+      <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like' } onClick={like}>
+        <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
       </Box>
       <Box className="View">
         <CounterButton name="VisibilityOutlined" count={5000}/>
@@ -88,6 +88,17 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     '& .MuiButtonBase-root': {
       transition: '0.5s',
       backgroundColor: 'rgba(249, 24, 128, 0.2)',
+    },
+
+    '& .IconByName': {
+      color: 'rgb(249, 24, 128)',
+    },
+  },
+
+  '& .Like_active': {
+    '& .MuiTypography-root': {
+      transition: '0.5s',
+      color: 'rgb(249, 24, 128)',
     },
 
     '& .IconByName': {

@@ -19,4 +19,6 @@ public class TweetResponse {
   private String body;
   private TweetUser user;
   private boolean IsTweetOwner;
+  private boolean IsTweetLiked;
+  private long likesCount;
 }

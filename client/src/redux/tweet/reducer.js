@@ -100,30 +100,16 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
         bookmarks: addOrFilterItem(state.bookmarks, payload, "bookmarks"),
       };
-    case String(ACTIONS.actionsTweet.success):
+    case String(ACTIONS.likeTweet.success): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.isTweetLiked = payload.isTweetLiked;
+        tweet.likesCount = payload.likesCount;
+      }
       return {
         ...state,
-        tweets: state.tweets.map((currentTweet) => {
-          const {tweet, actionType, user} = payload;
-          if (currentTweet.id === tweet.id) {
-            const findActionIndex = currentTweet.actions.findIndex((action) => {
-              return (
-                action.actionType === actionType && action.user.id === user.id
-              );
-            });
-            if (findActionIndex < 0) {
-              currentTweet.actions.push({
-                actionType: actionType,
-                user: user,
-              });
-            } else {
-              currentTweet.actions.splice(findActionIndex, 1);
-            }
-          }
-          return currentTweet;
-        }),
-      };
-
+      }
+    }
     default: {
       return state;
     }

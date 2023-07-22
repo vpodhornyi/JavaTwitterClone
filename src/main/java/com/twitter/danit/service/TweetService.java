@@ -7,12 +7,8 @@ import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
-import com.twitter.danit.dto.action.TweetActionRequest;
-import com.twitter.danit.dto.action.TweetActionResponseAllData;
-import com.twitter.danit.dto.tweet.TweetRequest;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
-import com.twitter.danit.facade.action.TweetActionResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,7 +30,6 @@ import java.util.Set;
 public class TweetService {
   private final TweetRepository tweetRepository;
   private final TweetActionRepository tweetActionRepository;
-  private final TweetActionResponseMapper tweetActionResponseMapper;
   private final UserDao userDao;
 
   public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
@@ -55,16 +50,6 @@ public class TweetService {
     return tweetActionRepository.findBookmarks(user.getId(), "BOOKMARK");
   }
 
-  public void update(TweetRequest tweetUpdate) {
-//    System.out.println(tweetUpdate.getId());
-//    Tweet tweet = tweetRepository.findById(tweetUpdate.getId()).get();
-//    tweet.setTweetType(tweetUpdate.getTweetType());
-//    tweet.setBody(tweetUpdate.getBody());
-//    tweet.setUser(tweetUpdate.getUser());
-
-//    tweetRepository.save(tweet);
-  }
-
   public Tweet findById(Long tweetId) {
     Optional<Tweet> optionalTweet = tweetRepository.findById(tweetId);
 
@@ -83,41 +68,13 @@ public class TweetService {
     if (!Objects.equals(tweet.getUser(), user)) throw new NoTweetAuthorException();
   }
 
-  public TweetActionResponseAllData changeAction(TweetActionRequest tweetActionRequest) {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String username = principal instanceof UserDetails
-        ? ((UserDetails) principal).getUsername()
-        : principal.toString();
-
-    Tweet tweet = tweetRepository.findById(tweetActionRequest.getTweetId()).orElse(new Tweet());
-    User user = userDao.findByUserTag(username);
-    TweetAction newTweetAction = new TweetAction(tweetActionRequest.getActionType(), tweet, user);
-
-    TweetAction resultFilter =
-        tweet.getActions().stream()
-            .filter(action -> action.getActionType().equals(tweetActionRequest.getActionType())
-                && action.getUser().getUserTag().equals(username)
-            ).findFirst().orElse(newTweetAction);
-
-    if (!resultFilter.equals(newTweetAction)) {
-      tweetActionRepository.deleteById(resultFilter.getId());
-    } else {
-      tweetActionRepository.save(newTweetAction);
-    }
-    return tweetActionResponseMapper.convertToDto(newTweetAction);
-  }
-
-  public Tweet likeTweet(Long tweetId, User user) {
+  public Tweet addOrRemoveTweetAction(Long tweetId, User user, ActionType actionType) {
     Tweet tweet = findById(tweetId);
-    Optional<TweetAction> optionalTweetAction = findTweetAction(tweet, user, ActionType.LIKE);
+    Optional<TweetAction> optionalTweetAction = tweetActionRepository.findFirstByTweetAndUserAndActionType(tweet, user, actionType);
 
-    if (optionalTweetAction.isEmpty()) tweet.addTweetAction(ActionType.LIKE, user);
+    if (optionalTweetAction.isEmpty()) tweet.addTweetAction(actionType, user);
     else tweet.deleteTweetAction(optionalTweetAction.get());
 
     return save(tweet);
-  }
-
-  private Optional<TweetAction> findTweetAction(Tweet tweet, User user, ActionType actionType) {
-    return tweetActionRepository.findFirstByTweetAndUserAndActionType(tweet, user, actionType);
   }
 }

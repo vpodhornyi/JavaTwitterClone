@@ -18,6 +18,7 @@ const actions = createActions(
       "GET_TWEETS",
       "ACTIONS_TWEET",
       "HANDLER_BOOKMARK",
+      "LIKE_TWEET",
     ],
   },
   {
@@ -74,30 +75,14 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-export const actionsTweet = (obj) => async (dispatch) => {
-  try {
-    dispatch(ACTIONS.actionsTweet.request());
-    const data = await api.post(URLS.TWEETS.ACTIONS, obj);
-    dispatch(ACTIONS.actionsTweet.success(data));
-    return data;
-
-  } catch (err) {
-    dispatch(ACTIONS.actionsTweet.fail());
-    alert(err.message);
-  }
-};
 
 export const likeTweet = (id) => async (dispatch) => {
   try {
-    // dispatch(ACTIONS.actionsTweet.request());
     const data = await api.post(URLS.TWEETS.like(id));
-    // dispatch(ACTIONS.actionsTweet.success(data));
-    console.log(data);
-    return data;
+    dispatch(ACTIONS.likeTweet.success(data));
 
   } catch (err) {
-    dispatch(ACTIONS.actionsTweet.fail());
-    alert(err.message);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
 export const changeBookmark = (id) => (dispatch) => {

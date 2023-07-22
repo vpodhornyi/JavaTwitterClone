@@ -3,12 +3,10 @@ package com.twitter.danit.controller;
 import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
-import com.twitter.danit.dto.tweet.DeleteTweetResponse;
-import com.twitter.danit.dto.tweet.PageTweetResponse;
-import com.twitter.danit.dto.tweet.TweetRequest;
-import com.twitter.danit.dto.tweet.TweetResponse;
+import com.twitter.danit.dto.tweet.*;
 import com.twitter.danit.dto.action.TweetActionRequest;
 import com.twitter.danit.dto.action.TweetActionResponseAllData;
+import com.twitter.danit.facade.tweet.LikeTweetResponseMapper;
 import com.twitter.danit.facade.tweet.PageTweetResponseMapper;
 import com.twitter.danit.facade.tweet.TweetRequestMapper;
 import com.twitter.danit.facade.tweet.TweetResponseMapper;
@@ -38,6 +36,7 @@ public class TweetController {
   private final TweetRequestMapper tweetRequestMapper;
   private final PageTweetResponseMapper pageTweetResponseMapper;
   private final TweetResponseMapper tweetResponseMapper;
+  private final LikeTweetResponseMapper likeTweetResponseMapper;
 
   @GetMapping
   public ResponseEntity<PageTweetResponse> getAll(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
@@ -69,18 +68,14 @@ public class TweetController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<DeleteTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) throws Exception {
+  public ResponseEntity<DeleteTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
     System.out.println(tweet);
     tweetService.isUserTweetAuthorException(tweet, authUser);
     tweetService.deleteById(tweetId);
-    return ResponseEntity.ok(new DeleteTweetResponse(tweetId));
-  }
 
-  @PutMapping("/update")
-  public void update(@Valid @RequestBody TweetRequest dto) {
-    tweetService.update(dto);
+    return ResponseEntity.ok(new DeleteTweetResponse(tweetId));
   }
 
   @PostMapping("/create")
@@ -89,17 +84,22 @@ public class TweetController {
     return tweetResponseMapper.convertToDto(tweetService.save(tweet));
   }
 
-  @PostMapping("/actions")
-  public TweetActionResponseAllData changeAction(@RequestBody TweetActionRequest tweetActionRequest, Principal principal) {
+  @PostMapping("/{id}/like")
+  public ResponseEntity<LikeTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    System.out.println(tweetActionRequest);
-    return null;
+    Tweet tweet = tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.LIKE);
+    return ResponseEntity.ok(likeTweetResponseMapper.convertToDto(tweet, authUser));
   }
 
-  @PostMapping("/{id}/like")
-  public ResponseEntity<TweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  @PostMapping("/{id}/bookmark")
+  public ResponseEntity<TweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.BOOKMARK)));
+  }
 
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.likeTweet(tweetId, authUser)));
+  @PostMapping("/{id}/retweet")
+  public ResponseEntity<TweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.RETWEET)));
   }
 }

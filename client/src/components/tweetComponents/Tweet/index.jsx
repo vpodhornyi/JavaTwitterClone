@@ -10,9 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import VerifiedIcon from "@mui/icons-material/Verified";
-import { ICONS } from "./tweetData";
+import {ICONS} from "./tweetData";
 import PropTypes from "prop-types";
-import { MoreIcon } from "../../../media/icons";
+import {MoreIcon} from "../../../media/icons";
 import Reply from "../Reply";
 import {
   AvatarDecorate,
@@ -24,20 +24,19 @@ import {
   UserAvatar,
   UserName,
 } from "./style";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ImageListContainer from "../../imageList/ImageListContainer";
 import {
-  actionsTweet,
   changeBookmark,
 } from "../../../redux/tweet/action";
-import { useLocation, useNavigate } from "react-router-dom";
-import { PATH } from "../../../utils/constants";
-import { getPersonalData } from "../../../redux/user/selector";
+import {useLocation, useNavigate} from "react-router-dom";
+import {PATH} from "../../../utils/constants";
+import {getPersonalData} from "../../../redux/user/selector";
 
-const Tweet = ({ tweetInfo }) => {
+const Tweet = ({tweetInfo}) => {
   const dispatch = useDispatch();
-  const { id, body, images, actions } = tweetInfo;
-  const { name, avatarImgUrl, userTag, created_at } = tweetInfo.user;
+  const {id, body, images, actions} = tweetInfo;
+  const {name, avatarImgUrl, userTag, created_at} = tweetInfo.user;
   const user = useSelector(getPersonalData);
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,26 +44,26 @@ const Tweet = ({ tweetInfo }) => {
     <>
       <TweetContainer className='TweetContainer'>
         <Content>
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{display: "flex"}}>
             <AvatarWrapper>
               <UserAvatar alt={name} src={avatarImgUrl}></UserAvatar>
               <AvatarDecorate variant={"span"}></AvatarDecorate>
             </AvatarWrapper>
             <Box>
-              <Box sx={{ marginLeft: 0.688 }}>
+              <Box sx={{marginLeft: 0.688}}>
                 <PostInfo>
                   <UserName variant="h2" underline={"hover"}>
                     {name}
                   </UserName>
                   <VerifiedIcon
-                    sx={{ w: 18, h: 18, color: "#1d9bf0", margin: "0 0.125" }}
+                    sx={{w: 18, h: 18, color: "#1d9bf0", margin: "0 0.125"}}
                   />
-                  <Typography variant="h4" sx={{ font: "inherit" }}>
+                  <Typography variant="h4" sx={{font: "inherit"}}>
                     {userTag}
                   </Typography>
                   <Link
                     variant="h4"
-                    sx={{ font: "inherit", color: "inherit" }}
+                    sx={{font: "inherit", color: "inherit"}}
                     underline={"hover"}
                   >
                     {created_at}
@@ -88,19 +87,19 @@ const Tweet = ({ tweetInfo }) => {
               <MoreIcon
                 onClick={() =>
                   navigate(PATH.TWEET.ROOT + `/${id}`, {
-                    state: { background: location },
+                    state: {background: location},
                   })
                 }
-                sx={{ padding: 1 }}
+                sx={{padding: 1}}
               />
             </Tooltip>{" "}
           </IconBlue>
         </Content>
-        {images.length > 0 && <ImageListContainer photos={images} />}
+        {images.length > 0 && <ImageListContainer photos={images}/>}
         <List
           component="ul"
           disablePadding
-          sx={{ display: "flex", justifyContent: "space-around" }}
+          sx={{display: "flex", justifyContent: "space-around"}}
         >
           {ICONS?.map((itemData, index) => {
             const filterActions = actions?.filter(
@@ -134,10 +133,10 @@ const Tweet = ({ tweetInfo }) => {
               switch (itemData.tooltip) {
                 case "Bookmark":
                   dispatch(
-                    actionsTweet({
-                      actionType: "BOOKMARK",
-                      tweetId: id,
-                    })
+                    // actionsTweet({
+                    //   actionType: "BOOKMARK",
+                    //   tweetId: id,
+                    // })
                   ).then(
                     (res) => res && dispatch(changeBookmark(res.tweet.id))
                   );
@@ -145,15 +144,15 @@ const Tweet = ({ tweetInfo }) => {
                   break;
                 case "Reply":
                   return navigate(PATH.TWEET.ROOT + `/reply/${id}`, {
-                    state: { background: location },
+                    state: {background: location},
                   });
                 case "Like":
                   return dispatch(
-                    actionsTweet({ actionType: "LIKE", tweetId: id })
+                    // actionsTweet({ actionType: "LIKE", tweetId: id })
                   );
                 case "Retweet":
                   return dispatch(
-                    actionsTweet({ actionType: "RETWEET", tweetId: id })
+                    // actionsTweet({ actionType: "RETWEET", tweetId: id })
                   );
               }
             };
@@ -178,7 +177,7 @@ const Tweet = ({ tweetInfo }) => {
                     {itemData.icon}
                   </ListItemIcon>
                 </Tooltip>{" "}
-                <ListItemText primary={filterActions.length} />
+                <ListItemText primary={filterActions.length}/>
               </ListItem>
             );
           })}

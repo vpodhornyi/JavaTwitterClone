@@ -57,6 +57,14 @@ public class Tweet extends BaseEntity {
     tweetAction.setTweet(null);
   }
 
+  public long getLikesCount() {
+    return actions.stream().filter(a -> a.getActionType().equals(ActionType.LIKE)).count();
+  }
+
+  public boolean isTweetLiked(User user) {
+    return actions.stream().anyMatch(a -> a.getUser().equals(user) && a.getActionType().equals(ActionType.LIKE));
+  }
+
   @Override
   public String toString() {
     return "Tweet{" + "tweetType=" + tweetType + ", body='" + body + '\'' + ", user=" + user + ", images=" + images
