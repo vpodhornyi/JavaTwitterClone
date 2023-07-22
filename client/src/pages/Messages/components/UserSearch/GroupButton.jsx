@@ -5,11 +5,11 @@ import {Box, Typography} from "@mui/material";
 
 import {PATH} from "@utils/constants";
 import {CustomIconButton} from "@components";
-import {BackgroundContext} from "@utils/context";
+import {Context} from "@utils/context";
 
 const GroupButton = () => {
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   return (
     <BoxWrapper onClick={() => navigate(PATH.MESSAGES.COMPOSE_GROUP, {state: {background}})}>

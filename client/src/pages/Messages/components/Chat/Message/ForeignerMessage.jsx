@@ -12,7 +12,7 @@ import {PATH} from "@utils/constants";
 import Action from "./Action/Action";
 // import Reaction from "./Reaction";
 
-const ForeignerMessage = ({chat, message, sameMessage, toggleModal}) => {
+const ForeignerMessage = ({chat, message, sameMessage}) => {
   const dispatch = useDispatch();
   const {ref, inView} = useInView({
     threshold: 1.0,
@@ -43,7 +43,7 @@ const ForeignerMessage = ({chat, message, sameMessage, toggleModal}) => {
         <MessageTextBox className={`${sameMessage && 'SameMessageTextBox'}`}>
           <Typography>{message.text}</Typography>
         </MessageTextBox>
-        <Action toggleModal={toggleModal} message={message}/>
+        <Action message={message}/>
       </MessageBox>
       <Box className={`InfoMessageBox ${sameMessage && 'SameMessage'}`}>
         {/*<Reaction/>*/}
@@ -114,7 +114,6 @@ const TimeBox = styled(Box)(({theme}) => ({
 ForeignerMessage.propTypes = {
   chat: PropTypes.object,
   message: PropTypes.object,
-  toggleModal: PropTypes.func,
   sameMessage: PropTypes.bool,
 }
 export default ForeignerMessage;

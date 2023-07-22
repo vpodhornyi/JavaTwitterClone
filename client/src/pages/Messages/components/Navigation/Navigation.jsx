@@ -9,14 +9,11 @@ import {ACTIONS, getChats} from "@redux/chat/action";
 import ActionWelcome from "./ActionWelcome";
 import SearchBox from "./SearchBox";
 import {CircularLoader, PrimaryHeader} from "../../../../components";
-import {ModalWindow} from "../../../../components";
-import {useModal} from '../../../../hooks/useModal';
 import InViewElement from "../InViewElement";
 import MessagesHeader from "../../Header";
 import {styled} from "@mui/material/styles";
 
 const Navigation = () => {
-  const {modal, toggleModal} = useModal();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const {isChatLoading, isChatsExist, chats, totalPages, pageNumber} = useSelector(getChatsData);
@@ -50,16 +47,11 @@ const Navigation = () => {
   if (isChatsExist) {
     element = (
       <Box>
-        {chats.map(chat => <ChatRoute key={chat.key} chat={chat} toggleModal={toggleModal}/>)}
+        {chats.map(chat => <ChatRoute key={chat.key} chat={chat}/>)}
         {!loading && <InViewElement toggleVisible={toggleVisible}/>}
         {loading && (<Box sx={{position: 'relative', pt: 1, pb: 1}}>
           <CircularLoader/>
         </Box>)}
-        <ModalWindow
-          isShowing={modal.isShowing}
-          toggleModal={toggleModal}
-          element={modal.element}
-        />
       </Box>
     )
   }

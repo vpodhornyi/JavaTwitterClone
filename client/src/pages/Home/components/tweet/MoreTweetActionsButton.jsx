@@ -1,14 +1,14 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {styled} from "@mui/material/styles";
 import {ListItemIcon, Box, Typography, MenuItem, Menu} from "@mui/material";
 import PropTypes from "prop-types";
-import {useDispatch} from "react-redux";
 
 import {IconByName, MoreButton} from "../../../../components";
 import DeleteTweetConfirm from "./DeleteTweetConfirm";
+import {Context} from "@utils/context";
 
-const MoreTweetActionsButton = ({tweet, toggleModal}) => {
-  const dispatch = useDispatch();
+const MoreTweetActionsButton = ({tweet}) => {
+  const {toggleModal} = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -98,6 +98,5 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 
 MoreTweetActionsButton.propTypes = {
   tweet: PropTypes.object,
-  toggleModal: PropTypes.func,
 }
 export default MoreTweetActionsButton;

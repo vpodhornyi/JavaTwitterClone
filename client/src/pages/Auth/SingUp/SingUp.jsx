@@ -5,11 +5,11 @@ import {Box, Typography} from "@mui/material";
 import {CustomFabButton} from "../../../components";
 import {OrLine, Question, Container, ButtonWrapper} from '../components';
 import {PATH} from "../../../utils/constants";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   return (
     <Container>

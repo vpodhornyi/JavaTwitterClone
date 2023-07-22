@@ -4,10 +4,10 @@ import {Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {styled} from "@mui/material/styles";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 
 const DontHavAnAccount = ({question, to, link}) => {
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   return (
     <TypographyWrapper variant='body1'>

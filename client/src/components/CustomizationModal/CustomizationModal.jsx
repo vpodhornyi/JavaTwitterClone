@@ -11,7 +11,7 @@ import {CustomIconButton, CustomFabButton} from "../buttons";
 import {PATH} from "@utils/constants";
 import {ACTIONS, updateCustomize} from "@redux/user/action";
 import StickyHeader from "../StickyHeader";
-import {BackgroundContext} from "../../utils/context";
+import {Context} from "../../utils/context";
 import {setFontSize, setBackgroundColor} from "@utils/theme";
 import {CircularLoader} from '../loaders';
 
@@ -40,7 +40,7 @@ const CustomizationModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   const close = () => navigate(background?.pathname || PATH.ROOT);
   const fontSizeHandler = (e, fontSize) => {

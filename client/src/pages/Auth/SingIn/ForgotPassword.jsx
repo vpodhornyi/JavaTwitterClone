@@ -4,14 +4,14 @@ import {useNavigate} from "react-router-dom";
 import {Box, TextField, Typography} from '@mui/material';
 
 import {CustomFabButton} from "../../../components";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {resetPassword} from '@redux/user/action';
 import {Container, ButtonWrapper} from '../components';
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const [login, setLogin] = useState('');
 
   const onChangeLogin = e => {

@@ -6,14 +6,14 @@ import {styled} from "@mui/material/styles";
 
 import {Container, ButtonWrapper} from "../components";
 import {CustomFabButton} from "../../../components";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {runSingUpSecondStep} from "@redux/auth/action";
 
 const UserData = () => {
   const newUser = useSelector(state => state.auth.newUser)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const [name, setName] = useState(newUser.name);
   const [email, setEmail] = useState(newUser.email);
   const [birthDate, setBirthDate] = useState(newUser.birthDate);

@@ -1,23 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {useModal} from '../../../../hooks/useModal';
 import Action from "./Action";
 import BlockConfirm from "../confirms/BlockConfirm";
-import {ModalWindow} from "../../../../components";
+import {Context} from "@utils/context";
 
 const BlockUser = ({userTag}) => {
-  const {modal, toggleModal} = useModal();
+  const {toggleModal} = useContext(Context);
 
   return (
     <Box onClick={() => toggleModal(<BlockConfirm toggleModal={toggleModal}/>, true)}>
       <Action name={`Block @${userTag}`}/>
-      <ModalWindow
-        isShowing={modal.isShowing}
-        toggleModal={toggleModal}
-        element={modal.element}
-      />
     </Box>);
 }
 

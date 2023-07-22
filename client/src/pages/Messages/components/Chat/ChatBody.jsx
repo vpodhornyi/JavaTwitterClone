@@ -12,7 +12,7 @@ import StartMessage from "./StartMessage";
 import {useModal} from "../../../../hooks/useModal";
 import UserInfo from "./UserInfo";
 import ScrollDownButton from "./ScrollDownButton";
-import {CircularLoader, ModalWindow} from "../../../../components";
+import {CircularLoader} from "../../../../components";
 import {ACTIONS as CHAT_ACTIONS, addNewPrivateChat, addNewGroupChat} from "@redux/chat/action";
 import {ACTIONS as MESSAGE_ACTIONS, getMessages, sendMessage} from "@redux/chat/message/action";
 import {getChatsData, getMessagesData} from "@redux/chat/selector";
@@ -28,7 +28,6 @@ import MessageViewElement from "./MessageViewElement";
 import ChatHeader from "./ChatHeader";
 
 const ChatBody = ({chatId}) => {
-  const {modal, toggleModal} = useModal();
   const {NEW_PRIVATE, NEW_GROUP} = CHAT_TYPE;
   const overlayRef = useRef();
   const chatBodyRef = useRef();
@@ -158,7 +157,6 @@ const ChatBody = ({chatId}) => {
         key={m?.key}
         toggleVisible={toggleElementVisible}
         message={m}
-        toggleModal={toggleModal}
         element={MessageOwner}
         chat={selectedChat}
         messageBoxClick={messageBoxClick}
@@ -172,7 +170,6 @@ const ChatBody = ({chatId}) => {
         key={m?.key}
         toggleVisible={toggleElementVisible}
         message={m}
-        toggleModal={toggleModal}
         element={ForeignerMessage}
         chat={selectedChat}
         messageBoxClick={messageBoxClick}
@@ -243,10 +240,6 @@ const ChatBody = ({chatId}) => {
         sendMessage={send}
       />
     </Box>
-    <ModalWindow
-      isShowing={modal.isShowing}
-      toggleModal={toggleModal}
-      element={modal.element}/>
   </BoxWrapper>);
 }
 

@@ -5,14 +5,14 @@ import {Box, Typography, TextField} from '@mui/material';
 import {authorize} from '@redux/auth/action';
 
 import {CustomFabButton} from "../../../components";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {Question, Container, ButtonWrapper} from '../components';
 import {PATH} from "../../../utils/constants";
 
 const SingInSecondStep = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const userName = useSelector(state => state.auth.loginName);
   const [password, setPassword] = useState('');
   const [login, setLogin] = useState(userName);

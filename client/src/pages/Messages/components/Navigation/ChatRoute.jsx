@@ -10,7 +10,7 @@ import More from './More';
 import {PATH} from "@utils/constants";
 import {moment} from "@utils";
 
-const ChatRoute = ({chat, toggleModal}) => {
+const ChatRoute = ({chat}) => {
   const {authUser} = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ const ChatRoute = ({chat, toggleModal}) => {
           // variant="dot"
         >
           <Box className='MoreIcon'>
-            <More toggleModal={toggleModal} chat={chat}/>
+            <More chat={chat}/>
           </Box>
         </Badge>
       </Box>
@@ -118,7 +118,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
 ChatRoute.propTypes = {
   chat: PropTypes.object,
-  toggleModal: PropTypes.func,
 }
 
 export default ChatRoute;

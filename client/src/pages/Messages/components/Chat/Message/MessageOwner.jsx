@@ -8,13 +8,13 @@ import Seen from "./Seen";
 import Action from "./Action/Action";
 import {moment} from "@utils";
 
-const MessageOwner = ({message, toggleModal, messageBoxClick, sameMessage, activeMessageId}) => {
+const MessageOwner = ({message, messageBoxClick, sameMessage, activeMessageId}) => {
   const active = message.id === activeMessageId;
 
   return (
     <BoxWrapper>
       <MessageBox onClick={() => messageBoxClick(message?.id)}>
-        <Action toggleModal={toggleModal} message={message} isRight={true}/>
+        <Action message={message} isRight={true}/>
         <MessageTextBox
           className={`${sameMessage ? 'SameMessageTextBox' : null} ${active ? 'SameMessageTextBoxActive' : null}`}>
           <Typography>{message.text}</Typography>
@@ -93,7 +93,6 @@ const TimeBox = styled(Box)(({theme}) => ({
 
 MessageOwner.propTypes = {
   message: PropTypes.object,
-  toggleModal: PropTypes.func,
   messageBoxClick: PropTypes.func,
   sameMessage: PropTypes.bool,
   activeMessageId: PropTypes.number,

@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {styled} from "@mui/material/styles";
 import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {MoreButton, IconByName} from "@components";
 import LeaveChatConfirm from "../confirms/LeaveChatConfirm";
+import {Context} from "@utils/context";
 
-const More = ({toggleModal, chat}) => {
+const More = ({chat}) => {
+  const {toggleModal} = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -132,7 +134,6 @@ const MobileBoxWrapper = styled(Box)(({theme}) => ({
   }
 }));
 More.propTypes = {
-  toggleModal: PropTypes.func,
   chat: PropTypes.object,
 }
 

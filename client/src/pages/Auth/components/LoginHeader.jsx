@@ -7,13 +7,13 @@ import IconButton from "@mui/material/IconButton";
 
 import {IconByName, LogoIcon} from '../../../components';
 import {PATH} from '../../../utils/constants';
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {ACTIONS} from '@redux/auth/action';
 
 const LoginHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const handleClick = () => {
     dispatch(ACTIONS.resetData());
     navigate(background?.pathname || PATH.ROOT);

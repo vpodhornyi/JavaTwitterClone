@@ -38,7 +38,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
   @Query(value =
       """
           select * from (select * from chats c
-          join chats_users cu on c.id = cu.chats_i
+          join chats_users cu on c.id = cu.chats_id
           where c.type = :type and cu.users_id = :authUserId) a
           where id in (select c.id from chats c
           join chats_users cu on c.id = cu.chats_id

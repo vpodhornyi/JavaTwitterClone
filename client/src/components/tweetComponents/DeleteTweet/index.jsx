@@ -8,7 +8,7 @@ import {IconByName} from "../../index";
 import {ModalPage} from '../../index';
 import IconButton from "@mui/material/IconButton";
 import {PATH} from "../../../utils/constants";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import Button from "@mui/material/Button";
 import {deleteTweet} from "../../../redux/tweet/action";
 import {useDispatch, useSelector} from "react-redux";
@@ -16,7 +16,7 @@ import {getPersonalData} from "../../../redux/user/selector";
 
 
 const DeleteTweet = () => {
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {id}=useParams();

@@ -9,14 +9,14 @@ import {IconByName, TweetForm} from "../../index";
 import {ModalPage} from '../../index';
 import IconButton from "@mui/material/IconButton";
 import {PATH} from "../../../utils/constants";
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import TweetReply from "../TweetReply";
 import {useSelector} from "react-redux";
 import {getTweetsState} from "../../../redux/tweet/selector";
 
 
 const Reply = () => {
-    const {background} = useContext(BackgroundContext);
+    const {background} = useContext(Context);
     const navigate = useNavigate();
     const tweets = useSelector(getTweetsState);
     const {id}=useParams();

@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {useSelector, useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
@@ -10,7 +9,7 @@ import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
 
-const Tweet = ({tweet, toggleModal}) => {
+const Tweet = ({tweet}) => {
   return (
     <BoxWrapper>
       <Link
@@ -35,7 +34,7 @@ const Tweet = ({tweet, toggleModal}) => {
               }
             }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
           </Box>
-          {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet} toggleModal={toggleModal}/>}
+          {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet}/>}
         </Box>
         <Typography>{tweet.body}</Typography>
         <Box className="ImagesBox">
@@ -80,6 +79,5 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
 Tweet.propTypes = {
   tweet: PropTypes.object,
-  toggleModal: PropTypes.func,
 }
 export default Tweet;

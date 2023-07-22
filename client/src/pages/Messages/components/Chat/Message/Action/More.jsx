@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {styled} from "@mui/material/styles";
 import {ListItemIcon, Menu, MenuItem, Box, ListItemText, Typography} from "@mui/material";
 import PropTypes from "prop-types";
@@ -7,8 +7,10 @@ import IconByName from "@components/icons/IconByName";
 import DeleteForYouMessageConfirm from "../../../confirms/DeleteForYouMessageConfirm";
 import DeleteForAllMessageConfirm from "../../../confirms/DeleteForAllMessageConfirm";
 import {CustomIconButton} from "@components";
+import {Context} from "@utils/context";
 
-const More = ({toggleModal, message, isRight}) => {
+const More = ({message, isRight}) => {
+  const {toggleModal} = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -121,7 +123,6 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 }));
 
 More.propTypes = {
-  toggleModal: PropTypes.func,
   message: PropTypes.object,
   isRight: PropTypes.bool,
 }

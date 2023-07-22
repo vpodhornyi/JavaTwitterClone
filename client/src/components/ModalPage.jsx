@@ -4,13 +4,13 @@ import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {BackgroundContext} from "../utils/context";
+import {Context} from "../utils/context";
 import {PATH} from "../utils/constants";
 
 
 const ModalPage = ({element, closable = true, styles}) => {
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   const onClick = () => {
     closable && navigate(background?.pathname || PATH.ROOT);

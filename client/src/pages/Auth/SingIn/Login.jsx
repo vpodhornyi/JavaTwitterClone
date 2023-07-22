@@ -5,7 +5,7 @@ import {Box, Typography, TextField} from '@mui/material';
 
 import {OrLine, Question, Container, ButtonWrapper} from '../components';
 import {CustomFabButton} from '../../../components';
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {PATH} from "../../../utils/constants";
 import {runLoginSecondStep} from '@redux/auth/action';
 
@@ -13,7 +13,7 @@ const Login = () => {
   const [login, setLogin] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
 
   const onChange = (e) => {
     setLogin(() => e.target.value);

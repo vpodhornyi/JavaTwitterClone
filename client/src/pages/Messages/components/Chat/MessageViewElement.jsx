@@ -5,7 +5,7 @@ import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
-const MessageViewElement = ({toggleVisible, message, toggleModal, activeMessageId,
+const MessageViewElement = ({toggleVisible, message, activeMessageId,
                               element: Message, chat, messageBoxClick, nextMessage}) => {
   const [sameMessage, setSameMessage] = useState(false);
 
@@ -36,7 +36,6 @@ const MessageViewElement = ({toggleVisible, message, toggleModal, activeMessageI
         Message && <Message
           message={message}
           chat={chat}
-          toggleModal={toggleModal}
           messageBoxClick={messageBoxClick}
           sameMessage={sameMessage}
           activeMessageId={activeMessageId}
@@ -54,7 +53,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 MessageViewElement.propTypes = {
   toggleVisible: PropTypes.func,
   message: PropTypes.object,
-  toggleModal: PropTypes.func,
   element: PropTypes.func,
   chat: PropTypes.object,
   messageBoxClick: PropTypes.func,

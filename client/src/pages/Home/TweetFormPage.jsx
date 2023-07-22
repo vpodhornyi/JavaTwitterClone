@@ -8,7 +8,7 @@ import TweetFormFooter from "./components/twitForm/TweetFormFooter";
 import WhoCanReplyButton from "./components/twitForm/WhoCanReplyButton";
 import {Link, useNavigate} from "react-router-dom";
 import {PATH} from "../../utils/constants";
-import {BackgroundContext} from "../../utils/context";
+import {Context} from "../../utils/context";
 import {useDebouncedCallback} from "use-debounce";
 import {ACTIONS} from "@redux/tweet/action";
 import {uploadImage} from '@redux/user/action';
@@ -20,7 +20,7 @@ const TweetFormPage = () => {
   const inputFiletRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const {authUser: user} = useSelector(state => state.user);
   const [text, setText] = useState('');
 

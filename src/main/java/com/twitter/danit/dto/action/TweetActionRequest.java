@@ -7,9 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Data
-
 public class TweetActionRequest {
   private @Enumerated(EnumType.STRING) ActionType actionType;
   private Long tweetId;
-
 }

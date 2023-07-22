@@ -89,8 +89,7 @@ public class TweetController {
   }
 
   @PostMapping("/change_actions")
-  public TweetActionResponseAllData changeAction(@RequestBody TweetActionRequest tweetActionRequest,
-                                                 @AuthenticationPrincipal User user) {
+  public TweetActionResponseAllData changeAction(@RequestBody TweetActionRequest tweetActionRequest, Principal principal) {
     return tweetService.changeAction(tweetActionRequest);
   }
 }

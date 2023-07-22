@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField, Typography} from "@mui/material";
 
-import {BackgroundContext} from "../../../utils/context";
+import {Context} from "../../../utils/context";
 import {ModalPage, CustomIconButton, FollowButton, CircularLoader,
   AddPhotoButton} from "../../../components";
 import {getChatsData} from '@redux/chat/selector';
@@ -12,7 +12,7 @@ import {editGroupChat} from '@redux/chat/action';
 import {PATH} from '@utils/constants';
 
 const GroupEditPage = () => {
-  const {background} = useContext(BackgroundContext);
+  const {background} = useContext(Context);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {selectedChat: chat} = useSelector(getChatsData);
