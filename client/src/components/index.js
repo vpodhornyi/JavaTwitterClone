@@ -28,6 +28,7 @@ import MobileDrawer from './Drawer/Drawer';
 import CustomDrawer from './CustomDrawer';
 import SnackBar from './SnackBar';
 import EmojiPicker from './EmojiPicker';
+import InViewElement from './InViewElement';
 
 export {
   Header,
@@ -67,4 +68,5 @@ export {
   CustomDrawer,
   SnackBar,
   EmojiPicker,
+  InViewElement,
 }

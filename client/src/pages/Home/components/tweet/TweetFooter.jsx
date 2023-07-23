@@ -25,8 +25,8 @@ const Index = ({tweet}) => {
       <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
         <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
       </Box>
-      <Box className="View">
-        <CounterButton name="VisibilityOutlined" count={tweet?.viewsCount}/>
+      <Box className={tweet?.isTweetViewed ? 'View View_active' : 'View'}>
+        <CounterButton name={tweet?.isTweetViewed ? 'Visibility' : 'VisibilityOutlined'} count={tweet?.viewsCount}/>
       </Box>
       <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
         <CustomIconButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}/>
@@ -114,6 +114,17 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     '& .MuiButtonBase-root': {
       transition: '0.5s',
       backgroundColor: 'rgba(29, 155, 240, 0.2)',
+    },
+
+    '& .IconByName': {
+      color: 'rgb(29, 155, 240)',
+    },
+  },
+
+  '& .View_active': {
+    '& .MuiTypography-root': {
+      transition: '0.5s',
+      color: 'rgb(29, 155, 240)',
     },
 
     '& .IconByName': {

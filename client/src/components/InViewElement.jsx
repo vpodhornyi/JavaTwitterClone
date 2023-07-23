@@ -12,7 +12,7 @@ const InViewElement = ({toggleVisible}) => {
     toggleVisible(inView);
   }, [inView])
 
-  return <Box sx={{width: '100%', p: '1px'}} ref={ref}/>;
+  return <Box className="InViewElement" sx={{width: '100%', p: '1px'}} ref={ref}/>;
 }
 
 

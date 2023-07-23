@@ -1,15 +1,27 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {PATH} from "../../../../utils/constants";
+import {InViewElement} from "@components";
 import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
+import {viewTweet} from "@redux/tweet/action";
 
 const Tweet = ({tweet}) => {
+  const dispatch = useDispatch();
+
+  const toggleVisible = async (inView) => {
+    if (inView && !tweet?.isTweetViewed) {
+      console.log('kuku');
+      dispatch(viewTweet(tweet?.id));
+    }
+  }
+
   return (
     <BoxWrapper>
       <Link
@@ -40,6 +52,7 @@ const Tweet = ({tweet}) => {
         <Box className="ImagesBox">
           {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
         </Box>
+        <InViewElement toggleVisible={toggleVisible}/>
         <TweetFooter tweet={tweet}/>
       </Box>
     </BoxWrapper>);
