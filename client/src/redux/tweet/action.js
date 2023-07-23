@@ -19,6 +19,8 @@ const actions = createActions(
       "ACTIONS_TWEET",
       "HANDLER_BOOKMARK",
       "LIKE_TWEET",
+      "BOOKMARK_TWEET",
+      "VIEW_TWEET",
     ],
   },
   {
@@ -85,9 +87,31 @@ export const likeTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
+export const viewTweet = (id) => async (dispatch) => {
+  try {
+    const data = await api.post(URLS.TWEETS.view(id));
+    dispatch(ACTIONS.viewTweet.success(data));
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const bookmarkTweet = (id) => async (dispatch) => {
+  try {
+    const data = await api.post(URLS.TWEETS.bookmark(id));
+    dispatch(ACTIONS.bookmarkTweet.success(data));
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
 export const changeBookmark = (id) => (dispatch) => {
   dispatch(ACTIONS.changeBookmark(id));
 };
+
 export const handlerBookmark = () => async (dispatch) => {
   try {
     dispatch(ACTIONS.handlerBookmark.request());

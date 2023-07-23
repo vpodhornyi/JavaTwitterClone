@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box, TextField} from "@mui/material";
+import {useDebouncedCallback} from "use-debounce";
 import PropTypes from "prop-types";
 
 import {CustomIconButton, EmojiPicker} from "../../../../components";
-import {useDebouncedCallback} from "use-debounce";
 import {ACTIONS} from "@redux/chat/action";
 import {getChatsData} from "@redux/chat/selector";
 

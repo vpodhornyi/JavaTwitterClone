@@ -110,6 +110,25 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
       }
     }
+    case String(ACTIONS.viewTweet.success): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.isTweetViewed = payload.isTweetViewed;
+        tweet.viewssCount = payload.viewssCount;
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.bookmarkTweet.success): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.isTweetInBookmark = payload.isTweetInBookmark;
+      }
+      return {
+        ...state,
+      }
+    }
     default: {
       return state;
     }

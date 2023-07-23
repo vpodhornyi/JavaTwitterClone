@@ -1,19 +1,18 @@
 import React from "react";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
+import {useDebouncedCallback} from "use-debounce";
 import PropTypes from "prop-types";
 
 import CounterButton from "./CounterButton";
 import {CustomIconButton} from "../../../../components";
-import {likeTweet} from "@redux/tweet/action";
+import {likeTweet, bookmarkTweet} from "@redux/tweet/action";
 
 const Index = ({tweet}) => {
   const dispatch = useDispatch();
-
-  const like = () => {
-    dispatch(likeTweet(tweet.id));
-  }
+  const like = useDebouncedCallback(() => dispatch(likeTweet(tweet.id)), 300);
+  const bookmark = useDebouncedCallback(() => dispatch(bookmarkTweet(tweet.id)), 300);
 
   return (
     <BoxWrapper>
@@ -23,14 +22,14 @@ const Index = ({tweet}) => {
       <Box className="Retweet">
         <CounterButton name="FlipCameraAndroid" count={500}/>
       </Box>
-      <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like' } onClick={like}>
+      <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
         <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
       </Box>
       <Box className="View">
-        <CounterButton name="VisibilityOutlined" count={5000}/>
+        <CounterButton name="VisibilityOutlined" count={tweet?.viewsCount}/>
       </Box>
-      <Box className="Bookmark">
-        <CustomIconButton name="BookmarkAddOutlined"/>
+      <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
+        <CustomIconButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}/>
       </Box>
     </BoxWrapper>);
 }
@@ -137,6 +136,18 @@ const BoxWrapper = styled(Box)(({theme}) => ({
       color: 'rgb(29, 155, 240)',
     },
   },
+
+  '& .Bookmark_active': {
+    '& .MuiTypography-root': {
+      transition: '0.5s',
+      color: 'rgb(29, 155, 240)',
+    },
+
+
+    '& .IconByName': {
+      color: 'rgb(29, 155, 240)',
+    },
+  }
 }));
 
 Index.propTypes = {

@@ -21,4 +21,7 @@ public class TweetResponse {
   private boolean IsTweetOwner;
   private boolean IsTweetLiked;
   private long likesCount;
+  private boolean IsTweetViewed;
+  private long viewsCount;
+  private boolean IsTweetInBookmark;
 }
