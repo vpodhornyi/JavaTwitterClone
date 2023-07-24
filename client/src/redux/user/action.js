@@ -71,8 +71,11 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     const {user: {authUser}} = getState();
     authUser?.id && api.client.subscribe(`/queue/tweets`, async (data) => {
       const {body} = JSON.parse(data.body);
+      console.log(body);
       switch (body?.type) {
         case 'TWEET_LIKE':
+          console.log('rebit');
+          body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.likeTweet.success(body));
           break;
         default:

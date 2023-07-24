@@ -16,5 +16,6 @@ public class LikeTweetResponseMapper extends GeneralFacade<Tweet, LikeTweetRespo
   protected void decorateDto(LikeTweetResponse dto, Tweet entity, User user) {
     dto.setLikesCount(entity.getLikesCount());
     dto.setIsTweetLiked(entity.isTweetLiked(user));
+    dto.setLikeUserId(entity.getUser().getId());
   }
 }

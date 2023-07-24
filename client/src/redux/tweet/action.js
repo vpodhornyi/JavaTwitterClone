@@ -76,9 +76,11 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
   }
 };
 
-export const likeTweet = (id) => async (dispatch) => {
+export const likeTweet = (id) => async (dispatch, getState) => {
   try {
+    const {user: {id: authUser}} = getState();
     const data = await api.post(URLS.TWEETS.like(id));
+    data.authUserId = authUser.id;
     dispatch(ACTIONS.likeTweet.success(data));
 
   } catch (err) {

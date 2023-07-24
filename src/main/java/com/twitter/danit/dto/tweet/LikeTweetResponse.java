@@ -11,4 +11,5 @@ public class LikeTweetResponse {
   private Long id;
   private boolean IsTweetLiked;
   private long likesCount;
+  private Long likeUserId;
 }
