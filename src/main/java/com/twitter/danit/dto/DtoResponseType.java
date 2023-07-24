@@ -9,4 +9,6 @@ public enum DtoResponseType {
   GROUP_CHAT,
   ADD_TO_GROUP_CHAT,
   LEAVE_CHAT,
+
+  TWEET_LIKE,
 }

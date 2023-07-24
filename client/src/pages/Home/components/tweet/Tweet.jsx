@@ -16,7 +16,7 @@ const Tweet = ({tweet}) => {
   const dispatch = useDispatch();
 
   const toggleVisible = async (inView) => {
-    if (inView && !tweet?.isTweetViewed) {
+    if (inView && !tweet?.isTweetViewed && !tweet?.isTweetOwner) {
       console.log('kuku');
       dispatch(viewTweet(tweet?.id));
     }

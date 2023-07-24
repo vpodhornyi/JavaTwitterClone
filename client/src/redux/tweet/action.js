@@ -37,7 +37,6 @@ export const getTweets = () => async (dispatch, getState) => {
     const {tweet: {pageNumber, pageSize}} = getState();
     dispatch(ACTIONS.getTweets.request());
     const data = await api.get(URLS.TWEETS.ROOT, {params: {pageNumber, pageSize}});
-    console.log(data);
     dispatch(ACTIONS.getTweets.success(data));
 
     return data;
@@ -58,7 +57,6 @@ export const createTweet = (obj) => async (dispatch, getState) => {
       body: form.text,
     }
     const data = await api.post(URLS.TWEETS.ROOT, body);
-    console.log(data);
     //
     dispatch(ACTIONS.createTweet.success(data));
   } catch (err) {

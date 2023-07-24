@@ -2,19 +2,20 @@ import {createActions} from '../utils';
 import api, {URLS} from "../../services/API";
 import {ACTIONS as AUTH_ACTIONS} from '../auth/action';
 import {ACTIONS as CHAT_ACTIONS} from "../chat/action";
+import {ACTIONS as TWEET_ACTIONS} from "../tweet/action";
 import {ACTIONS as MESSAGE_ACTIONS} from "../chat/message/action";
 import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 import {PATH} from "../../utils/constants";
 
 
 const actions = createActions(
-    {
-      actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
-      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
-    },
-    {
-      prefix: "user",
-    }
+  {
+    actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
+    async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
+  },
+  {
+    prefix: "user",
+  }
 );
 
 export const ACTIONS = {
@@ -68,9 +69,19 @@ export const uploadImage = (body) => async dispatch => {
 export const authUserSocketSubscribe = () => async (dispatch, getState) => {
   try {
     const {user: {authUser}} = getState();
+    authUser?.id && api.client.subscribe(`/queue/tweets`, async (data) => {
+      const {body} = JSON.parse(data.body);
+      switch (body?.type) {
+        case 'TWEET_LIKE':
+          dispatch(TWEET_ACTIONS.likeTweet.success(body));
+          break;
+        default:
+          console.log('no type');
+      }
+    });
+
     authUser?.id && api.client.subscribe(`/queue/user.${authUser.id}`, async (data) => {
       const {body} = JSON.parse(data.body);
-      // console.log('stomp body - ', body);
       switch (body?.type) {
         case 'MESSAGE_ADD':
           const {chat} = body;
@@ -106,6 +117,10 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
         case 'LEAVE_CHAT':
           dispatch(MESSAGE_ACTIONS.leaveChatNotification(body));
           dispatch(CHAT_ACTIONS.deleteUserFromChat(body));
+          break;
+        case 'TWEET_LIKE':
+          console.log('qwerty');
+          dispatch(TWEET_ACTIONS.likeTweet.success(body));
           break;
         default:
           console.log('no type');

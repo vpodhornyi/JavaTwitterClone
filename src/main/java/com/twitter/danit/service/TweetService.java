@@ -9,6 +9,7 @@ import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
+import com.twitter.danit.exception.TweetViewException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -68,8 +69,12 @@ public class TweetService {
     if (!Objects.equals(tweet.getUser(), user)) throw new NoTweetAuthorException();
   }
 
-  public Tweet addOrRemoveTweetAction(Long tweetId, User user, ActionType actionType) {
-    Tweet tweet = findById(tweetId);
+  public void isUserNoTweetAuthorException(Tweet tweet, User user) {
+    boolean showErrorMessage = false;
+    if (Objects.equals(tweet.getUser(), user)) throw new TweetViewException(showErrorMessage);
+  }
+
+  public Tweet addOrRemoveTweetAction(Tweet tweet, User user, ActionType actionType) {
     Optional<TweetAction> optionalTweetAction = tweetActionRepository.findFirstByTweetAndUserAndActionType(tweet, user, actionType);
 
     if (optionalTweetAction.isEmpty()) tweet.addTweetAction(actionType, user);

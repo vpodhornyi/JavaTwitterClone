@@ -44,6 +44,7 @@ import java.util.Objects;
 @RequestMapping("${api.version}/chats")
 public class ChatController {
   private final String queue = "/queue/user.";
+  private final SimpMessagingTemplate simpMessagingTemplate;
   private final ChatService chatService;
   private final UserService userService;
   private final MessageService messageService;
@@ -52,7 +53,6 @@ public class ChatController {
   private final GroupChatResponseMapper groupChatResponseMapper;
   private final PrivateChatRequestMapper privateChatRequestMapper;
   private final GroupChatRequestMapper groupChatRequestMapper;
-  private final SimpMessagingTemplate simpMessagingTemplate;
   private final PrivateMessageOwnerResponseMapper privateMessageOwnerResponseMapper;
   private final PrivateForeignerMessageResponseMapper privateForeignerMessageResponseMapper;
   private final GroupMessageOwnerResponseMapper groupMessageOwnerResponseMapper;

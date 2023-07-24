@@ -63,7 +63,7 @@ public class Tweet extends BaseEntity {
 
   public long getViewsCount(User user) {
     return actions.stream()
-        .filter(a -> a.getActionType().equals(ActionType.VIEW) && !a.getUser().equals(user))
+        .filter(a -> a.getActionType().equals(ActionType.VIEW))
         .count();
   }
 
@@ -76,7 +76,9 @@ public class Tweet extends BaseEntity {
   }
 
   public boolean isTweetViewed(User user) {
-    return actions.stream().anyMatch(a -> a.getUser().equals(user) && a.getActionType().equals(ActionType.VIEW));
+    return actions.stream().anyMatch(a -> a.getUser().equals(user) &&
+        a.getActionType().equals(ActionType.VIEW) &&
+        !this.getUser().equals(user));
   }
 
   @Override

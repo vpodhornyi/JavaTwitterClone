@@ -114,7 +114,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {
         tweet.isTweetViewed = payload.isTweetViewed;
-        tweet.viewssCount = payload.viewssCount;
+        tweet.viewsCount = payload.viewsCount;
       }
       return {
         ...state,

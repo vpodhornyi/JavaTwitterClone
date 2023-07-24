@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class TweetController {
+  private final String queue = "/queue/tweets";
+  private final SimpMessagingTemplate simpMessagingTemplate;
   private final UserService userService;
   private final TweetService tweetService;
   private final TweetRequestMapper tweetRequestMapper;
@@ -49,7 +52,7 @@ public class TweetController {
   public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest tweetRequest, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet savedTweet = tweetService.save(tweetRequestMapper.convertToEntity(tweetRequest, authUser));
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet));
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @GetMapping("/bookmarks")
@@ -70,7 +73,6 @@ public class TweetController {
   public ResponseEntity<DeleteTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
-    System.out.println(tweet);
     tweetService.isUserTweetAuthorException(tweet, authUser);
     tweetService.deleteById(tweetId);
 
@@ -78,36 +80,44 @@ public class TweetController {
   }
 
   @PostMapping("/create")
-  public TweetResponse create(@RequestBody TweetRequest dto) {
+  public ResponseEntity<TweetResponse> create(@RequestBody TweetRequest dto) {
     Tweet tweet = tweetRequestMapper.convertToEntity(dto);
-    return tweetResponseMapper.convertToDto(tweetService.save(tweet));
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.save(tweet)));
   }
 
   @PostMapping("/{id}/like")
   public ResponseEntity<LikeTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    Tweet tweet = tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.LIKE);
-    return ResponseEntity.ok(likeTweetResponseMapper.convertToDto(tweet, authUser));
+    Tweet tweet = tweetService.findById(tweetId);
+    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
+    LikeTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
+    simpMessagingTemplate.convertAndSend(queue, ResponseEntity.ok(likeTweetResponse));
+
+    return ResponseEntity.ok(likeTweetResponse);
   }
 
   @PostMapping("/{id}/view")
   public ResponseEntity<ViewTweetResponse> viewTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    Tweet tweet = tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.VIEW);
-    return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(tweet, authUser));
+    Tweet tweet = tweetService.findById(tweetId);
+    tweetService.isUserNoTweetAuthorException(tweet, authUser);
+    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.VIEW);
+    return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @PostMapping("/{id}/bookmark")
   public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    Tweet tweet = tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.BOOKMARK);
-    return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(tweet, authUser));
+    Tweet tweet = tweetService.findById(tweetId);
+    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
+    return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @PostMapping("/{id}/retweet")
   public ResponseEntity<TweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    Tweet tweet = tweetService.addOrRemoveTweetAction(tweetId, authUser, ActionType.RETWEET);
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweet, authUser));
+    Tweet tweet = tweetService.findById(tweetId);
+    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 }
