@@ -88,6 +88,7 @@ public class TweetController {
   @PostMapping("/{id}/like")
   public ResponseEntity<LikeTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
+    System.out.println(authUser.getId());
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
     LikeTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
@@ -102,6 +103,7 @@ public class TweetController {
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserNoTweetAuthorException(tweet, authUser);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.VIEW);
+
     return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
@@ -110,6 +112,7 @@ public class TweetController {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
+
     return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
@@ -118,6 +121,7 @@ public class TweetController {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
+
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 }

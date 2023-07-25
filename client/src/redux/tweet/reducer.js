@@ -103,7 +103,16 @@ export default (state = INITIAL_STATE, {payload, type}) => {
     case String(ACTIONS.likeTweet.success): {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {
-        tweet.isTweetLiked = payload.authUserId === payload.userId;
+        tweet.isTweetLiked = payload.isTweetLiked;
+        tweet.likesCount = payload.likesCount;
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.updateLikesTweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
         tweet.likesCount = payload.likesCount;
       }
       return {

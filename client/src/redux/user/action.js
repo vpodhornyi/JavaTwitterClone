@@ -69,21 +69,20 @@ export const uploadImage = (body) => async dispatch => {
 export const authUserSocketSubscribe = () => async (dispatch, getState) => {
   try {
     const {user: {authUser}} = getState();
-    authUser?.id && api.client.subscribe(`/queue/tweets`, async (data) => {
+    authUser?.id && api.stompClient.subscribe(`/queue/tweets`, async (data) => {
       const {body} = JSON.parse(data.body);
-      console.log(body);
+      console.log('redit - ', body);
       switch (body?.type) {
         case 'TWEET_LIKE':
-          console.log('rebit');
           body.authUserId = authUser.id;
-          dispatch(TWEET_ACTIONS.likeTweet.success(body));
+          dispatch(TWEET_ACTIONS.updateLikesTweetCount(body));
           break;
         default:
           console.log('no type');
       }
     });
 
-    authUser?.id && api.client.subscribe(`/queue/user.${authUser.id}`, async (data) => {
+    authUser?.id && api.stompClient.subscribe(`/queue/user.${authUser.id}`, async (data) => {
       const {body} = JSON.parse(data.body);
       switch (body?.type) {
         case 'MESSAGE_ADD':

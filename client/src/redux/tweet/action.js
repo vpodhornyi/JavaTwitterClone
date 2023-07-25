@@ -11,6 +11,7 @@ const actions = createActions(
       'SET_TWEET_FORM_IMAGES',
       'SET_TWEET_FORM_IMAGES_SRC',
       'SET_TWEET_FORM_DELETE_IMAGE',
+      'UPDATE_LIKES_TWEET_COUNT',
     ],
     async: [
       "DELETE_TWEET",
@@ -76,12 +77,12 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
   }
 };
 
-export const likeTweet = (id) => async (dispatch, getState) => {
+export const likeTweet = (id) => async (dispatch) => {
   try {
-    const {user: {id: authUser}} = getState();
     const data = await api.post(URLS.TWEETS.like(id));
-    data.authUserId = authUser.id;
     dispatch(ACTIONS.likeTweet.success(data));
+
+    api.stompClient.send('/send')
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));

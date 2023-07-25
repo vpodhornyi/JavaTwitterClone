@@ -39,7 +39,7 @@ const stompClient = (onConnect) => {
     debug: function (str) {
       // console.log(str);
     },
-    reconnectDelay: 5000,
+    reconnectDelay: 3000,
     onConnect,
   });
 
@@ -62,7 +62,7 @@ export default () => {
         setFontSize(user?.customize.fontSize);
         setBackgroundColor(user?.customize.background);
         store.dispatch(ACTIONS.setCustomize(user?.customize));
-        api.client = stompClient(() => {
+        api.stompClient = stompClient(() => {
           store.dispatch(authUserSocketSubscribe());
         });
       })
