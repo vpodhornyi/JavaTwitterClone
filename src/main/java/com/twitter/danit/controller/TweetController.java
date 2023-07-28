@@ -107,13 +107,11 @@ public class TweetController {
     return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
-  @PostMapping("/{id}/bookmark")
-  public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  @GetMapping("/bookmark")
+  public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    Tweet tweet = tweetService.findById(tweetId);
-    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
 
-    return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(null);
   }
 
   @PostMapping("/{id}/retweet")
