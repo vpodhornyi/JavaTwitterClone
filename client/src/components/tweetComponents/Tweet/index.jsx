@@ -26,9 +26,6 @@ import {
 } from "./style";
 import {useDispatch, useSelector} from "react-redux";
 import ImageListContainer from "../../imageList/ImageListContainer";
-import {
-  changeBookmark,
-} from "../../../redux/tweet/action";
 import {useLocation, useNavigate} from "react-router-dom";
 import {PATH} from "../../../utils/constants";
 import {getPersonalData} from "../../../redux/user/selector";
@@ -138,7 +135,7 @@ const Tweet = ({tweetInfo}) => {
                     //   tweetId: id,
                     // })
                   ).then(
-                    (res) => res && dispatch(changeBookmark(res.tweet.id))
+                    (res) => res && dispatch()
                   );
 
                   break;

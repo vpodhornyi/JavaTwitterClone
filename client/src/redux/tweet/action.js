@@ -5,7 +5,6 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 const actions = createActions(
   {
     actions: [
-      "CHANGE_BOOKMARK",
       'SET_TWEET_FORM_CAN_REPLY',
       'SET_TWEET_FORM_TEXT',
       'SET_TWEET_FORM_IMAGES',
@@ -18,10 +17,9 @@ const actions = createActions(
       "CREATE_TWEET",
       "GET_TWEETS",
       "ACTIONS_TWEET",
-      "HANDLER_BOOKMARK",
       "LIKE_TWEET",
-      "BOOKMARK_TWEET",
       "VIEW_TWEET",
+      'BOOKMARK_TWEET',
     ],
   },
   {
@@ -76,7 +74,6 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const likeTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.like(id));
@@ -88,7 +85,6 @@ export const likeTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const viewTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.view(id));
@@ -98,7 +94,6 @@ export const viewTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const bookmarkTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.bookmark(id));
@@ -106,22 +101,5 @@ export const bookmarkTweet = (id) => async (dispatch) => {
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
-  }
-};
-
-export const changeBookmark = (id) => (dispatch) => {
-  dispatch(ACTIONS.changeBookmark(id));
-};
-
-export const handlerBookmark = () => async (dispatch) => {
-  try {
-    dispatch(ACTIONS.handlerBookmark.request());
-    const bookmarksId = await api.get(URLS.TWEETS.BOOKMARKS);
-    dispatch(ACTIONS.handlerBookmark.success(bookmarksId));
-
-  } catch (err) {
-    //TODO show error
-    dispatch(ACTIONS.handlerBookmark.fail());
-    console.log("getBookmarks error - ", err);
   }
 };

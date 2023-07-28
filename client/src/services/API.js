@@ -65,6 +65,7 @@ export const URLS = {
     view: id => `/tweets/${id}/view`,
     bookmark: id => `/tweets/${id}/bookmark`,
     retweet: id => `/tweets/${id}/retweet`,
+    BOOKMARKS: "/tweets/bookmarks",
   },
   CHATS: {
     ROOT: '/chats',

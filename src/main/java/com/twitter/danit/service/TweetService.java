@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -35,6 +34,10 @@ public class TweetService {
 
   public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
     return tweetRepository.findAllTweets(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  }
+
+  public Page<Tweet> getBookmarkTweetsPage(int pageNumber, int pageSize, Long userId) {
+    return tweetRepository.findActionsTweets(userId, ActionType.BOOKMARK.toString(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
   @Transactional

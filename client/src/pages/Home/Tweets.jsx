@@ -1,20 +1,11 @@
-import React, {useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
+import React from "react";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
 import Tweet from "./components/tweet/Tweet";
-import {getTweets} from "@redux/tweet/action";
 
-const Tweets = ({bookmarksValue = false}) => {
-  const dispatch = useDispatch();
-  const tweets = useSelector(state => state.tweet.tweets);
-
-  useEffect(() => {
-    dispatch(getTweets());
-  }, []);
-
+const Tweets = ({tweets, bookmarksValue = false}) => {
   return (
     <BoxWrapper>
       {tweets.map(tweet => <Tweet key={tweet.key} tweet={tweet}/>)}
@@ -27,6 +18,7 @@ const BoxWrapper = styled(Box)({
 });
 
 Tweets.propTypes = {
+  tweets: PropTypes.array,
   bookmarksValue: PropTypes.bool,
 };
 

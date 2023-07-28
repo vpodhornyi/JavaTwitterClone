@@ -9,6 +9,7 @@ import {ACTIONS, authUserSocketSubscribe, getAuthUser} from "./user/action";
 import {setFontSize, setBackgroundColor} from "@utils/theme";
 
 import tweetReducer from "./tweet/reducer";
+import bookmarkReducer from "./tweet/bookmark/reducer";
 import authReducer from "./auth/reducer";
 import userReducer from "./user/reducer";
 import dialogReducer from "./dialog/reducer";
@@ -23,6 +24,7 @@ const reducer = combineReducers({
   chat: chatReducer,
   message: messagesReducer,
   tweet: tweetReducer,
+  bookmark: bookmarkReducer,
   auth: authReducer,
   user: userReducer,
   dialog: dialogReducer,

@@ -52,12 +52,16 @@ public class TweetController {
   public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest tweetRequest, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet savedTweet = tweetService.save(tweetRequestMapper.convertToEntity(tweetRequest, authUser));
+
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @GetMapping("/bookmarks")
-  public List<Long> getBookmarks() {
-    return tweetService.getBookmarks();
+  public ResponseEntity<PageTweetResponse> getBookmarks(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    Page<Tweet> tweets = tweetService.getBookmarkTweetsPage(pageNumber, pageSize, authUser.getId());
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
   @GetMapping("/{id}")
@@ -107,11 +111,13 @@ public class TweetController {
     return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
-  @GetMapping("/bookmark")
-  public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(Principal principal) {
+  @PostMapping("/{id}/bookmark")
+  public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
+    Tweet tweet = tweetService.findById(tweetId);
+    Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
 
-    return ResponseEntity.ok(null);
+    return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @PostMapping("/{id}/retweet")

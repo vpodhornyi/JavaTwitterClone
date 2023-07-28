@@ -1,4 +1,4 @@
-import {ACTIONS, changeBookmark} from "./action";
+import {ACTIONS} from "./action";
 import {addOrFilterItem} from "../../utils/tweets";
 
 const INITIAL_STATE = {
@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   pageNumber: 0,
   pageSize: 7,
   tweets: [],
-  bookmarks: JSON.parse(localStorage.getItem("bookmarks")) || [],
 };
 
 export default (state = INITIAL_STATE, {payload, type}) => {
@@ -54,6 +53,17 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
         loading: true,
       };
+    case String(ACTIONS.getTweets.success):
+      return {
+        ...state,
+        tweets: payload.elements,
+        loading: false,
+      };
+    case String(ACTIONS.getTweets.fail):
+      return {
+        ...state,
+        loading: false,
+      };
     case String(ACTIONS.deleteTweet.success):
       return {
         ...state,
@@ -78,28 +88,6 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         tweets: [payload, ...state.tweets],
       };
     }
-    case String(ACTIONS.getTweets.success):
-      return {
-        ...state,
-        tweets: payload.elements,
-        loading: false,
-      };
-    case String(ACTIONS.getTweets.fail):
-      return {
-        ...state,
-        loading: false,
-      };
-    case String(ACTIONS.handlerBookmark.success):
-      localStorage.setItem("bookmarks", JSON.stringify(payload));
-      return {
-        ...state,
-        bookmarks: payload,
-      };
-    case String(ACTIONS.changeBookmark):
-      return {
-        ...state,
-        bookmarks: addOrFilterItem(state.bookmarks, payload, "bookmarks"),
-      };
     case String(ACTIONS.likeTweet.success): {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {

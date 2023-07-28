@@ -138,10 +138,11 @@ export const resetPassword = (login, navigate, background) => async dispatch => 
     // dispatch(ACTIONS.resetPassword.request());
     const data = await api.post(URLS.USERS.RESET_PASSWORD, {login});
     // dispatch(ACTIONS.resetPassword.success(data));
+    dispatch(SNACK_ACTIONS.open(data));
     navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_IN.LOGIN}`, {
       state: {background}
     });
-    dispatch(SNACK_ACTIONS.open(data));
+    //TODO add reset password loading
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
