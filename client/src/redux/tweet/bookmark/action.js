@@ -4,9 +4,12 @@ import {ACTIONS as SNACK_ACTIONS} from "../../snack/action";
 
 const actions = createActions(
   {
-    actions: [],
+    actions: [
+      'CLEAR_BOOKMARKS',
+      'DELETE_BOOKMARK',
+    ],
     async: [
-      'GET_BOOKMARKS'
+      'GET_BOOKMARKS',
     ],
   },
   {

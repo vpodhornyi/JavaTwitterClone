@@ -1,6 +1,7 @@
-import { createActions } from "../utils";
-import api, { URLS } from "../../services/API";
+import {createActions} from "../utils";
+import api, {URLS} from "../../services/API";
 import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
+import {ACTIONS as BOOKMARK_ACTIONS} from "./bookmark/action";
 
 const actions = createActions(
   {
@@ -31,6 +32,7 @@ export const ACTIONS = {
   ...actions.actions,
   ...actions.async,
 };
+
 export const getTweets = () => async (dispatch, getState) => {
   try {
     const {tweet: {pageNumber, pageSize}} = getState();
@@ -45,6 +47,7 @@ export const getTweets = () => async (dispatch, getState) => {
     console.log("getTweets error - ", err);
   }
 };
+
 export const createTweet = (obj) => async (dispatch, getState) => {
   try {
     dispatch(ACTIONS.createTweet.request());
@@ -64,6 +67,7 @@ export const createTweet = (obj) => async (dispatch, getState) => {
     console.log("createTweet error - ", err);
   }
 };
+
 export const deleteTweet = (tweetId) => async (dispatch) => {
   try {
     const data = await api.delete(`${URLS.TWEETS.ROOT}/${tweetId}`);
@@ -74,6 +78,7 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
 export const likeTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.like(id));
@@ -85,6 +90,7 @@ export const likeTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
 export const viewTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.view(id));
@@ -94,10 +100,13 @@ export const viewTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
 export const bookmarkTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.bookmark(id));
     dispatch(ACTIONS.bookmarkTweet.success(data));
+
+    if (data.isTweetNotInBookmark) dispatch(BOOKMARK_ACTIONS.deleteBookmark(data));
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));

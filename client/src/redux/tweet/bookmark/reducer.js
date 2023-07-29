@@ -28,6 +28,19 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         loading: false,
       }
     }
+    case String(ACTIONS.deleteBookmark): {
+      const bookmarks = state.bookmarks.filter(t => t.id !== payload.id);
+      return {
+        ...state,
+        bookmarks,
+      }
+    }
+    case String(ACTIONS.clearBookmarks): {
+      return {
+        ...state,
+        bookmarks: [],
+      }
+    }
     default: {
       return state;
     }

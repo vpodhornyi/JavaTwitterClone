@@ -8,4 +8,5 @@ import lombok.Setter;
 public class BookmarkTweetResponse {
   private Long id;
   private boolean IsTweetInBookmark;
+  private boolean IsTweetNotInBookmark;
 }

@@ -15,5 +15,6 @@ public class BookmarkTweetResponseMapper extends GeneralFacade<Tweet, BookmarkTw
   @Override
   protected void decorateDto(BookmarkTweetResponse dto, Tweet entity, User user) {
     dto.setIsTweetInBookmark(entity.isTweetInBookmark(user));
+    dto.setIsTweetNotInBookmark(!entity.isTweetInBookmark(user));
   }
 }
