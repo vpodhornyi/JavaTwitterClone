@@ -41,9 +41,7 @@ const MoreTweetActionsButton = ({tweet}) => {
         onClose={handleClose}
         MenuListProps={{'aria-labelledby': 'basic-button'}}
       >
-        <MenuItem
-          onClick={() => deleteTweet()}
-          sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <MenuItem onClick={() => deleteTweet()}>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <ListItemIcon>
               <IconByName iconStyle={{color: 'red'}} iconName="DeleteOutline"/>
@@ -51,8 +49,7 @@ const MoreTweetActionsButton = ({tweet}) => {
             <Typography color='red' fontWeight='bold' variant='body1'>Delete</Typography>
           </Box>
         </MenuItem>
-        <MenuItem
-          sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <MenuItem>
           <Box sx={{display: 'flex', alignItems: 'center'}}>
             <ListItemIcon>
               <IconByName color='text' iconName="ChatBubbleOutline"/>
