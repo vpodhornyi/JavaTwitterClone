@@ -15,4 +15,6 @@ public interface TweetActionRepository extends JpaRepository<TweetAction, Long> 
   List<Long> findBookmarks(Long id, String type);
 
   Optional<TweetAction> findFirstByTweetAndUserAndActionType(Tweet tweet, User user, ActionType actionType);
+
+  void deleteAllByUserAndActionType(User user, ActionType actionType);
 }

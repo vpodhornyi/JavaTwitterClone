@@ -120,6 +120,14 @@ public class TweetController {
     return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
+  @PostMapping("/clear-bookmarks")
+  public ResponseEntity<ClearBookmarksResponse> clearAllUserBookmarks(Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    tweetService.deleteAllUserBookmarks(authUser);
+
+    return ResponseEntity.ok(new ClearBookmarksResponse());
+  }
+
   @PostMapping("/{id}/retweet")
   public ResponseEntity<TweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());

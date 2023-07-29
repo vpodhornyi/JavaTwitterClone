@@ -85,4 +85,8 @@ public class TweetService {
 
     return save(tweet);
   }
+
+  public void deleteAllUserBookmarks(User user) {
+    tweetActionRepository.deleteAllByUserAndActionType(user, ActionType.BOOKMARK);
+  }
 }

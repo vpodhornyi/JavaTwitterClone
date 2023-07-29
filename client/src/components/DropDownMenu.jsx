@@ -3,16 +3,27 @@ import {styled} from "@mui/material/styles";
 import {Box, Menu, MenuItem} from "@mui/material";
 import PropTypes from "prop-types";
 
-const DropDownMenu = ({clickElement: ClickElement, items, menuClick, key}) => {
+const DropDownMenu = ({clickElement: ClickElement, items, menuClick, itemKey}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   return (<Box>
-      <ClickElement/>
+      <Box
+        aria-controls={open ? 'demo-positioned-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+      >
+        <ClickElement/>
+      </Box>
       <MenuWrapper
         anchorEl={anchorEl}
         open={open}
@@ -20,7 +31,7 @@ const DropDownMenu = ({clickElement: ClickElement, items, menuClick, key}) => {
         MenuListProps={{'aria-labelledby': 'basic-button'}}
       >
         {items.map((Item, i) => {
-          return (<MenuItem key={key + i} onClick={menuClick(i)}>
+          return (<MenuItem key={itemKey + i} onClick={() => menuClick(i, setAnchorEl)}>
             <Item/>
           </MenuItem>)
         })}
@@ -62,9 +73,9 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
 }));
 
 DropDownMenu.propTypes = {
-  clickElement: PropTypes.element,
+  clickElement: PropTypes.func,
   items: PropTypes.array,
   menuClick: PropTypes.func,
-  key: PropTypes.string.isRequired,
+  itemKey: PropTypes.string.isRequired,
 }
 export default DropDownMenu;

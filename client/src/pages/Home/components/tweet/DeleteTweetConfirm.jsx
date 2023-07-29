@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import {Confirm} from '@components';
 import {deleteTweet} from "@redux/tweet/action";
 
-const DeleteTweetConfirm = ({toggleModal, tweet}) => {
+const DeleteTweetConfirm = ({toggleModal, tweetId}) => {
   const dispatch = useDispatch();
 
   const confirm = () => {
-    dispatch(deleteTweet(tweet.id))
+    dispatch(deleteTweet(tweetId))
     toggleModal();
   }
 
@@ -26,6 +26,6 @@ const DeleteTweetConfirm = ({toggleModal, tweet}) => {
 
 DeleteTweetConfirm.propTypes = {
   toggleModal: PropTypes.func,
-  tweet: PropTypes.object,
+  tweetId: PropTypes.number,
 }
 export default DeleteTweetConfirm;

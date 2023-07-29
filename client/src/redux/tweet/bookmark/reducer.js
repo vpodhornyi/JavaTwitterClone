@@ -35,10 +35,23 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         bookmarks,
       }
     }
-    case String(ACTIONS.clearBookmarks): {
+    case String(ACTIONS.clearBookmarks.request): {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+    case String(ACTIONS.clearBookmarks.success): {
       return {
         ...state,
         bookmarks: [],
+        loading: false,
+      }
+    }
+    case String(ACTIONS.clearBookmarks.fail): {
+      return {
+        ...state,
+        loading: false,
       }
     }
     case String(ACTIONS.likeBookmarkTweet): {

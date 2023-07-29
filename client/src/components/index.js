@@ -29,6 +29,7 @@ import CustomDrawer from './CustomDrawer';
 import SnackBar from './SnackBar';
 import EmojiPicker from './EmojiPicker';
 import InViewElement from './InViewElement';
+import DropDownMenu from './DropDownMenu';
 
 export {
   Header,
@@ -69,4 +70,5 @@ export {
   SnackBar,
   EmojiPicker,
   InViewElement,
+  DropDownMenu,
 }

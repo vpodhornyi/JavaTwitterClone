@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class DeleteTweetResponse {
   private Long tweetId;
-  private String message = "Tweet was deleted!";
+  boolean show = true;
+  private final String message = "Tweet was deleted!";
 
   public DeleteTweetResponse(Long tweetId) {
     this.tweetId = tweetId;
