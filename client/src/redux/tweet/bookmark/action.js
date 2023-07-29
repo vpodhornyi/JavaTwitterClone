@@ -7,6 +7,7 @@ const actions = createActions(
     actions: [
       'CLEAR_BOOKMARKS',
       'DELETE_BOOKMARK',
+      'LIKE_BOOKMARK_TWEET',
     ],
     async: [
       'GET_BOOKMARKS',

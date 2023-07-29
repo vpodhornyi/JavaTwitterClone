@@ -83,8 +83,7 @@ export const likeTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.like(id));
     dispatch(ACTIONS.likeTweet.success(data));
-
-    api.stompClient.send('/send')
+    dispatch(BOOKMARK_ACTIONS.likeBookmarkTweet(data));
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));

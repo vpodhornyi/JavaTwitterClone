@@ -15,7 +15,7 @@ public class TweetResponse {
   private String key;
   private TweetType tweetType;
   private Set<AttachmentResponse> images;
-  private Set<TweetActionResponse> actions;
+//  private Set<TweetActionResponse> actions;
   private String body;
   private TweetUser user;
   private boolean IsTweetOwner;

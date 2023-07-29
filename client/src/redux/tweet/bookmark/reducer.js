@@ -41,6 +41,16 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         bookmarks: [],
       }
     }
+    case String(ACTIONS.likeBookmarkTweet): {
+      const tweet = state.bookmarks.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.isTweetLiked = payload.isTweetLiked;
+        tweet.likesCount = payload.likesCount;
+      }
+      return {
+        ...state,
+      }
+    }
     default: {
       return state;
     }
