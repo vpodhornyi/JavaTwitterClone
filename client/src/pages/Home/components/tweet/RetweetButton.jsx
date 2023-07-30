@@ -9,12 +9,12 @@ import {IconByName, DropDownMenu} from "@components";
 import CounterButton from "./CounterButton";
 
 
-const items = [
+const getItems = (isTweetRetweeted) => [
   () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
     <ListItemIcon>
       <IconByName color='text' iconName="FlipCameraAndroid"/>
     </ListItemIcon>
-    <Typography fontWeight='bold' variant='body1'>Retweet</Typography>
+    <Typography fontWeight='bold' variant='body1'>{isTweetRetweeted ? 'Undo Retweet' : 'Retweet'}</Typography>
   </Box>),
   () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
     <ListItemIcon>
@@ -45,7 +45,7 @@ const RetweetButton = ({tweet}) => {
 
   return <DropDownMenu
     clickElement={() => Button(tweet.retweetsCount, tweet.isTweetRetweeted)}
-    items={items}
+    items={getItems(tweet.isTweetRetweeted)}
     menuClick={menuClick}
     itemKey='tweet-more-button'
   />
