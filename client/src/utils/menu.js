@@ -35,12 +35,12 @@ export const menu = (userTag, authorized, isChatSelected, countUnreadMessages, c
         iconActive: "Bookmark",
         text: 'Bookmarks',
       },
-      {
+/*      {
         path: PATH.lists(userTag),
         iconName: "ArticleOutlined",
         iconActive: "Article",
         text: 'Lists',
-      },
+      },*/
       {
         path: PATH.USER.profile(userTag),
         iconName: "PersonOutlined",

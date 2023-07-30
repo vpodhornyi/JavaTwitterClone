@@ -88,6 +88,16 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         tweets: [payload, ...state.tweets],
       };
     }
+    case String(ACTIONS.retweet.success): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.isTweetRetweeted = payload.isTweetRetweeted;
+        tweet.retweetsCount = payload.retweetsCount;
+      }
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.likeTweet.success): {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {

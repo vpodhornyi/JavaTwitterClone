@@ -6,6 +6,7 @@ import {useDebouncedCallback} from "use-debounce";
 import PropTypes from "prop-types";
 
 import CounterButton from "./CounterButton";
+import RetweetButton from "./RetweetButton";
 import {CustomIconButton} from "../../../../components";
 import {likeTweet, bookmarkTweet} from "@redux/tweet/action";
 
@@ -19,9 +20,7 @@ const Index = ({tweet}) => {
       <Box className="Reply">
         <CounterButton name="ChatBubbleOutlineOutlined" count={45}/>
       </Box>
-      <Box className="Retweet">
-        <CounterButton name="FlipCameraAndroid" count={500}/>
-      </Box>
+      <RetweetButton tweet={tweet}/>
       <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
         <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
       </Box>
@@ -71,6 +70,17 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     '& .MuiButtonBase-root': {
       transition: '0.5s',
       backgroundColor: 'rgba(0, 186, 124, 0.2)',
+    },
+
+    '& .IconByName': {
+      color: 'rgb(0, 186, 124)',
+    },
+  },
+
+  '& .Retweet_active': {
+    '& .MuiTypography-root': {
+      transition: '0.5s',
+      color: 'rgb(0, 186, 124)',
     },
 
     '& .IconByName': {

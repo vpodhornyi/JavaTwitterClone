@@ -16,10 +16,13 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
   protected void decorateDto(TweetResponse dto, Tweet entity, User user) {
     dto.setIsTweetOwner(entity.getUser().equals(user));
 
+    dto.setRetweetsCount(entity.getRetweetsCount());
+    dto.setIsTweetRetweeted(entity.isTweetRetweeted(user));
+
     dto.setLikesCount(entity.getLikesCount());
     dto.setIsTweetLiked(entity.isTweetLiked(user));
 
-    dto.setViewsCount(entity.getViewsCount(user));
+    dto.setViewsCount(entity.getViewsCount());
     dto.setIsTweetViewed(entity.isTweetViewed(user));
 
     dto.setIsTweetInBookmark(entity.isTweetInBookmark(user));

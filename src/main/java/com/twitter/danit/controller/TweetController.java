@@ -36,6 +36,7 @@ public class TweetController {
   private final TweetRequestMapper tweetRequestMapper;
   private final PageTweetResponseMapper pageTweetResponseMapper;
   private final TweetResponseMapper tweetResponseMapper;
+  private final RetweetResponseMapper retweetResponseMapper;
   private final LikeTweetResponseMapper likeTweetResponseMapper;
   private final ViewTweetResponseMapper viewTweetResponseMapper;
   private final BookmarkTweetResponseMapper bookmarkTweetResponseMapper;
@@ -129,11 +130,11 @@ public class TweetController {
   }
 
   @PostMapping("/{id}/retweet")
-  public ResponseEntity<TweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<RetweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
 
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(retweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 }

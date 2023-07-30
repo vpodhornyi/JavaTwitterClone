@@ -14,6 +14,6 @@ public class ViewTweetResponseMapper extends GeneralFacade<Tweet, ViewTweetRespo
   @Override
   protected void decorateDto(ViewTweetResponse dto, Tweet entity, User user) {
     dto.setIsTweetViewed(entity.isTweetViewed(user));
-    dto.setViewsCount(entity.getViewsCount(user));
+    dto.setViewsCount(entity.getViewsCount());
   }
 }

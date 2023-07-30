@@ -18,6 +18,7 @@ const actions = createActions(
       "CREATE_TWEET",
       "GET_TWEETS",
       "ACTIONS_TWEET",
+      "RETWEET",
       "LIKE_TWEET",
       "VIEW_TWEET",
       'BOOKMARK_TWEET',
@@ -75,6 +76,18 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(ACTIONS.deleteTweet.success(data));
 
   } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const retweet = (id) => async (dispatch) => {
+  try {
+    // dispatch(ACTIONS.retweet.request());
+    const data = await api.post(URLS.TWEETS.retweet(id));
+    dispatch(ACTIONS.retweet.success(data));
+
+  } catch (err) {
+    // dispatch(ACTIONS.retweet.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
