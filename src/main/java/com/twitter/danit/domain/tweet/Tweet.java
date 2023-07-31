@@ -30,6 +30,7 @@ public class Tweet extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private TweetCanReply tweetCanReply;
 
+  @Column(columnDefinition = "TEXT")
   private String body;
 
   @LazyCollection(LazyCollectionOption.EXTRA)

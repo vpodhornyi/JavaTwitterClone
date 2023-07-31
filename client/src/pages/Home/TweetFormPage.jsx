@@ -2,14 +2,15 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField} from "@mui/material";
+import {useDebouncedCallback} from "use-debounce";
+import {Link, useNavigate} from "react-router-dom";
 
 import {ModalPage, CustomIconButton} from "../../components";
 import TweetFormFooter from "./components/twitForm/TweetFormFooter";
 import WhoCanReplyButton from "./components/twitForm/WhoCanReplyButton";
-import {Link, useNavigate} from "react-router-dom";
+import ReplyTweet from "./components/tweet/ReplyTweet";
 import {PATH} from "../../utils/constants";
 import {Context} from "../../utils/context";
-import {useDebouncedCallback} from "use-debounce";
 import {ACTIONS} from "@redux/tweet/action";
 import {uploadImage} from '@redux/user/action';
 import ImagesList from "./components/twitForm/imagesList/ImagesList";
@@ -20,7 +21,9 @@ const TweetFormPage = () => {
   const inputFiletRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {background} = useContext(Context);
+  const {background, tweetAction} = useContext(Context);
+  const {tweet, isReplyTweet, isQuoteTweet} = tweetAction || {};
+  const isNewTweet = !tweet?.id;
   const {authUser: user} = useSelector(state => state.user);
   const [text, setText] = useState('');
 
@@ -58,47 +61,59 @@ const TweetFormPage = () => {
     setText(form.text);
   }, [form.text])
 
+  const getText = () => {
+    switch (true) {
+      case isReplyTweet:
+        return 'Tweet your reply!'
+      case isQuoteTweet:
+        return 'Add a comment!';
+      default:
+        return 'What is happening?!';
+    }
+  }
+
   return (
-    <BoxWrapper>
-      <Box sx={{pb: 2}}>
-        <Box onClick={() => navigate(background?.pathname || PATH.ROOT)}>
-          <CustomIconButton name='Close' color='text'/>
+      <BoxWrapper>
+        <Box sx={{pb: 2}}>
+          <Box onClick={() => navigate(background?.pathname || PATH.ROOT)}>
+            <CustomIconButton name='Close' color='text'/>
+          </Box>
         </Box>
-      </Box>
-      <Box sx={{pl: 2, pr: 2}}>
-        <Box sx={{display: 'flex'}}>
-          <Link
-            to={PATH.USER.profile(user.userTag)}
-            className="AvatarLink">
-            <Avatar className="Avatar" src={user.avatarImgUrl}/>
-          </Link>
-          <TextFieldWrapper
-            inputRef={inputRef}
-            onChange={handleChangeInputText}
-            placeholder='What is happening?!'
-            value={text}
-            multiline
-            variant="filled"
-            size='medium'
-            rows={5}
-          />
+        <Box sx={{pl: 2, pr: 2}}>
+          {isReplyTweet && <ReplyTweet tweet={tweet}/>}
+          <Box sx={{display: 'flex'}}>
+            <Link
+                to={PATH.USER.profile(user.userTag)}
+                className="AvatarLink">
+              <Avatar className="Avatar" src={user.avatarImgUrl}/>
+            </Link>
+            <TextFieldWrapper
+                inputRef={inputRef}
+                onChange={handleChangeInputText}
+                placeholder={getText()}
+                value={text}
+                multiline
+                variant="filled"
+                size='medium'
+                rows={5}
+            />
+          </Box>
+          <ImagesList/>
+          {isNewTweet && <WhoCanReplyButton form={form}/>}
+          <Box className='FooterWrapper'>
+            <TweetFormFooter
+                handleUploadImage={handleUploadImage}
+                addEmoji={addEmoji}
+                inputRef={inputRef}
+                inputFiletRef={inputFiletRef}/>
+          </Box>
         </Box>
-        <ImagesList/>
-        <WhoCanReplyButton form={form}/>
-        <Box className='FooterWrapper'>
-          <TweetFormFooter
-            handleUploadImage={handleUploadImage}
-            addEmoji={addEmoji}
-            inputRef={inputRef}
-            inputFiletRef={inputFiletRef}/>
-        </Box>
-      </Box>
-    </BoxWrapper>);
+      </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   overflow: 'auto',
-  width: '100%',
+  maxWidth: '600px !important',
   height: '100%',
   backgroundColor: theme.palette.background.main,
 
@@ -120,7 +135,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     height: '50px',
   },
 }));
-
 const TextFieldWrapper = styled(TextField)(({theme}) => ({
   width: '100%',
   paddingTop: '5px',
