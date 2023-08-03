@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 @Data
 public class TweetRequest {
+  private Long parentTweetId;
   private TweetType tweetType;
   private TweetCanReply tweetCanReply;
   private ArrayList<String> images;

@@ -24,6 +24,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class Tweet extends BaseEntity {
 
+  @ManyToOne
+  @JoinColumn(name = "parent_tweet_id")
+  private Tweet parentTweet;
+
   @Enumerated(EnumType.STRING)
   private TweetType tweetType;
 

@@ -49,19 +49,12 @@ export const getTweets = () => async (dispatch, getState) => {
   }
 };
 
-export const createTweet = (obj) => async (dispatch, getState) => {
+export const createTweet = (body) => async (dispatch) => {
   try {
     dispatch(ACTIONS.createTweet.request());
-    const {tweet: {form}} = getState();
-    const body = {
-      tweetType: 'TWEET',
-      tweetCanReply: form.canReply,
-      images: form.images.map(v => v.src),
-      body: form.text,
-    }
     const data = await api.post(URLS.TWEETS.ROOT, body);
-    //
     dispatch(ACTIONS.createTweet.success(data));
+
   } catch (err) {
     //TODO show error
     dispatch(ACTIONS.createTweet.fail());

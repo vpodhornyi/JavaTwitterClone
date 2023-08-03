@@ -69,7 +69,7 @@ export const uploadImage = (body) => async dispatch => {
 export const authUserSocketSubscribe = () => async (dispatch, getState) => {
   try {
     const {user: {authUser}} = getState();
-    authUser?.id && api.stompClient.subscribe(`/queue/tweets`, async (data) => {
+    authUser?.id && api.stompClient.subscribe(`/topic/tweets`, async (data) => {
       const {body} = JSON.parse(data.body);
       console.log('redit - ', body);
       switch (body?.type) {

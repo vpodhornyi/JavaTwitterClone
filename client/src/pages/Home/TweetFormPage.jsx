@@ -22,8 +22,8 @@ const TweetFormPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {background, tweetAction} = useContext(Context);
-  const {tweet, isReplyTweet, isQuoteTweet} = tweetAction || {};
-  const isNewTweet = !tweet?.id;
+  const {tweet: parentTweet, isReplyTweet, isQuoteTweet} = tweetAction || {};
+  const isNewTweet = !parentTweet?.id;
   const {authUser: user} = useSelector(state => state.user);
   const [text, setText] = useState('');
 
@@ -72,6 +72,8 @@ const TweetFormPage = () => {
     }
   }
 
+
+
   return (
       <BoxWrapper>
         <Box sx={{pb: 2}}>
@@ -80,7 +82,7 @@ const TweetFormPage = () => {
           </Box>
         </Box>
         <Box sx={{pl: 2, pr: 2}}>
-          {isReplyTweet && <ReplyTweet tweet={tweet}/>}
+          {isReplyTweet && <ReplyTweet tweet={parentTweet}/>}
           <Box sx={{display: 'flex'}}>
             <Link
                 to={PATH.USER.profile(user.userTag)}
@@ -105,6 +107,9 @@ const TweetFormPage = () => {
                 handleUploadImage={handleUploadImage}
                 addEmoji={addEmoji}
                 inputRef={inputRef}
+                isReplyTweet={isReplyTweet}
+                isQuoteTweet={isQuoteTweet}
+                parentTweetId={parentTweet?.id}
                 inputFiletRef={inputFiletRef}/>
           </Box>
         </Box>

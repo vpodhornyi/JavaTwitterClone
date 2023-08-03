@@ -29,7 +29,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class TweetController {
-  private final String queue = "/queue/tweets";
+  private final String topic = "/topic/tweets";
   private final SimpMessagingTemplate simpMessagingTemplate;
   private final UserService userService;
   private final TweetService tweetService;
@@ -97,7 +97,7 @@ public class TweetController {
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
     LikeTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
-    simpMessagingTemplate.convertAndSend(queue, ResponseEntity.ok(likeTweetResponse));
+    simpMessagingTemplate.convertAndSend(topic, ResponseEntity.ok(likeTweetResponse));
 
     return ResponseEntity.ok(likeTweetResponse);
   }
