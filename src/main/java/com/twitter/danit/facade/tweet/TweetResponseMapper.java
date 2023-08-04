@@ -2,7 +2,7 @@ package com.twitter.danit.facade.tweet;
 
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
-import com.twitter.danit.dto.tweet.TweetResponse;
+import com.twitter.danit.dto.tweet.response.TweetResponse;
 import com.twitter.danit.facade.GeneralFacade;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,9 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
   protected void decorateDto(TweetResponse dto, Tweet entity, User user) {
     dto.setIsTweetOwner(entity.getUser().equals(user));
 
+    dto.setRepliesTweetCount(entity.getRepliesTweetCount());
+    dto.setIsTweetReplied(entity.isTweetReplied(user));
+
     dto.setRetweetsCount(entity.getRetweetsCount());
     dto.setIsTweetRetweeted(entity.isTweetRetweeted(user));
 
@@ -26,5 +29,6 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
     dto.setIsTweetViewed(entity.isTweetViewed(user));
 
     dto.setIsTweetInBookmark(entity.isTweetInBookmark(user));
+
   }
 }

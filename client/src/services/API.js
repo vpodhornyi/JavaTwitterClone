@@ -60,7 +60,8 @@ export const URLS = {
   },
   TWEETS: {
     ROOT: "/tweets",
-    CREATE_TWEET: "/tweets/create",
+    REPLY_TWEET: "/tweets/reply-tweet",
+    QUOTE_TWEET: "/tweets/quote-tweet",
     like: id => `/tweets/${id}/like`,
     view: id => `/tweets/${id}/view`,
     bookmark: id => `/tweets/${id}/bookmark`,

@@ -4,34 +4,29 @@ import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.tweet.*;
-import com.twitter.danit.dto.action.TweetActionRequest;
-import com.twitter.danit.dto.action.TweetActionResponseAllData;
+import com.twitter.danit.dto.tweet.request.QuoteTweetRequest;
+import com.twitter.danit.dto.tweet.request.ReplyTweetRequest;
+import com.twitter.danit.dto.tweet.request.TweetRequest;
+import com.twitter.danit.dto.tweet.response.AbstractTweetResponse;
+import com.twitter.danit.dto.tweet.response.BookmarkTweetResponse;
+import com.twitter.danit.dto.tweet.response.TweetResponse;
 import com.twitter.danit.facade.tweet.*;
 import com.twitter.danit.service.TweetService;
-import com.twitter.danit.service.UserService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("${api.version}/tweets")
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
-public class TweetController {
+public class TweetController extends AbstractController {
   private final String topic = "/topic/tweets";
-  private final SimpMessagingTemplate simpMessagingTemplate;
-  private final UserService userService;
   private final TweetService tweetService;
   private final TweetRequestMapper tweetRequestMapper;
   private final PageTweetResponseMapper pageTweetResponseMapper;
@@ -43,7 +38,7 @@ public class TweetController {
 
   @GetMapping
   public ResponseEntity<PageTweetResponse> getAll(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Page<Tweet> tweets = tweetService.getTweetsPage(pageNumber, pageSize, authUser.getId());
 
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
@@ -51,60 +46,61 @@ public class TweetController {
 
   @PostMapping
   public ResponseEntity<TweetResponse> postTweet(@RequestBody TweetRequest tweetRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Tweet savedTweet = tweetService.save(tweetRequestMapper.convertToEntity(tweetRequest, authUser));
+
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
+  }
+
+  @PostMapping("/reply-tweet")
+  public ResponseEntity<TweetResponse> postReplyTweet(@RequestBody ReplyTweetRequest tweetRequest, Principal principal) {
+    User authUser = getAuthUser(principal);
+    Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
+    Tweet savedTweet = tweetService.saveTweetAndUpdateParentTweet(authUser, tweet, ActionType.REPLY_TWEET);
+
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
+  }
+
+  @PostMapping("/quote-tweet")
+  public ResponseEntity<TweetResponse> postQuoteTweet(@RequestBody QuoteTweetRequest tweetRequest, Principal principal) {
+    User authUser = getAuthUser(principal);
+    Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
+    Tweet savedTweet = tweetService.saveTweetAndUpdateParentTweet(authUser, tweet, ActionType.QUOTE_TWEET);
 
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
   @GetMapping("/bookmarks")
   public ResponseEntity<PageTweetResponse> getBookmarks(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Page<Tweet> tweets = tweetService.getBookmarkTweetsPage(pageNumber, pageSize, authUser.getId());
 
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
-  @GetMapping("/{id}")
-  public TweetResponse getById(@PathVariable("id") String userId, Principal principal) throws Exception {
-    Tweet tweet = tweetService.findById(Long.parseLong(userId));
-    if (tweet.equals(new Tweet())) {
-      throw new NullPointerException("There is no tweet with this id");
-    }
-    return tweetResponseMapper.convertToDto(tweet);
-  }
-
   @DeleteMapping("/{id}")
-  public ResponseEntity<DeleteTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+  public ResponseEntity<AbstractTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserTweetAuthorException(tweet, authUser);
-    tweetService.deleteById(tweetId);
 
-    return ResponseEntity.ok(new DeleteTweetResponse(tweetId));
-  }
-
-  @PostMapping("/create")
-  public ResponseEntity<TweetResponse> create(@RequestBody TweetRequest dto) {
-    Tweet tweet = tweetRequestMapper.convertToEntity(dto);
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.save(tweet)));
+    return ResponseEntity.ok(tweetService.deleteByIdWithResponse(tweetId));
   }
 
   @PostMapping("/{id}/like")
-  public ResponseEntity<LikeTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
-    System.out.println(authUser.getId());
+  public ResponseEntity<AbstractTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
-    LikeTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
-    simpMessagingTemplate.convertAndSend(topic, ResponseEntity.ok(likeTweetResponse));
+    AbstractTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
+    sendStompMessage(topic, likeTweetResponse);
 
     return ResponseEntity.ok(likeTweetResponse);
   }
 
   @PostMapping("/{id}/view")
   public ResponseEntity<ViewTweetResponse> viewTweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserNoTweetAuthorException(tweet, authUser);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.VIEW);
@@ -114,7 +110,7 @@ public class TweetController {
 
   @PostMapping("/{id}/bookmark")
   public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
 
@@ -123,7 +119,7 @@ public class TweetController {
 
   @PostMapping("/clear-bookmarks")
   public ResponseEntity<ClearBookmarksResponse> clearAllUserBookmarks(Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     tweetService.deleteAllUserBookmarks(authUser);
 
     return ResponseEntity.ok(new ClearBookmarksResponse());
@@ -131,7 +127,7 @@ public class TweetController {
 
   @PostMapping("/{id}/retweet")
   public ResponseEntity<RetweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
 

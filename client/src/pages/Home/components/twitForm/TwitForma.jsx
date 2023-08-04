@@ -12,7 +12,7 @@ import {ACTIONS} from "@redux/tweet/action";
 import {uploadImage} from '@redux/user/action';
 import ImagesList from "./imagesList/ImagesList";
 import {LineLoader} from "@components";
-import PropTypes from "prop-types";
+
 
 const TwitForma = () => {
   const form = useSelector(state => state.tweet.form);

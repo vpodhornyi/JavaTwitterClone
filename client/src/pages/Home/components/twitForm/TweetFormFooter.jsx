@@ -5,11 +5,11 @@ import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {CustomFabButton, CustomIconButton, EmojiPicker} from "@components"
-import {createTweet} from "@redux/tweet/action";
+import {createTweet, replyTweet, quoteTweet} from "@redux/tweet/action";
 
 const TweetFormFooter = ({
                            handleUploadImage, addEmoji, inputFiletRef, inputRef,
-                           isReplyTweet, isQuoteTweet, parentTweetId
+                           isReplyTweet, isQuoteTweet, parentTweetId, navigate, background
                          }) => {
   const dispatch = useDispatch();
   const form = useSelector(state => state.tweet.form);
@@ -32,19 +32,20 @@ const TweetFormFooter = ({
     if (!setDisabledTweetButton()) {
       switch (true) {
         case isReplyTweet:
-          body.tweetType = 'REPLY_TWEET';
           body.parentTweetId = parentTweetId;
+          dispatch(replyTweet(body, navigate, background));
           break;
         case isQuoteTweet:
-          body.tweetType = 'QUOTE_TWEET';
           body.parentTweetId = parentTweetId;
+          dispatch(quoteTweet(body, navigate, background));
           break;
         default:
-          body.tweetType = 'TWEET';
+          dispatch(createTweet(body));
       }
-      dispatch(createTweet(body));
     }
   }
+
+  const getButtonName = () => isReplyTweet ? 'Reply' : 'Tweet';
 
   return (
       <BoxWrapper>
@@ -62,7 +63,10 @@ const TweetFormFooter = ({
           <EmojiPicker addEmoji={addEmoji} inputRef={inputRef}/>
         </Box>
         <Box onClick={submit}>
-          <CustomFabButton disabled={setDisabledTweetButton()} className='TweetButton' name='Tweet'/>
+          <CustomFabButton
+              disabled={setDisabledTweetButton()}
+              className='TweetButton'
+              name={getButtonName()}/>
         </Box>
       </BoxWrapper>);
 }
@@ -98,14 +102,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   }
 }));
 
-const EmojiBox = styled(Box)(({theme}) => ({
-
-  '& .EmojiWrapper': {
-    position: 'absolute',
-    left: '10px'
-  }
-}));
-
 TweetFormFooter.propTypes = {
   handleUploadImage: PropTypes.func,
   addEmoji: PropTypes.func,
@@ -114,6 +110,8 @@ TweetFormFooter.propTypes = {
   isQuoteTweet: PropTypes.bool,
   parentTweetId: PropTypes.number,
   inputFiletRef: PropTypes.object,
+  navigate: PropTypes.func,
+  background: PropTypes.object,
 }
 
 export default TweetFormFooter;

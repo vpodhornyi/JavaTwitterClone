@@ -13,7 +13,7 @@ export default (state = init, {payload, type}) => {
     case String(ACTIONS.open):
       if (payload?.message) {
         state.message = payload.message;
-        state.open = payload.show;
+        state.open = payload.showMessage;
       }
       return {
         ...state,

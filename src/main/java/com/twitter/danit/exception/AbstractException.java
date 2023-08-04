@@ -9,17 +9,17 @@ import org.springframework.web.server.ResponseStatusException;
 @Setter
 public abstract class AbstractException extends ResponseStatusException {
 
-  private String showMessage;
-  private Boolean show = true;
+  private String message;
+  private Boolean showMessage = true;
 
   public AbstractException(HttpStatus status, String message) {
     super(status, message);
-    this.showMessage = message;
+    this.message = message;
   }
 
   public AbstractException(HttpStatus status, String message, Boolean show) {
     super(status, message);
-    this.showMessage = message;
-    this.show = show;
+    this.message = message;
+    this.showMessage = show;
   }
 }

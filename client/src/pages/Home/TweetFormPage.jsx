@@ -110,6 +110,8 @@ const TweetFormPage = () => {
                 isReplyTweet={isReplyTweet}
                 isQuoteTweet={isQuoteTweet}
                 parentTweetId={parentTweet?.id}
+                navigate={navigate}
+                background={background}
                 inputFiletRef={inputFiletRef}/>
           </Box>
         </Box>

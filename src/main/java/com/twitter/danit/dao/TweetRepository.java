@@ -15,10 +15,12 @@ import java.util.Optional;
 public interface TweetRepository extends JpaRepository<Tweet, Long> {
 
   @Query(value = """
-      select * from tweets t order by t.created_at desc
+      select * from tweets t
+      where t.tweet_type = 'TWEET'
+      order by t.created_at desc
       """,
       nativeQuery = true)
-  Optional<Page<Tweet>> findAllTweets(@Param("userId") Long userId, Pageable pageable);
+  Optional<Page<Tweet>> findAllTweetsWithTypeTweet(@Param("userId") Long userId, Pageable pageable);
 
   @Query(value = """
       select * from tweets t

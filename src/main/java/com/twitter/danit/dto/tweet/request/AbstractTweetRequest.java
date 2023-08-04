@@ -1,15 +1,13 @@
-package com.twitter.danit.dto.tweet;
+package com.twitter.danit.dto.tweet.request;
 
 import com.twitter.danit.domain.tweet.TweetCanReply;
-import com.twitter.danit.domain.tweet.TweetType;
 import lombok.Data;
 
 import java.util.ArrayList;
 
 @Data
-public class TweetRequest {
+public abstract class AbstractTweetRequest {
   private Long parentTweetId;
-  private TweetType tweetType;
   private TweetCanReply tweetCanReply;
   private ArrayList<String> images;
   private String body;

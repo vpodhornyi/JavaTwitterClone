@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(AbstractException.class)
   public ResponseEntity<Object> handleItemNotFoundException(AbstractException exception) {
     final ResponseError responseError =
-            new ResponseError(exception.getRawStatusCode(), exception.getShowMessage(), exception.getShow());
+            new ResponseError(exception.getRawStatusCode(), exception.getMessage(), exception.getShowMessage());
 
     return ResponseEntity.status(exception.getRawStatusCode()).body(responseError);
   }

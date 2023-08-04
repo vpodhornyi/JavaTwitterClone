@@ -24,8 +24,8 @@ const TweetFooter = ({tweet}) => {
             to={PATH.COMPOSE.TWEET}
             state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}
         >
-          <Box className="Reply">
-            <CounterButton name="ChatBubbleOutlineOutlined" count={45}/>
+          <Box className={tweet?.isTweetReplied ? 'Reply Reply_active' : 'Reply'}>
+            <CounterButton name="ChatBubbleOutlineOutlined" count={tweet?.repliesTweetCount}/>
           </Box>
         </Link>
         <RetweetButton tweet={tweet}/>
@@ -63,6 +63,17 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     '& .MuiButtonBase-root': {
       transition: '0.5s',
       backgroundColor: 'rgba(29, 155, 240, 0.2)',
+    },
+
+    '& .IconByName': {
+      color: 'rgb(29, 155, 240)',
+    },
+  },
+
+  '& .Reply_active': {
+    '& .MuiTypography-root': {
+      transition: '0.5s',
+      color: 'rgb(29, 155, 240)',
     },
 
     '& .IconByName': {

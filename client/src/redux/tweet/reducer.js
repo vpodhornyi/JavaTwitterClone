@@ -67,7 +67,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
     case String(ACTIONS.deleteTweet.success):
       return {
         ...state,
-        tweets: state.tweets.filter(el => el.id !== payload.tweetId),
+        tweets: state.tweets.filter(el => el.id !== payload.id),
       };
     case String(ACTIONS.createTweet.request): {
       state.form.loading = true;

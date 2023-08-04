@@ -62,6 +62,10 @@ public class Tweet extends BaseEntity {
     tweetAction.setTweet(null);
   }
 
+  public long getRepliesTweetCount() {
+    return actions.stream().filter(a -> a.getActionType().equals(ActionType.REPLY_TWEET)).count();
+  }
+
   public long getRetweetsCount() {
     return actions.stream().filter(a -> a.getActionType().equals(ActionType.RETWEET)).count();
   }
@@ -74,6 +78,10 @@ public class Tweet extends BaseEntity {
     return actions.stream()
         .filter(a -> a.getActionType().equals(ActionType.VIEW))
         .count();
+  }
+
+  public boolean isTweetReplied(User user) {
+    return actions.stream().anyMatch(a -> a.getUser().equals(user) && a.getActionType().equals(ActionType.REPLY_TWEET));
   }
 
   public boolean isTweetRetweeted(User user) {

@@ -2,11 +2,12 @@ package com.twitter.danit.service;
 
 import com.twitter.danit.dao.TweetActionRepository;
 import com.twitter.danit.dao.TweetRepository;
-import com.twitter.danit.dao.UserDao;
 import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.tweet.response.DeleteTweetResponse;
+import com.twitter.danit.dto.tweet.response.AbstractTweetResponse;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
 import com.twitter.danit.exception.TweetViewException;
@@ -14,12 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -30,10 +28,9 @@ import java.util.Optional;
 public class TweetService {
   private final TweetRepository tweetRepository;
   private final TweetActionRepository tweetActionRepository;
-  private final UserDao userDao;
 
   public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
-    return tweetRepository.findAllTweets(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+    return tweetRepository.findAllTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
   public Page<Tweet> getBookmarkTweetsPage(int pageNumber, int pageSize, Long userId) {
@@ -45,13 +42,13 @@ public class TweetService {
     return tweetRepository.save(tweet);
   }
 
-  public List<Long> getBookmarks() {
-    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    String username = principal instanceof UserDetails
-        ? ((UserDetails) principal).getUsername()
-        : principal.toString();
-    User user = userDao.findByUserTag(username);
-    return tweetActionRepository.findBookmarks(user.getId(), "BOOKMARK");
+  @Transactional
+  public Tweet saveTweetAndUpdateParentTweet(User user, Tweet tweet, ActionType actionType) {
+    Tweet parentTweet = tweet.getParentTweet();
+    parentTweet.addTweetAction(actionType, user);
+    save(parentTweet);
+
+    return save(tweet);
   }
 
   public Tweet findById(Long tweetId) {
@@ -66,6 +63,12 @@ public class TweetService {
 
   public void deleteById(Long tweetId) {
     tweetRepository.deleteById(tweetId);
+  }
+
+  public AbstractTweetResponse deleteByIdWithResponse(Long tweetId) {
+    tweetRepository.deleteById(tweetId);
+
+    return new DeleteTweetResponse(tweetId);
   }
 
   public void isUserTweetAuthorException(Tweet tweet, User user) {
