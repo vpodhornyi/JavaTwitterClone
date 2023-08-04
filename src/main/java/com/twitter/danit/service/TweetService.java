@@ -33,6 +33,10 @@ public class TweetService {
     return tweetRepository.findAllTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
+  public Page<Tweet> getTweetRepliesPage(int pageNumber, int pageSize, Long tweetId) {
+    return tweetRepository.findTweetReplies(tweetId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  }
+
   public Page<Tweet> getBookmarkTweetsPage(int pageNumber, int pageSize, Long userId) {
     return tweetRepository.findActionsTweets(userId, ActionType.BOOKMARK.toString(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }

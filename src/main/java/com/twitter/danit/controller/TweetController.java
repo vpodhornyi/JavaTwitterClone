@@ -37,7 +37,10 @@ public class TweetController extends AbstractController {
   private final BookmarkTweetResponseMapper bookmarkTweetResponseMapper;
 
   @GetMapping
-  public ResponseEntity<PageTweetResponse> getAll(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
+  public ResponseEntity<PageTweetResponse> getAll(
+      @RequestParam int pageNumber,
+      @RequestParam int pageSize,
+      Principal principal) {
     User authUser = getAuthUser(principal);
     Page<Tweet> tweets = tweetService.getTweetsPage(pageNumber, pageSize, authUser.getId());
 
@@ -50,6 +53,18 @@ public class TweetController extends AbstractController {
     Tweet savedTweet = tweetService.save(tweetRequestMapper.convertToEntity(tweetRequest, authUser));
 
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
+  }
+
+  @GetMapping("/{id}/replies")
+  public ResponseEntity<PageTweetResponse> getRepliesTweet(
+      @PathVariable("id") Long tweetId,
+      @RequestParam int pageNumber,
+      @RequestParam int pageSize,
+      Principal principal) {
+    User authUser = getAuthUser(principal);
+    Page<Tweet> tweets = tweetService.getTweetRepliesPage(pageNumber, pageSize, tweetId);
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
   @PostMapping("/reply-tweet")
