@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   pageNumber: 0,
   pageSize: 7,
   tweets: [],
+  selectedTweet: {},
 };
 
 export default (state = INITIAL_STATE, {payload, type}) => {
@@ -132,6 +133,12 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       if (tweet) {
         tweet.isTweetInBookmark = payload.isTweetInBookmark;
       }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.setSelectedTweet): {
+      state.selectedTweet = payload;
       return {
         ...state,
       }

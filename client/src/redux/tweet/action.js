@@ -13,6 +13,7 @@ const actions = createActions(
         'SET_TWEET_FORM_IMAGES_SRC',
         'SET_TWEET_FORM_DELETE_IMAGE',
         'UPDATE_LIKES_TWEET_COUNT',
+        'SET_SELECTED_TWEET',
       ],
       async: [
         "DELETE_TWEET",
@@ -20,6 +21,7 @@ const actions = createActions(
         "REPLY_TWEET",
         "QUOTE_TWEET",
         "GET_TWEETS",
+        "GET_TWEET_BY_ID",
         "ACTIONS_TWEET",
         "RETWEET",
         "LIKE_TWEET",
@@ -47,6 +49,18 @@ export const getTweets = () => async (dispatch, getState) => {
     return data;
   } catch (err) {
     dispatch(ACTIONS.getTweets.fail());
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const getTweetById = id => async (dispatch) => {
+  try {
+    dispatch(ACTIONS.getTweetById.request());
+    const data = await api.get(URLS.TWEETS.getTweetById(id));
+    dispatch(ACTIONS.getTweetById.success(data));
+
+  } catch (err) {
+    dispatch(ACTIONS.getTweetById.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };

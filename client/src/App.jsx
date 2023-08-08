@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {useLocation} from "react-router-dom";
 import {useResizeDetector} from 'react-resize-detector';
 import {ThemeProvider} from "@emotion/react";
+import {createTheme} from "@mui/material/styles";
 
 import {
   Preloader, RootContainer, LoginPanel, SnackBar,
@@ -13,8 +14,6 @@ import {Context} from "./utils/context";
 import MainRoutes from "./routes/MainRoutes";
 import ModalRoutes from "./routes/ModalRoutes";
 import {getChatsData} from "@redux/chat/selector";
-import {createTheme} from "@mui/material/styles";
-
 import {themeStyles} from "./utils/theme";
 import {useModal} from "./hooks/useModal";
 

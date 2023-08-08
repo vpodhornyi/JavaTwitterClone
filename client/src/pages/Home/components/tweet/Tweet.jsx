@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
@@ -10,19 +10,24 @@ import {InViewElement} from "@components";
 import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
-import {viewTweet} from "@redux/tweet/action";
+import {ACTIONS, viewTweet} from "@redux/tweet/action";
 
 const Tweet = ({tweet}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleVisible = async (inView) => {
     if (inView && !tweet?.isTweetViewed && !tweet?.isTweetOwner) {
       dispatch(viewTweet(tweet?.id));
     }
   }
+  const navigateToTweetPage = () => {
+    navigate(PATH.USER.tweet(tweet?.user?.name, tweet?.id));
+    dispatch(ACTIONS.setSelectedTweet(tweet));
+  }
 
   return (
-    <BoxWrapper>
+    <BoxWrapper onClick={navigateToTweetPage}>
       <Link
         to={PATH.USER.profile(tweet?.user?.userTag)}
         className="AvatarLink">

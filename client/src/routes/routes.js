@@ -3,7 +3,7 @@ import {Navigate} from "react-router-dom";
 import {
   Home, Explore, Notifications, Messages, Chat, ChatInfo, Bookmarks, CreateAccount, SelectMessage,
   Lists, UserProfile, UserSearch, Auth, Login, Password, ForgotPassword, SingUp, UserData, Participants,
-  GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage, TweetFormPage
+  GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage, TweetFormPage, RepliesTweetPage,
 } from "../pages";
 import {PATH} from "../utils/constants";
 import {Display, DeleteTweet} from "../components";
@@ -29,6 +29,11 @@ export const mainRoutes = (width, authorized) => {
         {
           path: PATH.HOME,
           element: <Home/>,
+          children: [],
+        },
+        {
+          path: PATH.USER.TWEET,
+          element: <RepliesTweetPage/>,
           children: [],
         },
         {

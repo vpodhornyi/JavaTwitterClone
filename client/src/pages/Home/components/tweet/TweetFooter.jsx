@@ -19,7 +19,7 @@ const TweetFooter = ({tweet}) => {
   const bookmark = useDebouncedCallback(() => dispatch(bookmarkTweet(tweet.id)), 300);
 
   return (
-      <BoxWrapper>
+      <BoxWrapper onClick={e => e.stopPropagation()}>
         <Link
             to={PATH.COMPOSE.TWEET}
             state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}

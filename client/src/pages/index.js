@@ -1,5 +1,6 @@
 import Home from './Home/Home';
 import TweetFormPage from './Home/TweetFormPage';
+import RepliesTweetPage from './RepliesTweet/RepliesTweetPage';
 import Explore from './Explore/Explore';
 import Notifications from './Notifications/Notifications';
 import Messages from './Messages/Messages';
@@ -37,6 +38,7 @@ export {
 
   Home,
   TweetFormPage,
+  RepliesTweetPage,
   Explore,
   Notifications,
 
