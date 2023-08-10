@@ -15,7 +15,7 @@ const DropDownMenu = ({clickElement: ClickElement, items, menuClick, itemKey}) =
     setAnchorEl(null);
   };
 
-  return (<Box>
+  return (<Box onClick={e => e.stopPropagation()}>
       <Box
         aria-controls={open ? 'demo-positioned-menu' : undefined}
         aria-haspopup="true"

@@ -63,6 +63,7 @@ export const URLS = {
     GET_TWEET_BY_ID: "/tweets/:id",
     getTweetById: id => `/tweets/${id}`,
     REPLY_TWEET: "/tweets/reply-tweet",
+    getTweetReplies: id => `/tweets/${id}/replies`,
     QUOTE_TWEET: "/tweets/quote-tweet",
     like: id => `/tweets/${id}/like`,
     view: id => `/tweets/${id}/view`,

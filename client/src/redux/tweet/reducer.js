@@ -1,4 +1,4 @@
-import {ACTIONS, getTweetById} from "./action";
+import {ACTIONS} from "./action";
 
 
 const INITIAL_STATE = {
@@ -15,6 +15,8 @@ const INITIAL_STATE = {
   pageSize: 7,
   tweets: [],
   selectedTweet: {},
+  repliesPageNumber: 0,
+  repliesPageSize: 7,
 };
 
 export default (state = INITIAL_STATE, {payload, type}) => {

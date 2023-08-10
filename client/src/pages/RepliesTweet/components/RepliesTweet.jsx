@@ -1,28 +1,33 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux"
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import {moment} from "@utils";
 import PropTypes from "prop-types";
 
-import {Link} from "react-router-dom";
 import {PATH} from "../../../utils/constants";
 import MoreTweetActionsButton from "../../Home/components/tweet/MoreTweetActionsButton";
-import {ACTIONS, getTweetById} from '@redux/tweet/action';
+import {getTweetReplies, getTweetById} from '@redux/tweet/action';
 import {CircularLoader} from "../../../components";
-import TweetFooter from "../../Home/components/tweet/TweetFooter";
 import ActionsTweetButtons from "./ActionsTweetButtons";
+import Tweet from "../../Home/components/tweet/Tweet";
 
 const RepliesTweet = () => {
   const {selectedTweet: tweet, tweetByIdLoading: loading} = useSelector(state => state.tweet);
   const dispatch = useDispatch();
   const {id} = useParams();
+  const [repliesTweet, setRepliesTweet] = useState([]);
 
   useEffect(() => {
-    if (!tweet?.id) {
-      dispatch(getTweetById(id));
+    const fetch = async () => {
+      if (!tweet?.id) {
+        await dispatch(getTweetById(id));
+      }
+      const data = await dispatch(getTweetReplies(id));
+      setRepliesTweet(data);
     }
+    fetch();
   }, [])
 
   return (loading ? <CircularLoader/> :
@@ -68,6 +73,9 @@ const RepliesTweet = () => {
           </Box>
           <Box>
             <ActionsTweetButtons tweet={tweet}/>
+          </Box>
+          <Box>
+            {repliesTweet?.map(tweet => <Tweet key={tweet.key} tweet={tweet}/>)}
           </Box>
         </Box>
       </BoxWrapper>);

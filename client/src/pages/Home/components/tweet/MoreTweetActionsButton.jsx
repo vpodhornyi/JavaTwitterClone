@@ -27,17 +27,19 @@ const MoreTweetActionsButton = ({tweet}) => {
   const menuClick = (index, setAnchorEl) => {
     switch (index) {
       case 0: {
-        toggleModal(<DeleteTweetConfirm toggleModal={toggleModal} tweetId={tweet.id}/>, true);
+        toggleModal(<DeleteTweetConfirm
+            toggleModal={toggleModal}
+            tweetId={tweet.id}/>, true);
         setAnchorEl(null);
       }
     }
   }
 
   return <DropDownMenu
-    clickElement={MoreButton}
-    items={items}
-    menuClick={menuClick}
-    itemKey='tweet-more-button'
+      clickElement={MoreButton}
+      items={items}
+      menuClick={menuClick}
+      itemKey='tweet-more-button'
   />
 }
 

@@ -27,6 +27,7 @@ const actions = createActions(
         "LIKE_TWEET",
         "VIEW_TWEET",
         'BOOKMARK_TWEET',
+        'GET_TWEET_REPLIES',
       ],
     },
     {
@@ -61,6 +62,23 @@ export const getTweetById = id => async (dispatch) => {
 
   } catch (err) {
     dispatch(ACTIONS.getTweetById.fail());
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const getTweetReplies = (id) => async (dispatch, getState) => {
+  try {
+    const {tweet: {repliesPageNumber: pageNumber, repliesPageSize: pageSize}} = getState();
+    dispatch(ACTIONS.getTweetReplies.request());
+    const data = await api.get(URLS.TWEETS.getTweetReplies(id),
+        {params: {pageNumber, pageSize}});
+    console.log(data);
+    dispatch(ACTIONS.getTweetReplies.success(data));
+
+    return data?.elements;
+
+  } catch (err) {
+    dispatch(ACTIONS.getTweetReplies.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
