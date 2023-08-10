@@ -55,6 +55,23 @@ public class TweetController extends AbstractController {
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<TweetResponse> getTweetById(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = getAuthUser(principal);
+    Tweet tweet = tweetService.findById(tweetId);
+
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweet, authUser));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<AbstractTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
+    User authUser = getAuthUser(principal);
+    Tweet tweet = tweetService.findById(tweetId);
+    tweetService.isUserTweetAuthorException(tweet, authUser);
+
+    return ResponseEntity.ok(tweetService.deleteByIdWithResponse(tweetId));
+  }
+
   @GetMapping("/{id}/replies")
   public ResponseEntity<PageTweetResponse> getRepliesTweet(
       @PathVariable("id") Long tweetId,
@@ -91,15 +108,6 @@ public class TweetController extends AbstractController {
     Page<Tweet> tweets = tweetService.getBookmarkTweetsPage(pageNumber, pageSize, authUser.getId());
 
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<AbstractTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
-    User authUser = getAuthUser(principal);
-    Tweet tweet = tweetService.findById(tweetId);
-    tweetService.isUserTweetAuthorException(tweet, authUser);
-
-    return ResponseEntity.ok(tweetService.deleteByIdWithResponse(tweetId));
   }
 
   @PostMapping("/{id}/like")

@@ -9,6 +9,7 @@ import {retweet} from '@redux/tweet/action';
 import {IconByName, DropDownMenu} from "@components";
 import CounterButton from "./CounterButton";
 import {PATH} from "@utils/constants";
+import {CustomIconButton} from "../../../../components";
 
 const getItems = (tweet) => {
   const location = useLocation();
@@ -33,12 +34,13 @@ const getItems = (tweet) => {
     </Link>)
   ]
 };
-const Button = (retweetsCount, isTweetRetweeted) => (
+const Button = (retweetsCount, isTweetRetweeted, showCounter) => (
     <Box className={isTweetRetweeted ? 'Retweet Retweet_active' : 'Retweet'}>
-      <CounterButton name="FlipCameraAndroid" count={retweetsCount}/>
+      {showCounter ? <CounterButton name="FlipCameraAndroid" count={retweetsCount}/> :
+          <CustomIconButton name="FlipCameraAndroid"/>}
     </Box>)
 
-const RetweetButton = ({tweet}) => {
+const RetweetButton = ({tweet, showCounter = true}) => {
   const dispatch = useDispatch();
   const menuClick = (index, setAnchorEl) => {
     switch (index) {
@@ -54,7 +56,7 @@ const RetweetButton = ({tweet}) => {
   }
 
   return <DropDownMenu
-      clickElement={() => Button(tweet.retweetsCount, tweet.isTweetRetweeted)}
+      clickElement={() => Button(tweet.retweetsCount, tweet.isTweetRetweeted, showCounter)}
       items={getItems(tweet)}
       menuClick={menuClick}
       itemKey='tweet-more-button'
@@ -69,5 +71,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
 RetweetButton.propTypes = {
   tweet: PropTypes.object,
+  showCounter: PropTypes.bool,
 }
 export default RetweetButton;

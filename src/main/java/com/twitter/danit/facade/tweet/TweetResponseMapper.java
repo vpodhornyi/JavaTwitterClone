@@ -22,13 +22,16 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
     dto.setRetweetsCount(entity.getRetweetsCount());
     dto.setIsTweetRetweeted(entity.isTweetRetweeted(user));
 
+    dto.setQuoteTweetsCount(entity.getQuoteTweetsCount());
+    dto.setIsTweetQuoteTweeted(entity.isTweetQuoteTweeted(user));
+
     dto.setLikesCount(entity.getLikesCount());
     dto.setIsTweetLiked(entity.isTweetLiked(user));
 
     dto.setViewsCount(entity.getViewsCount());
     dto.setIsTweetViewed(entity.isTweetViewed(user));
 
+    dto.setBookmarksCount(entity.getBookmarksCount());
     dto.setIsTweetInBookmark(entity.isTweetInBookmark(user));
-
   }
 }

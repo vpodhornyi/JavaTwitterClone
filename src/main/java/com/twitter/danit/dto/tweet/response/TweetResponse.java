@@ -2,7 +2,6 @@ package com.twitter.danit.dto.tweet.response;
 
 import com.twitter.danit.domain.tweet.TweetType;
 import com.twitter.danit.dto.attachment.AttachmentResponse;
-import com.twitter.danit.dto.action.TweetActionResponse;
 import com.twitter.danit.dto.tweet.TweetUser;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,11 +24,14 @@ public class TweetResponse extends AbstractTweetResponse {
   private long repliesTweetCount;
   private boolean IsTweetRetweeted;
   private long retweetsCount;
+  private boolean IsTweetQuoteTweeted;
+  private long quoteTweetsCount;
   private boolean IsTweetLiked;
   private long likesCount;
   private boolean IsTweetViewed;
   private long viewsCount;
   private boolean IsTweetInBookmark;
+  private long bookmarksCount;
 
   public TweetResponse() {
     setMessage("Your Tweet was sent!");

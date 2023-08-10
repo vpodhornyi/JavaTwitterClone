@@ -1,8 +1,9 @@
-import {ACTIONS} from "./action";
+import {ACTIONS, getTweetById} from "./action";
 
 
 const INITIAL_STATE = {
   loading: false,
+  tweetByIdLoading: false,
   form: {
     loading: false,
     MAX_IMAGES_COUNT: 3,
@@ -142,6 +143,25 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       return {
         ...state,
       }
+    }
+    case String(ACTIONS.getTweetById.request): {
+      state.tweetByIdLoading = true;
+      return {
+        ...state,
+      };
+    }
+    case String(ACTIONS.getTweetById.success): {
+      state.selectedTweet = payload;
+      state.tweetByIdLoading = false;
+      return {
+        ...state,
+      };
+    }
+    case String(ACTIONS.getTweetById.fail): {
+      state.tweetByIdLoading = false;
+      return {
+        ...state,
+      };
     }
     default: {
       return state;

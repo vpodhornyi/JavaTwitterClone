@@ -29,7 +29,7 @@ export const PATH = {
     photo: userTag => `/${userTag}/photo`,
     HEADER_PHOTO: '/:user_tag/header_photo',
     header_photo: userTag => `/${userTag}/header_photo`,
-    TWEET: '/:user_tag/status/:tweet_id',
+    TWEET: '/:user_tag/status/:id',
     tweet: (userTag, tweetId) => `/${userTag}/status/${tweetId}`
   },
   AUTH: {
