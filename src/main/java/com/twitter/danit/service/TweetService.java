@@ -77,16 +77,16 @@ public class TweetService {
   }
 
   @Transactional
-  public void cascadeRemoveReplies(Tweet tweet) {
-    List<Tweet> children = tweet.getReplies();
+  public void cascadeRemoveChildren(Tweet tweet) {
+    List<Tweet> children = tweet.getChildren();
     for (Tweet child : children) {
-      cascadeRemoveReplies(child);
+      cascadeRemoveChildren(child);
     }
     tweetRepository.delete(tweet);
   }
 
   public AbstractTweetResponse cascadeRemoveWithResponse(Tweet tweet) {
-    cascadeRemoveReplies(tweet);
+    cascadeRemoveChildren(tweet);
 
     return new DeleteTweetResponse(tweet.getId());
   }

@@ -59,7 +59,7 @@ public class Tweet extends BaseEntity {
 
   @OneToMany(mappedBy = "parentTweet", cascade = CascadeType.ALL, orphanRemoval = true)
   @OnDelete(action = OnDeleteAction.CASCADE)
-  private List<Tweet> replies = new ArrayList<>();
+  private List<Tweet> children = new ArrayList<>();
 
   public void addTweetAction(ActionType actionType, User user) {
     actions.add(new TweetAction(actionType, this, user));
@@ -71,7 +71,7 @@ public class Tweet extends BaseEntity {
   }
 
   public long getRepliesTweetCount() {
-    return replies.size();
+    return children.stream().filter(a -> a.getTweetType().equals(TweetType.REPLY_TWEET)).count();
   }
 
   public long getRetweetsCount() {
@@ -95,7 +95,7 @@ public class Tweet extends BaseEntity {
   }
 
   public boolean isTweetReplied(User user) {
-    return replies.stream().anyMatch(a -> a.getUser().equals(user) && a.getTweetType().equals(TweetType.REPLY_TWEET));
+    return children.stream().anyMatch(a -> a.getUser().equals(user) && a.getTweetType().equals(TweetType.REPLY_TWEET));
   }
 
   public boolean isTweetRetweeted(User user) {
