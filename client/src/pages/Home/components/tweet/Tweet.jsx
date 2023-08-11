@@ -22,7 +22,7 @@ const Tweet = ({tweet}) => {
     }
   }
   const navigateToTweetPage = () => {
-    navigate(PATH.USER.tweet(tweet?.user?.name, tweet?.id));
+    navigate(PATH.USER.tweet(tweet?.user?.userTag, tweet?.id));
     dispatch(ACTIONS.setSelectedTweet(tweet));
   }
 

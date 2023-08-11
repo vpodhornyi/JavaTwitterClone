@@ -35,7 +35,7 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
       select * from tweets t
       join tweet_actions ta on t.id = ta.tweet_id
       where ta.user_id = :userId and ta.action_type = :actionType
-      order by t.created_at desc
+      order by ta.created_at desc
       """,
       nativeQuery = true)
   Optional<Page<Tweet>> findActionsTweets(

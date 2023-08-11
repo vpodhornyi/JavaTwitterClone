@@ -3,6 +3,7 @@ import api, {URLS} from "@service/API";
 import {CHAT_TYPE} from "../../utils/constants";
 import {ACTIONS as USER_ACTIONS} from '../user/action';
 import {ACTIONS as MESSAGE_ACTIONS} from "./message/action";
+import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 
 const actions = createActions(
   {
@@ -29,15 +30,15 @@ export const getChats = () => async (dispatch, getState) => {
     const {chat: {pageNumber, pageSize}} = getState();
     dispatch(ACTIONS.getChats.request());
     const data = await api.get(URLS.CHATS.ROOT, {params: {pageNumber, pageSize}});
-    if (data?.elements.length > 0) {
-      dispatch(ACTIONS.setPageNumber({pageNumber: pageNumber + 1}));
-    }
+
+    if (data?.elements.length > 0) dispatch(ACTIONS.setPageNumber({pageNumber: pageNumber + 1}));
+
     dispatch(ACTIONS.getChats.success(data));
 
     return data;
 
   } catch (err) {
-    console.log('getChats error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
     dispatch(ACTIONS.getChats.fail());
     return [];
   }
@@ -66,7 +67,7 @@ export const addNewPrivateChat = (chat, text) => async dispatch => {
     return data.id;
 
   } catch (err) {
-    console.log('addNewChat error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
 
@@ -85,7 +86,7 @@ export const addNewGroupChat = (chat, text) => async dispatch => {
     return data.id;
 
   } catch (err) {
-    console.log('addNewChat error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
 
@@ -96,7 +97,7 @@ export const leaveChat = body => async (dispatch) => {
     dispatch(USER_ACTIONS.updateCountUnreadMessages(data));
 
   } catch (err) {
-    console.log('leavePrivateChat error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
 
@@ -105,7 +106,7 @@ export const getPrivateChatByUsersId = ({guestUserId}) => async dispatch => {
     return await api.get(URLS.CHATS.PRIVATE, {params: {guestUserId}});
 
   } catch (err) {
-    console.log('getPrivateChatByUsersId error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
 
@@ -116,7 +117,7 @@ export const addPeopleToChat = body => async (dispatch) => {
     dispatch(MESSAGE_ACTIONS.addUsersNotification(data));
 
   } catch (err) {
-    console.log('addPeopleToChat error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
 
@@ -126,6 +127,6 @@ export const editGroupChat = body => async (dispatch) => {
     dispatch(ACTIONS.updateChat(data));
 
   } catch (err) {
-    console.log('editGroupChat error - ', err);
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }

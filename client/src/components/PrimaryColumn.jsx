@@ -4,6 +4,7 @@ import {styled} from "@mui/material/styles";
 export default styled('div')(({theme}) => ({
   width: '100%',
   height: '100%',
+  position: 'relative',
 
   [theme.breakpoints.up('xs')]: {
     maxWidth: 600,

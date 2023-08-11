@@ -8,7 +8,7 @@ import ChatRoute from "./ChatRoute";
 import {ACTIONS, getChats} from "@redux/chat/action";
 import ActionWelcome from "./ActionWelcome";
 import SearchBox from "./SearchBox";
-import {CircularLoader, PrimaryHeader, InViewElement} from "../../../../components";
+import {CircularLoader, PrimaryHeader, InViewElement} from "@components";
 import MessagesHeader from "../../Header";
 import {styled} from "@mui/material/styles";
 

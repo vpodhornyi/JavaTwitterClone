@@ -10,6 +10,7 @@ import {setFontSize, setBackgroundColor} from "@utils/theme";
 
 import tweetReducer from "./tweet/reducer";
 import bookmarkReducer from "./tweet/bookmark/reducer";
+import repliesReducer from "./tweet/replies/reducer";
 import authReducer from "./auth/reducer";
 import userReducer from "./user/reducer";
 import dialogReducer from "./dialog/reducer";
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   message: messagesReducer,
   tweet: tweetReducer,
   bookmark: bookmarkReducer,
+  replies: repliesReducer,
   auth: authReducer,
   user: userReducer,
   dialog: dialogReducer,
