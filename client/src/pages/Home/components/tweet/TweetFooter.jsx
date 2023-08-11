@@ -19,25 +19,31 @@ const TweetFooter = ({tweet}) => {
   const bookmark = useDebouncedCallback(() => dispatch(bookmarkTweet(tweet.id)), 300);
 
   return (
-      <BoxWrapper onClick={e => e.stopPropagation()}>
-        <Link
-            to={PATH.COMPOSE.TWEET}
-            state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}
-        >
-          <Box className={tweet?.isTweetReplied ? 'Reply Reply_active' : 'Reply'}>
-            <CounterButton name="ChatBubbleOutlineOutlined" count={tweet?.repliesTweetCount}/>
-          </Box>
-        </Link>
-        <RetweetButton tweet={tweet}/>
-        <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
-          <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
+      <BoxWrapper>
+        <Box onClick={e => e.stopPropagation()}>
+          <Link
+              to={PATH.COMPOSE.TWEET}
+              state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}
+          >
+            <Box className={tweet?.isTweetReplied ? 'Reply Reply_active' : 'Reply'}>
+              <CounterButton name="ChatBubbleOutlineOutlined" count={tweet?.repliesTweetCount}/>
+            </Box>
+          </Link>
         </Box>
-        <Box className={tweet?.isTweetViewed ? 'View View_active' : 'View'}>
+        <RetweetButton tweet={tweet}/>
+        <Box onClick={e => e.stopPropagation()}>
+          <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
+            <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
+          </Box>
+        </Box>
+        <Box className={tweet?.isTweetViewed ? 'View View_active' : 'View'} onClick={e => e.stopPropagation()}>
           <CounterButton name={tweet?.isTweetViewed ? 'Visibility' : 'VisibilityOutlined'}
                          count={tweet?.viewsCount}/>
         </Box>
-        <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
-          <CustomIconButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}/>
+        <Box onClick={e => e.stopPropagation()}>
+          <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
+            <CustomIconButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}/>
+          </Box>
         </Box>
       </BoxWrapper>);
 }

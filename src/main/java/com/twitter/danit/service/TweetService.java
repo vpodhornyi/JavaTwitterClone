@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -73,6 +74,21 @@ public class TweetService {
     tweetRepository.deleteById(tweetId);
 
     return new DeleteTweetResponse(tweetId);
+  }
+
+  @Transactional
+  public void cascadeRemoveReplies(Tweet tweet) {
+    List<Tweet> children = tweet.getReplies();
+    for (Tweet child : children) {
+      cascadeRemoveReplies(child);
+    }
+    tweetRepository.delete(tweet);
+  }
+
+  public AbstractTweetResponse cascadeRemoveWithResponse(Tweet tweet) {
+    cascadeRemoveReplies(tweet);
+
+    return new DeleteTweetResponse(tweet.getId());
   }
 
   public void isUserTweetAuthorException(Tweet tweet, User user) {

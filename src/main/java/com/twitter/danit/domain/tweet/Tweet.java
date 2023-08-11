@@ -1,5 +1,6 @@
 package com.twitter.danit.domain.tweet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.twitter.danit.domain.BaseEntity;
 import com.twitter.danit.domain.attachment.AttachmentImage;
@@ -14,7 +15,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,16 +45,21 @@ public class Tweet extends BaseEntity {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private User user;
 
-  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> images = new HashSet<>();
 
-  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> actions = new HashSet<>();
+
+  @OneToMany(mappedBy = "parentTweet", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private List<Tweet> replies = new ArrayList<>();
 
   public void addTweetAction(ActionType actionType, User user) {
     actions.add(new TweetAction(actionType, this, user));
@@ -63,7 +71,7 @@ public class Tweet extends BaseEntity {
   }
 
   public long getRepliesTweetCount() {
-    return actions.stream().filter(a -> a.getActionType().equals(ActionType.REPLY_TWEET)).count();
+    return replies.size();
   }
 
   public long getRetweetsCount() {
@@ -87,7 +95,7 @@ public class Tweet extends BaseEntity {
   }
 
   public boolean isTweetReplied(User user) {
-    return actions.stream().anyMatch(a -> a.getUser().equals(user) && a.getActionType().equals(ActionType.REPLY_TWEET));
+    return replies.stream().anyMatch(a -> a.getUser().equals(user) && a.getTweetType().equals(TweetType.REPLY_TWEET));
   }
 
   public boolean isTweetRetweeted(User user) {

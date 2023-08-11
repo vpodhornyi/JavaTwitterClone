@@ -27,39 +27,40 @@ const Tweet = ({tweet}) => {
   }
 
   return (
-    <BoxWrapper onClick={navigateToTweetPage}>
-      <Link
-        to={PATH.USER.profile(tweet?.user?.userTag)}
-        className="AvatarLink">
-        <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
-      </Link>
-      <Box sx={{width: '100%'}}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Box sx={{display: 'flex'}}>
-            <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
-            <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
-            <Typography variant='body2' sx={{
-              '&:before': {
-                content: '"·"',
-                marginLeft: '5px',
-                marginRight: '5px',
-              }
-            }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
+      <BoxWrapper onClick={navigateToTweetPage}>
+        <Link
+            onClick={e => e.stopPropagation()}
+            to={PATH.USER.profile(tweet?.user?.userTag)}
+            className="AvatarLink">
+          <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
+        </Link>
+        <Box sx={{width: '100%'}}>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <Box sx={{display: 'flex'}}>
+              <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
+              <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
+              <Typography variant='body2' sx={{
+                '&:before': {
+                  content: '"·"',
+                  marginLeft: '5px',
+                  marginRight: '5px',
+                }
+              }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
+            </Box>
+            {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet}/>}
           </Box>
-          {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet}/>}
+          <Typography>{tweet.body}</Typography>
+          <Box className="ImagesBox">
+            {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
+          </Box>
+          <InViewElement toggleVisible={toggleVisible}/>
+          <TweetFooter tweet={tweet}/>
         </Box>
-        <Typography>{tweet.body}</Typography>
-        <Box className="ImagesBox">
-          {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
-        </Box>
-        <InViewElement toggleVisible={toggleVisible}/>
-        <TweetFooter tweet={tweet}/>
-      </Box>
-    </BoxWrapper>);
+      </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({

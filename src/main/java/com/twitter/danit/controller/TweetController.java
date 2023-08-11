@@ -69,7 +69,7 @@ public class TweetController extends AbstractController {
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserTweetAuthorException(tweet, authUser);
 
-    return ResponseEntity.ok(tweetService.deleteByIdWithResponse(tweetId));
+    return ResponseEntity.ok(tweetService.cascadeRemoveWithResponse(tweet));
   }
 
   @GetMapping("/{id}/replies")
@@ -88,9 +88,7 @@ public class TweetController extends AbstractController {
   public ResponseEntity<TweetResponse> postReplyTweet(@RequestBody ReplyTweetRequest tweetRequest, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
-    Tweet savedTweet = tweetService.saveTweetAndUpdateParentTweet(authUser, tweet, ActionType.REPLY_TWEET);
-
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.save(tweet), authUser));
   }
 
   @PostMapping("/quote-tweet")

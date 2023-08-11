@@ -5,6 +5,5 @@ public enum ActionType {
   BOOKMARK,
   RETWEET,
   VIEW,
-  REPLY_TWEET,
   QUOTE_TWEET,
 }
