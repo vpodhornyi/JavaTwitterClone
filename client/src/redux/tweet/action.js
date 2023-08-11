@@ -99,15 +99,17 @@ export const createTweet = (body) => async (dispatch) => {
   }
 };
 
-export const replyTweet = (body, navigate, background) => async (dispatch) => {
+export const replyTweet = (body, navigate, background, isNavigate) => async (dispatch) => {
   try {
     console.log(background);
     await dispatch(ACTIONS.replyTweet.request());
     const data = await api.post(URLS.TWEETS.REPLY_TWEET, body);
     await dispatch(ACTIONS.replyTweet.success(data));
-    navigate(background.pathname, {
-      state: {background}
-    });
+    if (isNavigate) {
+      navigate(background.pathname, {
+        state: {background}
+      });
+    }
 
   } catch (err) {
     dispatch(ACTIONS.replyTweet.fail());

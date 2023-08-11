@@ -7,6 +7,8 @@ import HomeHeader from "./Header";
 import {useDispatch, useSelector} from "react-redux";
 
 import {getTweets} from "@redux/tweet/action";
+import {styled} from "@mui/material/styles";
+import {Box} from "@mui/material";
 
 const Tweets = lazy(() => import('./Tweets'));
 
@@ -22,7 +24,9 @@ const Home = () => {
     <ColumnWrapper>
       <PrimaryColumn>
         <PrimaryHeader pageElement={HomeHeader}/>
-        <TwitForma/>
+        <TweetFormWrapper>
+          <TwitForma/>
+        </TweetFormWrapper>
         <Suspense fallback={<Loading/>}>
           <Tweets tweets={tweets}/>
         </Suspense>
@@ -36,5 +40,10 @@ const Home = () => {
     </ColumnWrapper>
   );
 };
+
+const TweetFormWrapper = styled(Box)(({theme}) => ({
+  borderTop: `1px solid ${theme.palette.border.main}`,
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+}));
 
 export default Home;

@@ -9,7 +9,8 @@ import {createTweet, replyTweet, quoteTweet} from "@redux/tweet/action";
 
 const TweetFormFooter = ({
                            handleUploadImage, addEmoji, inputFiletRef, inputRef,
-                           isReplyTweet, isQuoteTweet, parentTweetId, navigate, background
+                           isReplyTweet, isQuoteTweet, isNavigate = true,
+                           parentTweetId, navigate, background
                          }) => {
   const dispatch = useDispatch();
   const form = useSelector(state => state.tweet.form);
@@ -33,7 +34,7 @@ const TweetFormFooter = ({
       switch (true) {
         case isReplyTweet:
           body.parentTweetId = parentTweetId;
-          dispatch(replyTweet(body, navigate, background));
+          dispatch(replyTweet(body, navigate, background, isNavigate));
           break;
         case isQuoteTweet:
           body.parentTweetId = parentTweetId;
@@ -106,6 +107,7 @@ TweetFormFooter.propTypes = {
   handleUploadImage: PropTypes.func,
   addEmoji: PropTypes.func,
   inputRef: PropTypes.object,
+  isNavigate: PropTypes.bool,
   isReplyTweet: PropTypes.bool,
   isQuoteTweet: PropTypes.bool,
   parentTweetId: PropTypes.number,
