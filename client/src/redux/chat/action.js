@@ -1,5 +1,5 @@
 import {createActions} from '../utils';
-import api, {URLS} from "@service/API";
+import api, {URLS} from "@services/API";
 import {CHAT_TYPE} from "../../utils/constants";
 import {ACTIONS as USER_ACTIONS} from '../user/action';
 import {ACTIONS as MESSAGE_ACTIONS} from "./message/action";

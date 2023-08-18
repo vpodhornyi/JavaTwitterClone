@@ -6,10 +6,8 @@ import {
   GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage, TweetFormPage, RepliesTweetPage,
 } from "../pages";
 import {PATH} from "../utils/constants";
-import {Display, DeleteTweet} from "../components";
-import Reply from "../components/tweetComponents/Reply";
-import ModalImg from "../components/tweetComponents/ModalImg";
-import {themeStyles} from "../utils/theme";
+import {Display} from "@components";
+import {themeStyles} from "@utils/theme";
 
 const BREAKPOINTS_VALUES = themeStyles().breakpoints.values;
 const lazyLoading = (path) => {
@@ -177,21 +175,6 @@ export const modalRoutes = authorized => {
         {
           path: PATH.COMPOSE.TWEET,
           element: <TweetFormPage/>,
-        },
-        {
-          path: PATH.TWEET.DELETE,
-          element: <DeleteTweet/>,
-          children: [],
-        },
-        {
-          path: PATH.TWEET.REPLY,
-          element: <Reply/>,
-          children: [],
-        },
-        {
-          path: PATH.TWEET.IMG,
-          element: <ModalImg/>,
-          children: [],
         },
         {
           path: PATH.ALL,

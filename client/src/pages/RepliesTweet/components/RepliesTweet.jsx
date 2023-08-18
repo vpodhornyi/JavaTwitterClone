@@ -6,33 +6,24 @@ import {Avatar, Box, Typography} from "@mui/material";
 import {moment} from "@utils";
 import PropTypes from "prop-types";
 
-import {PATH} from "../../../utils/constants";
-import MoreTweetActionsButton from "../../Home/components/tweet/MoreTweetActionsButton";
+import {PATH} from "@utils/constants";
 import {getTweetById} from '@redux/tweet/action';
-import {ACTIONS as REPLIES_ACTIONS, getTweetReplies} from '@redux/tweet/replies/action';
-import {CircularLoader, InViewElement} from "@components";
+import {CircularLoader, Tweets, MoreTweetActionsButton} from "@components";
 import ActionsTweetButtons from "./ActionsTweetButtons";
-import Tweet from "../../Home/components/tweet/Tweet";
 import TwitForma from "../../Home/components/twitForm/TwitForma";
+import {URLS} from "@services/API";
 
 const RepliesTweet = () => {
   const {selectedTweet: tweet, tweetByIdLoading} = useSelector(state => state.tweet);
-  const {replies, pageNumber, totalPages, loading: repliesLoading} = useSelector(state => state.replies);
   const dispatch = useDispatch();
   const {id} = useParams();
 
   useEffect(() => {
     const fetch = async () => {
-      await dispatch(REPLIES_ACTIONS.reset());
       await dispatch(getTweetById(id));
-      await dispatch(getTweetReplies(id));
     }
     fetch();
   }, [tweet?.id, id]);
-
-  const toggleVisible = async (inView) => {
-    if (!tweetByIdLoading && inView && (pageNumber < totalPages)) await dispatch(getTweetReplies(id));
-  }
 
   return (
       <BoxWrapper>
@@ -89,11 +80,7 @@ const RepliesTweet = () => {
           </Box>
         </Box>
         <Box>
-          {replies.map(tweet => <Tweet key={tweet?.key} tweet={tweet}/>)}
-          {!repliesLoading && <InViewElement toggleVisible={toggleVisible}/>}
-          {repliesLoading && (<Box sx={{position: 'relative', pt: 3, pb: 3}}>
-            <CircularLoader/>
-          </Box>)}
+          {!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(id)}/>}
         </Box>
       </BoxWrapper>);
 }

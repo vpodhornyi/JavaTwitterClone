@@ -1,5 +1,5 @@
 import {createActions} from '../../utils';
-import api, {URLS} from "@service/API";
+import api, {URLS} from "@services/API";
 import {ACTIONS as CHAT_ACTIONS} from '../action';
 import {ACTIONS as USER_ACTIONS} from '../../user/action';
 

@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {Box, Typography} from "@mui/material";
 
 import {DropDownMenu, MoreButton} from "@components";
-import {clearBookmarks} from "@redux/tweet/bookmark/action";
+import {clearBookmarks} from "@redux/tweet/action";
 
 const items = [
   () => (<Box sx={{display: 'flex', alignItems: 'center'}}>

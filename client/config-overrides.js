@@ -28,7 +28,7 @@ module.exports = (config, env) => {
       "@hooks": path.resolve(__dirname, "./src/hooks"),
       "@containers": path.resolve(__dirname, "./src/containers"),
       "@redux": path.resolve(__dirname, "./src/redux"),
-      "@service": path.resolve(__dirname, "./src/services"),
+      "@services": path.resolve(__dirname, "./src/services"),
     }),
     addLessLoader({
       lessOptions: {

@@ -2,15 +2,13 @@ import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 import {Client} from "@stomp/stompjs";
 
-import api from "@service/API";
+import api from "@services/API";
 import {getTokens, setHeaderAuthorization} from "@utils";
-import {interceptor} from "@service/API";
+import {interceptor} from "@services/API";
 import {ACTIONS, authUserSocketSubscribe, getAuthUser} from "./user/action";
 import {setFontSize, setBackgroundColor} from "@utils/theme";
 
 import tweetReducer from "./tweet/reducer";
-import bookmarkReducer from "./tweet/bookmark/reducer";
-import repliesReducer from "./tweet/replies/reducer";
 import authReducer from "./auth/reducer";
 import userReducer from "./user/reducer";
 import dialogReducer from "./dialog/reducer";
@@ -25,8 +23,6 @@ const reducer = combineReducers({
   chat: chatReducer,
   message: messagesReducer,
   tweet: tweetReducer,
-  bookmark: bookmarkReducer,
-  replies: repliesReducer,
   auth: authReducer,
   user: userReducer,
   dialog: dialogReducer,

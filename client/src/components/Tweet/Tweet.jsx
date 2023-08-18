@@ -5,7 +5,7 @@ import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {PATH} from "../../../../utils/constants";
+import {PATH} from "@utils/constants";
 import {InViewElement} from "@components";
 import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";

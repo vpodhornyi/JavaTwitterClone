@@ -20,9 +20,11 @@ import LoginPanel from "./LoginPanel";
 import Display from "./Display";
 import ModalWindow from "./ModalWindow";
 import Confirm from "./Confirm";
-import {TweetForm} from "./tweetComponents/TweetForm";
-import Tweet from "./tweetComponents/Tweet";
-import DeleteTweet from "./tweetComponents/DeleteTweet";
+import Tweet from "./Tweet/Tweet";
+import ReplyTweet from "./Tweet/ReplyTweet";
+import RetweetButton from "./Tweet/RetweetButton";
+import MoreTweetActionsButton from "./Tweet/MoreTweetActionsButton";
+import Tweets from "./Tweets";
 import PrimaryHeader from './PrimaryHeader';
 import MobileDrawer from './Drawer/Drawer';
 import CustomDrawer from './CustomDrawer';
@@ -61,9 +63,11 @@ export {
   Display,
   ModalWindow,
   Confirm,
-  TweetForm,
   Tweet,
-  DeleteTweet,
+  ReplyTweet,
+  RetweetButton,
+  MoreTweetActionsButton,
+  Tweets,
   PrimaryHeader,
   MobileDrawer,
   CustomDrawer,

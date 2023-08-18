@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 import CounterButton from "./CounterButton";
 import RetweetButton from "./RetweetButton";
-import {CustomIconButton} from "../../../../components";
+import {CustomIconButton} from "@components";
 import {likeTweet, bookmarkTweet} from "@redux/tweet/action";
 import {PATH} from "@utils/constants";
 
@@ -16,7 +16,10 @@ const TweetFooter = ({tweet}) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const like = useDebouncedCallback(() => dispatch(likeTweet(tweet.id)), 300);
-  const bookmark = useDebouncedCallback(() => dispatch(bookmarkTweet(tweet.id)), 300);
+  const bookmark = useDebouncedCallback(() => {
+    const isBookmarks = location.pathname === PATH.BOOKMARKS;
+    dispatch(bookmarkTweet(tweet.id, isBookmarks))
+  }, 300);
 
   return (
       <BoxWrapper>

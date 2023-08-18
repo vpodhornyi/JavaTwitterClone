@@ -1,4 +1,4 @@
-import api from "@service/API";
+import api from "@services/API";
 
 const ACCESS_TOKEN = 'accessToken';
 const REFRESH_TOKEN = 'refreshToken';

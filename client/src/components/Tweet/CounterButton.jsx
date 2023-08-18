@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles";
 import {Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {CustomIconButton} from "../../../../components"
+import {CustomIconButton} from "@components"
 
 const CounterButton = ({name, count, showCounter = true}) => {
 

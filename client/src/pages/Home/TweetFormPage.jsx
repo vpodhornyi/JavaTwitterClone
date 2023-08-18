@@ -5,10 +5,9 @@ import {Avatar, Box, TextField} from "@mui/material";
 import {useDebouncedCallback} from "use-debounce";
 import {Link, useNavigate} from "react-router-dom";
 
-import {ModalPage, CustomIconButton} from "../../components";
+import {ModalPage, CustomIconButton, ReplyTweet} from "@components";
 import TweetFormFooter from "./components/twitForm/TweetFormFooter";
 import WhoCanReplyButton from "./components/twitForm/WhoCanReplyButton";
-import ReplyTweet from "./components/tweet/ReplyTweet";
 import {PATH} from "../../utils/constants";
 import {Context} from "../../utils/context";
 import {ACTIONS} from "@redux/tweet/action";

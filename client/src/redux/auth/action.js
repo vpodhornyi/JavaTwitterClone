@@ -1,4 +1,4 @@
-import api, {URLS} from "@service/API";
+import api, {URLS} from "@services/API";
 import {createActions} from '../utils';
 import {setAuthToken, setTokenType, setHeaderAuthorization, setRefreshToken} from "@utils";
 import {PATH} from "../../utils/constants";

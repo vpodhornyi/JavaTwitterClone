@@ -1,7 +1,6 @@
 import {createActions} from "../utils";
 import api, {URLS} from "../../services/API";
 import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
-import {ACTIONS as BOOKMARK_ACTIONS} from "./bookmark/action";
 
 
 const actions = createActions(
@@ -14,20 +13,23 @@ const actions = createActions(
         'SET_TWEET_FORM_DELETE_IMAGE',
         'UPDATE_LIKES_TWEET_COUNT',
         'SET_SELECTED_TWEET',
+        'SET_PAGE_NUMBER',
+        'RESET_GET_TWEETS',
+        'DELETE_BOOKMARK',
       ],
       async: [
         "DELETE_TWEET",
         "CREATE_TWEET",
-        "REPLY_TWEET",
         "QUOTE_TWEET",
         "GET_TWEETS",
         "GET_TWEET_BY_ID",
         "ACTIONS_TWEET",
         "RETWEET",
         "LIKE_TWEET",
+        "REPLY_TWEET",
         "VIEW_TWEET",
         'BOOKMARK_TWEET',
-        'GET_TWEET_REPLIES',
+        'CLEAR_BOOKMARKS',
       ],
     },
     {
@@ -38,20 +40,6 @@ const actions = createActions(
 export const ACTIONS = {
   ...actions.actions,
   ...actions.async,
-};
-
-export const getTweets = () => async (dispatch, getState) => {
-  try {
-    const {tweet: {pageNumber, pageSize}} = getState();
-    dispatch(ACTIONS.getTweets.request());
-    const data = await api.get(URLS.TWEETS.ROOT, {params: {pageNumber, pageSize}});
-    dispatch(ACTIONS.getTweets.success(data));
-
-    return data;
-  } catch (err) {
-    dispatch(ACTIONS.getTweets.fail());
-    dispatch(SNACK_ACTIONS.open(err?.response?.data));
-  }
 };
 
 export const getTweetById = id => async (dispatch) => {
@@ -66,19 +54,18 @@ export const getTweetById = id => async (dispatch) => {
   }
 };
 
-export const getTweetReplies = (id) => async (dispatch, getState) => {
+export const getTweets = (url) => async (dispatch, getState) => {
   try {
-    const {tweet: {repliesPageNumber: pageNumber, repliesPageSize: pageSize}} = getState();
-    dispatch(ACTIONS.getTweetReplies.request());
-    const data = await api.get(URLS.TWEETS.getTweetReplies(id),
-        {params: {pageNumber, pageSize}});
-    console.log(data);
-    dispatch(ACTIONS.getTweetReplies.success(data));
+    const {tweet: {pageNumber, pageSize}} = getState();
+    dispatch(ACTIONS.getTweets.request());
+    const data = await api.get(url, {params: {pageNumber, pageSize}});
 
-    return data?.elements;
+    if (data?.elements.length > 0) dispatch(ACTIONS.setPageNumber({pageNumber: pageNumber + 1}));
+
+    dispatch(ACTIONS.getTweets.success(data));
 
   } catch (err) {
-    dispatch(ACTIONS.getTweetReplies.fail());
+    dispatch(ACTIONS.getTweets.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
@@ -138,9 +125,31 @@ export const likeTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.like(id));
     dispatch(ACTIONS.likeTweet.success(data));
-    dispatch(BOOKMARK_ACTIONS.likeBookmarkTweet(data));
 
   } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const replyTweet = (body, navigate, background, isNavigate) => async (dispatch) => {
+  try {
+    await dispatch(ACTIONS.replyTweet.request());
+    const data = await api.post(URLS.TWEETS.REPLY_TWEET, body);
+    await dispatch(ACTIONS.replyTweet.success(data));
+
+    if (isNavigate) {
+      navigate(background.pathname, {
+        state: {background}
+      });
+    }
+
+    dispatch(SNACK_ACTIONS.open({
+      message: data.message,
+      showMessage: data.showMessage
+    }));
+
+  } catch (err) {
+    dispatch(ACTIONS.replyTweet.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
@@ -155,14 +164,31 @@ export const viewTweet = (id) => async (dispatch) => {
   }
 };
 
-export const bookmarkTweet = (id) => async (dispatch) => {
+export const bookmarkTweet = (id, isBookmarks = false) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.bookmark(id));
     dispatch(ACTIONS.bookmarkTweet.success(data));
+    dispatch(SNACK_ACTIONS.open({
+      message: data.message,
+      showMessage: data.showMessage,
+    }));
 
-    if (data.isTweetNotInBookmark) dispatch(BOOKMARK_ACTIONS.deleteBookmark(data));
+    if (data.isTweetNotInBookmark && isBookmarks) dispatch(ACTIONS.deleteBookmark(data));
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
+export const clearBookmarks = () => async dispatch => {
+  try {
+    dispatch(ACTIONS.clearBookmarks.request());
+    const data = await api.post(URLS.TWEETS.CLEAR_BOOKMARKS);
+    dispatch(ACTIONS.clearBookmarks.success());
+    dispatch(SNACK_ACTIONS.open(data));
+
+  } catch (err) {
+    dispatch(ACTIONS.clearBookmarks.fail());
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+}

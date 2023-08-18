@@ -15,12 +15,16 @@ const INITIAL_STATE = {
   pageSize: 7,
   tweets: [],
   selectedTweet: {},
-  repliesPageNumber: 0,
-  repliesPageSize: 7,
 };
 
 export default (state = INITIAL_STATE, {payload, type}) => {
   switch (type) {
+    case String(ACTIONS.setPageNumber): {
+      return {
+        ...state,
+        pageNumber: payload.pageNumber,
+      }
+    }
     case String(ACTIONS.setTweetFormImages): {
       state.form.images.push(payload);
       return {
@@ -52,22 +56,27 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
       }
     }
-    case String(ACTIONS.getTweets.request):
+    case String(ACTIONS.getTweets.request): {
       return {
         ...state,
         loading: true,
-      };
-    case String(ACTIONS.getTweets.success):
-      return {
-        ...state,
-        tweets: payload.elements,
-        loading: false,
-      };
-    case String(ACTIONS.getTweets.fail):
+      }
+    }
+    case String(ACTIONS.getTweets.success): {
+      const tweets = payload.elements.filter(e => !state.tweets.find(t => e.id === t.id));
       return {
         ...state,
         loading: false,
-      };
+        totalPages: payload.totalPages,
+        tweets: [...state.tweets, ...tweets],
+      }
+    }
+    case String(ACTIONS.getTweets.fail): {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
     case String(ACTIONS.deleteTweet.success):
       return {
         ...state,
@@ -164,6 +173,62 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       return {
         ...state,
       };
+    }
+    case String(ACTIONS.clearBookmarks.request): {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+    case String(ACTIONS.clearBookmarks.success): {
+      return {
+        ...state,
+        tweets: [],
+        loading: false,
+      }
+    }
+    case String(ACTIONS.clearBookmarks.fail): {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+    case String(ACTIONS.deleteBookmark): {
+      const tweets = state.tweets.filter(t => t.id !== payload.id);
+      return {
+        ...state,
+        tweets,
+      }
+    }
+    case String(ACTIONS.replyTweet.request): {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+    case String(ACTIONS.replyTweet.success): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (!tweet) {
+        state.replies = [payload, ...state.tweets];
+      }
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+    case String(ACTIONS.replyTweet.fail): {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+    case String(ACTIONS.resetGetTweets): {
+      return {
+        ...state,
+        pageNumber: 0,
+        pageSize: 7,
+        tweets: [],
+      }
     }
     default: {
       return state;

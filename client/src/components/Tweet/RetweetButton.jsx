@@ -9,7 +9,7 @@ import {retweet} from '@redux/tweet/action';
 import {IconByName, DropDownMenu} from "@components";
 import CounterButton from "./CounterButton";
 import {PATH} from "@utils/constants";
-import {CustomIconButton} from "../../../../components";
+import {CustomIconButton} from "@components";
 
 const getItems = (tweet) => {
   const location = useLocation();

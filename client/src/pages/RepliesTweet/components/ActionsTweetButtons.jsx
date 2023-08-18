@@ -1,11 +1,10 @@
 import React from "react";
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 import {Link, useLocation} from "react-router-dom";
-import RetweetButton from "../../Home/components/tweet/RetweetButton";
-import {CustomIconButton} from "../../../components";
+import {CustomIconButton, RetweetButton} from "@components";
 import {useDebouncedCallback} from "use-debounce";
 import {likeTweet, bookmarkTweet} from "@redux/tweet/action";
 import {PATH} from "@utils/constants";

@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
 
 import {
   ColumnWrapper,
@@ -7,24 +6,17 @@ import {
   SitebarColumn,
   StickyHeader,
   PrimaryHeader,
-} from "../../components";
-import Tweets from "../Home/Tweets";
+  Tweets,
+} from "@components";
 import Header from "./Header";
-import {getBookmarks} from "@redux/tweet/bookmark/action";
+import {URLS} from "@services/API";
 
 const Bookmarks = () => {
-  const dispatch = useDispatch();
-  const tweets = useSelector(state => state.bookmark.bookmarks);
-
-  useEffect(() => {
-    dispatch(getBookmarks());
-  }, []);
-
   return (
     <ColumnWrapper>
       <PrimaryColumn>
         <PrimaryHeader pageElement={Header}/>
-        <Tweets tweets={tweets} bookmarksValue={true}/>
+        <Tweets url={URLS.TWEETS.BOOKMARKS}/>
       </PrimaryColumn>
       <SitebarColumn>
         <StickyHeader>HEADER Bookmarks sitebar column</StickyHeader>
