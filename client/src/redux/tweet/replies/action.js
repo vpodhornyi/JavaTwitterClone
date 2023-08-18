@@ -10,6 +10,7 @@ const actions = createActions(
       ],
       async: [
         'GET_TWEET_REPLIES',
+        'REPLY_TWEET',
       ],
     },
     {
@@ -34,6 +35,29 @@ export const getTweetReplies = (id) => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(ACTIONS.getTweetReplies.fail());
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+};
+
+export const replyTweet = (body, navigate, background, isNavigate) => async (dispatch) => {
+  try {
+    await dispatch(ACTIONS.replyTweet.request());
+    const data = await api.post(URLS.TWEETS.REPLY_TWEET, body);
+    await dispatch(ACTIONS.replyTweet.success(data));
+
+    if (isNavigate) {
+      navigate(background.pathname, {
+        state: {background}
+      });
+    }
+
+    dispatch(SNACK_ACTIONS.open({
+      message: data.message,
+      showMessage: data.showMessage
+    }));
+
+  } catch (err) {
+    dispatch(ACTIONS.replyTweet.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };

@@ -100,7 +100,7 @@ const TwitForma = ({isReply = false, parentTweetId}) => {
           addEmoji={addEmoji}
           inputRef={inputRef}
           isNavigate={false}
-          isReplyTweet={true}
+          isReplyTweet={isReply}
           parentTweetId={parentTweetId}
           inputFiletRef={inputFiletRef}/>
       </Box>

@@ -16,6 +16,7 @@ public class TweetResponse extends AbstractTweetResponse {
   private String key;
   private TweetType tweetType;
   private Set<AttachmentResponse> images;
+  private TweetResponse parentTweet;
   //  private Set<TweetActionResponse> actions;
   private String body;
   private TweetUser user;

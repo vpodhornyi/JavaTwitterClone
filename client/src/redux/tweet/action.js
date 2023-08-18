@@ -2,7 +2,7 @@ import {createActions} from "../utils";
 import api, {URLS} from "../../services/API";
 import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 import {ACTIONS as BOOKMARK_ACTIONS} from "./bookmark/action";
-import {PATH} from "../../utils/constants";
+
 
 const actions = createActions(
     {
@@ -95,24 +95,6 @@ export const createTweet = (body) => async (dispatch) => {
 
   } catch (err) {
     dispatch(ACTIONS.createTweet.fail());
-    dispatch(SNACK_ACTIONS.open(err?.response?.data));
-  }
-};
-
-export const replyTweet = (body, navigate, background, isNavigate) => async (dispatch) => {
-  try {
-    console.log(background);
-    await dispatch(ACTIONS.replyTweet.request());
-    const data = await api.post(URLS.TWEETS.REPLY_TWEET, body);
-    await dispatch(ACTIONS.replyTweet.success(data));
-    if (isNavigate) {
-      navigate(background.pathname, {
-        state: {background}
-      });
-    }
-
-  } catch (err) {
-    dispatch(ACTIONS.replyTweet.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };

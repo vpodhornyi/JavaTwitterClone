@@ -37,6 +37,28 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         loading: false,
       }
     }
+    case String(ACTIONS.replyTweet.request): {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+    case String(ACTIONS.replyTweet.success): {
+      const tweet = state.replies.find(t => t.id === payload.id);
+      if (!tweet) {
+        state.replies = [payload, ...state.replies];
+      }
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+    case String(ACTIONS.replyTweet.fail): {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
     case String(ACTIONS.reset): {
       return {
         ...state,

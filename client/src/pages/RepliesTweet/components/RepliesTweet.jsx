@@ -89,7 +89,7 @@ const RepliesTweet = () => {
           </Box>
         </Box>
         <Box>
-          {replies.map(tweet => <Tweet key={tweet.key} tweet={tweet}/>)}
+          {replies.map(tweet => <Tweet key={tweet?.key} tweet={tweet}/>)}
           {!repliesLoading && <InViewElement toggleVisible={toggleVisible}/>}
           {repliesLoading && (<Box sx={{position: 'relative', pt: 3, pb: 3}}>
             <CircularLoader/>

@@ -5,7 +5,8 @@ import {Box} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {CustomFabButton, CustomIconButton, EmojiPicker} from "@components"
-import {createTweet, replyTweet, quoteTweet} from "@redux/tweet/action";
+import {createTweet, quoteTweet} from "@redux/tweet/action";
+import {replyTweet} from "@redux/tweet/replies/action";
 
 const TweetFormFooter = ({
                            handleUploadImage, addEmoji, inputFiletRef, inputRef,

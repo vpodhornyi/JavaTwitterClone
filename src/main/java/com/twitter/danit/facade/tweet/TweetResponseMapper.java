@@ -14,6 +14,12 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
 
   @Override
   protected void decorateDto(TweetResponse dto, Tweet entity, User user) {
+    Tweet parentTweet = entity.getParentTweet();
+
+    if (parentTweet != null) {
+      dto.setParentTweet(this.convertToDto(parentTweet, user));
+    }
+
     dto.setIsTweetOwner(entity.getUser().equals(user));
 
     dto.setRepliesTweetCount(entity.getRepliesTweetCount());
