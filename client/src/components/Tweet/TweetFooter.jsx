@@ -45,7 +45,8 @@ const TweetFooter = ({tweet}) => {
         </Box>
         <Box onClick={e => e.stopPropagation()}>
           <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
-            <CustomIconButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}/>
+            <CounterButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}
+                           count={tweet?.bookmarksCount}/>
           </Box>
         </Box>
       </BoxWrapper>);

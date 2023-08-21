@@ -7,8 +7,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LikeTweetResponse extends AbstractResponse {
-  private final DtoResponseType type = DtoResponseType.TWEET_LIKE;
-  private boolean IsTweetLiked;
-  private long likesCount;
+public class ViewTweetResponse extends AbstractResponse {
+  private final DtoResponseType type = DtoResponseType.TWEET_VIEW;
+  private boolean IsTweetViewed;
+  private long viewsCount;
 }

@@ -2,7 +2,7 @@ package com.twitter.danit.facade.tweet;
 
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
-import com.twitter.danit.dto.tweet.RetweetResponse;
+import com.twitter.danit.dto.tweet.response.RetweetResponse;
 import com.twitter.danit.facade.GeneralFacade;
 import org.springframework.stereotype.Service;
 

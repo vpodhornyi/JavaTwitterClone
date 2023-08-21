@@ -1,6 +1,7 @@
 package com.twitter.danit.dto.tweet.response;
 
 import com.twitter.danit.domain.tweet.TweetType;
+import com.twitter.danit.dto.AbstractResponse;
 import com.twitter.danit.dto.attachment.AttachmentResponse;
 import com.twitter.danit.dto.tweet.TweetUser;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class TweetResponse extends AbstractTweetResponse {
+public class TweetResponse extends AbstractResponse {
   private LocalDateTime createdAt;
   private String key;
   private TweetType tweetType;

@@ -6,8 +6,8 @@ import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.AbstractResponse;
 import com.twitter.danit.dto.tweet.response.DeleteTweetResponse;
-import com.twitter.danit.dto.tweet.response.AbstractTweetResponse;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
 import com.twitter.danit.exception.TweetViewException;
@@ -70,7 +70,7 @@ public class TweetService {
     tweetRepository.deleteById(tweetId);
   }
 
-  public AbstractTweetResponse deleteByIdWithResponse(Long tweetId) {
+  public AbstractResponse deleteByIdWithResponse(Long tweetId) {
     tweetRepository.deleteById(tweetId);
 
     return new DeleteTweetResponse(tweetId);
@@ -85,7 +85,7 @@ public class TweetService {
     tweetRepository.delete(tweet);
   }
 
-  public AbstractTweetResponse cascadeRemoveWithResponse(Tweet tweet) {
+  public AbstractResponse cascadeRemoveWithResponse(Tweet tweet) {
     cascadeRemoveChildren(tweet);
 
     return new DeleteTweetResponse(tweet.getId());

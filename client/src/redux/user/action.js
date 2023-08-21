@@ -77,6 +77,18 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
           body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.updateLikesTweetCount(body));
           break;
+        case 'TWEET_VIEW':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateViewsTweetCount(body));
+          break;
+        case 'TWEET_BOOKMARK':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateBookmarksTweetCount(body));
+          break;
+        case 'RETWEET':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateRetweetCount(body));
+          break;
         default:
           console.log('no type');
       }

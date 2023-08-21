@@ -3,14 +3,16 @@ package com.twitter.danit.controller;
 import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.dto.AbstractResponse;
+import com.twitter.danit.dto.PageAbstract;
 import com.twitter.danit.dto.tweet.*;
 import com.twitter.danit.dto.tweet.request.QuoteTweetRequest;
 import com.twitter.danit.dto.tweet.request.ReplyTweetRequest;
 import com.twitter.danit.dto.tweet.request.TweetRequest;
-import com.twitter.danit.dto.tweet.response.AbstractTweetResponse;
 import com.twitter.danit.dto.tweet.response.BookmarkTweetResponse;
 import com.twitter.danit.dto.tweet.response.TweetResponse;
 import com.twitter.danit.facade.tweet.*;
+import com.twitter.danit.facade.tweet.ViewTweetResponseMapper;
 import com.twitter.danit.service.TweetService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +66,7 @@ public class TweetController extends AbstractController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<AbstractTweetResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<AbstractResponse> deleteTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserTweetAuthorException(tweet, authUser);
@@ -85,9 +87,10 @@ public class TweetController extends AbstractController {
   }
 
   @PostMapping("/reply-tweet")
-  public ResponseEntity<TweetResponse> postReplyTweet(@RequestBody ReplyTweetRequest tweetRequest, Principal principal) {
+  public ResponseEntity<AbstractResponse> postReplyTweet(@RequestBody ReplyTweetRequest tweetRequest, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
+
     return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.save(tweet), authUser));
   }
 
@@ -101,7 +104,7 @@ public class TweetController extends AbstractController {
   }
 
   @GetMapping("/bookmarks")
-  public ResponseEntity<PageTweetResponse> getBookmarks(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
+  public ResponseEntity<PageAbstract<TweetResponse>> getBookmarks(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
     User authUser = getAuthUser(principal);
     Page<Tweet> tweets = tweetService.getBookmarkTweetsPage(pageNumber, pageSize, authUser.getId());
 
@@ -109,33 +112,37 @@ public class TweetController extends AbstractController {
   }
 
   @PostMapping("/{id}/like")
-  public ResponseEntity<AbstractTweetResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<AbstractResponse> likeTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
-    AbstractTweetResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
+    AbstractResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
     sendStompMessage(topic, likeTweetResponse);
 
     return ResponseEntity.ok(likeTweetResponse);
   }
 
   @PostMapping("/{id}/view")
-  public ResponseEntity<ViewTweetResponse> viewTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<AbstractResponse> viewTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     tweetService.isUserNoTweetAuthorException(tweet, authUser);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.VIEW);
+    AbstractResponse viewTweetResponse = viewTweetResponseMapper.convertToDto(savedTweet, authUser);
+    sendStompMessage(topic, viewTweetResponse);
 
-    return ResponseEntity.ok(viewTweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(viewTweetResponse);
   }
 
   @PostMapping("/{id}/bookmark")
-  public ResponseEntity<BookmarkTweetResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<AbstractResponse> bookmarkTweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
+    AbstractResponse bookmarkTweetResponse = bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser);
+    sendStompMessage(topic, bookmarkTweetResponse);
 
-    return ResponseEntity.ok(bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(bookmarkTweetResponse);
   }
 
   @PostMapping("/clear-bookmarks")
@@ -147,11 +154,13 @@ public class TweetController extends AbstractController {
   }
 
   @PostMapping("/{id}/retweet")
-  public ResponseEntity<RetweetResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
+  public ResponseEntity<AbstractResponse> retweet(@PathVariable("id") Long tweetId, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
+    AbstractResponse retweetResponse = retweetResponseMapper.convertToDto(savedTweet, authUser);
+    sendStompMessage(topic, retweetResponse);
 
-    return ResponseEntity.ok(retweetResponseMapper.convertToDto(savedTweet, authUser));
+    return ResponseEntity.ok(retweetResponse);
   }
 }

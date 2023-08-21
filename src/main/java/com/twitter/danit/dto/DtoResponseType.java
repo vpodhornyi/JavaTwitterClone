@@ -11,5 +11,7 @@ public enum DtoResponseType {
   LEAVE_CHAT,
 
   TWEET_LIKE,
+  TWEET_VIEW,
+  TWEET_BOOKMARK,
   RETWEET,
 }

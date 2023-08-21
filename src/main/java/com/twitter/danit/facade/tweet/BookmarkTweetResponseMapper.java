@@ -15,6 +15,7 @@ public class BookmarkTweetResponseMapper extends GeneralFacade<Tweet, BookmarkTw
   @Override
   protected void decorateDto(BookmarkTweetResponse dto, Tweet entity, User user) {
     boolean tweetInBookmark = entity.isTweetInBookmark(user);
+    dto.setBookmarksCount(entity.getBookmarksCount());
     dto.setIsTweetInBookmark(tweetInBookmark);
     dto.setIsTweetNotInBookmark(!tweetInBookmark);
     dto.setMessage(tweetInBookmark ? "Post added to your Bookmarks" : "Post removed from your Bookmarks");

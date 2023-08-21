@@ -107,6 +107,68 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         tweet.isTweetRetweeted = payload.isTweetRetweeted;
         tweet.retweetsCount = payload.retweetsCount;
       }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.isTweetRetweeted = payload.isTweetRetweeted;
+        selectedTweet.retweetsCount = payload.retweetsCount;
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.updateRetweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.retweetsCount = payload.retweetsCount;
+      }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.retweetsCount = payload.retweetsCount;
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.updateLikesTweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.likesCount = payload.likesCount;
+      }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.likesCount = payload.likesCount;
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.updateViewsTweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      const selectedTweet = state.selectedTweet;
+      if (tweet) {
+        tweet.viewsCount = payload.viewsCount;
+
+        if (tweet.id === selectedTweet.id) {
+          selectedTweet.viewsCount = payload.viewsCount;
+        }
+      }
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.updateBookmarksTweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.bookmarksCount = payload.bookmarksCount;
+      }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.bookmarksCount = payload.bookmarksCount;
+      }
       return {
         ...state,
       }
@@ -117,14 +179,11 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         tweet.isTweetLiked = payload.isTweetLiked;
         tweet.likesCount = payload.likesCount;
       }
-      return {
-        ...state,
-      }
-    }
-    case String(ACTIONS.updateLikesTweetCount): {
-      const tweet = state.tweets.find(t => t.id === payload.id);
-      if (tweet) {
-        tweet.likesCount = payload.likesCount;
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.isTweetLiked = payload.isTweetLiked;
+        selectedTweet.likesCount = payload.likesCount;
       }
       return {
         ...state,
@@ -136,6 +195,12 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         tweet.isTweetViewed = payload.isTweetViewed;
         tweet.viewsCount = payload.viewsCount;
       }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.isTweetViewed = payload.isTweetViewed;
+        selectedTweet.viewsCount = payload.viewsCount;
+      }
       return {
         ...state,
       }
@@ -144,6 +209,13 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {
         tweet.isTweetInBookmark = payload.isTweetInBookmark;
+        tweet.bookmarksCount = payload.bookmarksCount;
+      }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.isTweetInBookmark = payload.isTweetInBookmark;
+        selectedTweet.bookmarksCount = payload.bookmarksCount;
       }
       return {
         ...state,
