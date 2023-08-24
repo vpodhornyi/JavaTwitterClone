@@ -45,7 +45,6 @@ export const ACTIONS = {
   ...actions.actions,
   ...actions.async,
 };
-
 export const getTweetById = id => async (dispatch) => {
   try {
     dispatch(ACTIONS.getTweetById.request());
@@ -57,7 +56,6 @@ export const getTweetById = id => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const getTweets = (url) => async (dispatch, getState) => {
   try {
     const {tweet: {pageNumber, pageSize}} = getState();
@@ -73,7 +71,6 @@ export const getTweets = (url) => async (dispatch, getState) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const createTweet = (body) => async (dispatch) => {
   try {
     dispatch(ACTIONS.createTweet.request());
@@ -89,7 +86,6 @@ export const createTweet = (body) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const quoteTweet = (body) => async (dispatch) => {
   try {
     dispatch(ACTIONS.quoteTweet.request());
@@ -101,7 +97,6 @@ export const quoteTweet = (body) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const deleteTweet = (tweetId) => async (dispatch) => {
   try {
     const data = await api.delete(`${URLS.TWEETS.ROOT}/${tweetId}`);
@@ -112,7 +107,6 @@ export const deleteTweet = (tweetId) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const retweet = (id) => async (dispatch) => {
   try {
     // dispatch(ACTIONS.retweet.request());
@@ -124,7 +118,6 @@ export const retweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const likeTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.like(id));
@@ -134,7 +127,6 @@ export const likeTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const replyTweet = (body, navigate, background, isNavigate) => async (dispatch) => {
   try {
     await dispatch(ACTIONS.replyTweet.request());
@@ -157,7 +149,6 @@ export const replyTweet = (body, navigate, background, isNavigate) => async (dis
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const viewTweet = (id) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.view(id));
@@ -167,7 +158,6 @@ export const viewTweet = (id) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const bookmarkTweet = (id, isBookmarks = false) => async (dispatch) => {
   try {
     const data = await api.post(URLS.TWEETS.bookmark(id));
@@ -183,7 +173,6 @@ export const bookmarkTweet = (id, isBookmarks = false) => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
-
 export const clearBookmarks = () => async dispatch => {
   try {
     dispatch(ACTIONS.clearBookmarks.request());

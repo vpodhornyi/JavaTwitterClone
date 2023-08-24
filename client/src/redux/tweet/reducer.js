@@ -173,6 +173,20 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
       }
     }
+    case String(ACTIONS.updateRepliesTweetCount): {
+      const tweet = state.tweets.find(t => t.id === payload.id);
+      if (tweet) {
+        tweet.repliesTweetCount = payload.repliesTweetCount;
+      }
+
+      const selectedTweet = state.selectedTweet;
+      if (payload.id === selectedTweet.id) {
+        selectedTweet.repliesTweetCount = payload.repliesTweetCount;
+      }
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.likeTweet.success): {
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (tweet) {
@@ -279,6 +293,17 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       }
     }
     case String(ACTIONS.replyTweet.success): {
+      const parentTweet = payload.parentTweet;
+
+      if (parentTweet) {
+        const tweet = state.tweets.find(t => t.id === parentTweet.id);
+
+        if (tweet) {
+          tweet.repliesTweetCount = parentTweet.repliesTweetCount;
+          tweet.isTweetReplied = parentTweet.isTweetReplied;
+        }
+      }
+
       const tweet = state.tweets.find(t => t.id === payload.id);
       if (!tweet) {
         state.replies = [payload, ...state.tweets];

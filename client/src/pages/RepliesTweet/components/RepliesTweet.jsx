@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useSelector, useDispatch} from "react-redux"
-import {useParams, Link} from 'react-router-dom';
+import {useParams, Link, useBeforeUnload} from 'react-router-dom';
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import {moment} from "@utils";
@@ -17,6 +17,10 @@ const RepliesTweet = () => {
   const {selectedTweet: tweet, tweetByIdLoading} = useSelector(state => state.tweet);
   const dispatch = useDispatch();
   const {id} = useParams();
+
+  useBeforeUnload(() => {
+    console.log('kuku');
+  });
 
   useEffect(() => {
     const fetch = async () => {
