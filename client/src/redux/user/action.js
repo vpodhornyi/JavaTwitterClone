@@ -9,13 +9,13 @@ import {PATH} from "../../utils/constants";
 
 
 const actions = createActions(
-  {
-    actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
-    async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
-  },
-  {
-    prefix: "user",
-  }
+    {
+      actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
+      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
+    },
+    {
+      prefix: "user",
+    }
 );
 
 export const ACTIONS = {
@@ -85,6 +85,19 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
           body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.updateBookmarksTweetCount(body));
           break;
+        case 'REPLY_TWEET':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateRepliesTweetCount(body));
+          break;
+        default:
+          console.log('no type');
+      }
+
+      switch (body?.tweetType) {
+        case 'REPLY_TWEET':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateRepliesTweetCount(body));
+          break;
         case 'RETWEET':
           body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.updateRetweetCount(body));
@@ -131,10 +144,6 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
         case 'LEAVE_CHAT':
           dispatch(MESSAGE_ACTIONS.leaveChatNotification(body));
           dispatch(CHAT_ACTIONS.deleteUserFromChat(body));
-          break;
-        case 'TWEET_LIKE':
-          console.log('qwerty');
-          dispatch(TWEET_ACTIONS.likeTweet.success(body));
           break;
         default:
           console.log('no type');

@@ -90,8 +90,10 @@ public class TweetController extends AbstractController {
   public ResponseEntity<AbstractResponse> postReplyTweet(@RequestBody ReplyTweetRequest tweetRequest, Principal principal) {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
+    AbstractResponse tweetResponse = tweetResponseMapper.convertToDto(tweetService.save(tweet), authUser);
+    sendStompMessage(topic, tweetResponse);
 
-    return ResponseEntity.ok(tweetResponseMapper.convertToDto(tweetService.save(tweet), authUser));
+    return ResponseEntity.ok(tweetResponse);
   }
 
   @PostMapping("/quote-tweet")

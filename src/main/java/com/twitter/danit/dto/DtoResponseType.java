@@ -12,6 +12,7 @@ public enum DtoResponseType {
 
   TWEET_LIKE,
   TWEET_VIEW,
+  TWEET,
   TWEET_BOOKMARK,
   RETWEET,
 }

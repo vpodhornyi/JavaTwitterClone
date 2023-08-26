@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux"
-import {useParams, Link, useBeforeUnload} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import {moment} from "@utils";
 import PropTypes from "prop-types";
 
 import {PATH} from "@utils/constants";
-import {getTweetById} from '@redux/tweet/action';
+import {ACTIONS as TWEET_ACTIONS, getTweetById} from '@redux/tweet/action';
 import {CircularLoader, Tweets, MoreTweetActionsButton} from "@components";
 import ActionsTweetButtons from "./ActionsTweetButtons";
 import TwitForma from "../../Home/components/twitForm/TwitForma";
@@ -18,16 +18,16 @@ const RepliesTweet = () => {
   const dispatch = useDispatch();
   const {id} = useParams();
 
-  useBeforeUnload(() => {
-    console.log('kuku');
-  });
-
   useEffect(() => {
     const fetch = async () => {
       await dispatch(getTweetById(id));
     }
     fetch();
-  }, [tweet?.id, id]);
+
+    return () => {
+      dispatch(TWEET_ACTIONS.resetSelectedTweet());
+    }
+  }, [id]);
 
   return (
       <BoxWrapper>

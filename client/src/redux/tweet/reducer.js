@@ -174,15 +174,24 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       }
     }
     case String(ACTIONS.updateRepliesTweetCount): {
-      const tweet = state.tweets.find(t => t.id === payload.id);
-      if (tweet) {
-        tweet.repliesTweetCount = payload.repliesTweetCount;
+      const parentTweet = payload.parentTweet;
+
+      if (state.selectedTweet.id && (state.selectedTweet.id === parentTweet.id)) {
+        const tweet = state.tweets.find(t => t.id === payload.id);
+
+        if (!tweet) {
+          state.tweets = [payload, ...state.tweets];
+        }
       }
 
-      const selectedTweet = state.selectedTweet;
-      if (payload.id === selectedTweet.id) {
-        selectedTweet.repliesTweetCount = payload.repliesTweetCount;
+      if (parentTweet) {
+        const tweet = state.tweets.find(t => t.id === parentTweet.id);
+
+        if (tweet) {
+          tweet.repliesTweetCount = parentTweet.repliesTweetCount;
+        }
       }
+
       return {
         ...state,
       }
@@ -237,6 +246,12 @@ export default (state = INITIAL_STATE, {payload, type}) => {
     }
     case String(ACTIONS.setSelectedTweet): {
       state.selectedTweet = payload;
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.resetSelectedTweet): {
+      state.selectedTweet = {};
       return {
         ...state,
       }
@@ -304,10 +319,14 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         }
       }
 
-      const tweet = state.tweets.find(t => t.id === payload.id);
-      if (!tweet) {
-        state.replies = [payload, ...state.tweets];
+      if (state.selectedTweet.id) {
+        const tweet = state.tweets.find(t => t.id === payload.id);
+
+        if (!tweet) {
+          state.tweets = [payload, ...state.tweets];
+        }
       }
+
       return {
         ...state,
         loading: false,

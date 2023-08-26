@@ -28,6 +28,7 @@ const App = () => {
   const background = location.state?.background;
   const tweetAction = location.state?.tweetAction;
   const mainMenu = menu(authUser.userTag, authorized, isChatSelected, authUser.countUnreadMessages, chatId);
+
   return (preloader ? <Preloader/> :
       <Context.Provider value={{background, toggleModal, tweetAction}}>
         <ThemeProvider theme={theme}>

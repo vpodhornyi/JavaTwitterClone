@@ -17,6 +17,7 @@ const actions = createActions(
         'UPDATE_REPLIES_TWEET_COUNT',
         'UPDATE_RETWEET_COUNT',
         'SET_SELECTED_TWEET',
+        'RESET_SELECTED_TWEET',
         'SET_PAGE_NUMBER',
         'RESET_GET_TWEETS',
         'DELETE_BOOKMARK',

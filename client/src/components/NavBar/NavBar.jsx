@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -11,7 +11,6 @@ import {LogoIcon} from "../.";
 import {PATH} from "../../utils/constants";
 
 const NavBar = ({user, authorized, menu}) => {
-
   return (
       <StyledBox>
         <Box className='NavWrapper'>
