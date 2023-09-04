@@ -173,6 +173,18 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
       }
     }
+    case String(ACTIONS.updateBookmarksCount): {
+      payload.bookmarks.forEach(el => {
+        const tweet = state.tweets.find(t => t.id === el.id);
+        if (tweet) {
+          tweet.bookmarksCount = el.bookmarksCount;
+        }
+      })
+
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.updateRepliesTweetCount): {
       const parentTweet = payload.parentTweet;
 

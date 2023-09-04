@@ -14,6 +14,7 @@ const actions = createActions(
         'UPDATE_LIKES_TWEET_COUNT',
         'UPDATE_VIEWS_TWEET_COUNT',
         'UPDATE_BOOKMARKS_TWEET_COUNT',
+        'UPDATE_BOOKMARKS_COUNT',
         'UPDATE_REPLIES_TWEET_COUNT',
         'UPDATE_RETWEET_COUNT',
         'SET_SELECTED_TWEET',

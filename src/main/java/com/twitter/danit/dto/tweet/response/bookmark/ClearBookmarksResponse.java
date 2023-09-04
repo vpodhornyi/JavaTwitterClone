@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ClearBookmarksResponse {
-  private final DtoResponseType type = DtoResponseType.CLEAR_BOOKMARK;
+  private final DtoResponseType type = DtoResponseType.UPDATE_BOOKMARKS_COUNT;
   List<ClearBookmarksTweetsResponse> bookmarks;
 }

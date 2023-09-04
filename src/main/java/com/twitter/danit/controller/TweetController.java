@@ -10,6 +10,7 @@ import com.twitter.danit.dto.tweet.request.QuoteTweetRequest;
 import com.twitter.danit.dto.tweet.request.ReplyTweetRequest;
 import com.twitter.danit.dto.tweet.request.TweetRequest;
 import com.twitter.danit.dto.tweet.response.TweetResponse;
+import com.twitter.danit.dto.tweet.response.bookmark.ClearBookmarksResponse;
 import com.twitter.danit.facade.tweet.*;
 import com.twitter.danit.facade.tweet.ViewTweetResponseMapper;
 import com.twitter.danit.service.TweetService;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -36,6 +38,7 @@ public class TweetController extends AbstractController {
   private final LikeTweetResponseMapper likeTweetResponseMapper;
   private final ViewTweetResponseMapper viewTweetResponseMapper;
   private final BookmarkTweetResponseMapper bookmarkTweetResponseMapper;
+  private final ClearBookmarksResponseMapper clearBookmarksResponseMapper;
 
   @GetMapping
   public ResponseEntity<PageTweetResponse> getAll(
@@ -149,9 +152,11 @@ public class TweetController extends AbstractController {
   @PostMapping("/clear-bookmarks")
   public ResponseEntity<ClearBookmarksResponse> clearAllUserBookmarks(Principal principal) {
     User authUser = getAuthUser(principal);
-    tweetService.deleteAllUserBookmarks(authUser);
+    List<Tweet> tweets = tweetService.deleteAllUserBookmarks(authUser);
+    ClearBookmarksResponse clearBookmarksResponse = clearBookmarksResponseMapper.convertToDto(tweets);
+    sendStompMessage(topic, clearBookmarksResponse);
 
-    return ResponseEntity.ok(new ClearBookmarksResponse());
+    return ResponseEntity.ok(clearBookmarksResponse);
   }
 
   @PostMapping("/{id}/retweet")

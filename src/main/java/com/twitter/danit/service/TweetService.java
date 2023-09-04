@@ -1,5 +1,6 @@
 package com.twitter.danit.service;
 
+import com.twitter.danit.dao.RefreshJwtStoreDao;
 import com.twitter.danit.dao.TweetActionRepository;
 import com.twitter.danit.dao.TweetRepository;
 import com.twitter.danit.domain.tweet.ActionType;
@@ -7,12 +8,10 @@ import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.AbstractResponse;
-import com.twitter.danit.dto.tweet.response.bookmark.ClearBookmarksTweetsResponse;
 import com.twitter.danit.dto.tweet.response.DeleteTweetResponse;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
 import com.twitter.danit.exception.TweetViewException;
-import com.twitter.danit.facade.tweet.ClearBookmarksTweetsResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,9 +29,10 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 public class TweetService {
+  private final RefreshJwtStoreDao refreshJwtStoreDao;
   private final TweetRepository tweetRepository;
   private final TweetActionRepository tweetActionRepository;
-  private final ClearBookmarksTweetsResponseMapper clearBookmarksTweetsResponseMapper;
+
 
   public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
     return tweetRepository.findAllTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
@@ -113,7 +113,7 @@ public class TweetService {
     return save(tweet);
   }
 
-  public List<ClearBookmarksTweetsResponse> deleteAllUserBookmarks(User user) {
+  public List<Tweet> deleteAllUserBookmarks(User user) {
     Optional<List<Tweet>> optionalTweets = tweetRepository.findAllTweetsByUserAndActionType(user.getId(), ActionType.BOOKMARK.toString());
 
     if (optionalTweets.isPresent()) {
@@ -124,11 +124,7 @@ public class TweetService {
         List<Long> list = tweets.stream().map(Tweet::getId).toList();
         Optional<List<Tweet>> optionalTweetList = tweetRepository.findAllByIdIn(list);
 
-        if (optionalTweetList.isPresent()) {
-          return optionalTweetList.get().stream()
-              .map(clearBookmarksTweetsResponseMapper::convertToDto)
-              .toList();
-        }
+        return optionalTweetList.orElseGet(ArrayList::new);
       }
     }
     return new ArrayList<>();

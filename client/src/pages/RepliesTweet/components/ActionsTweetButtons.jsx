@@ -41,6 +41,10 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   padding: '2px 0',
   borderBottom: `1px solid ${theme.palette.border.main}`,
 
+  '& .IconByName': {
+    color: theme.typography.body2.color,
+  },
+
   '& .Reply:hover': {
     '& .MuiTypography-root': {
       transition: '0.5s',

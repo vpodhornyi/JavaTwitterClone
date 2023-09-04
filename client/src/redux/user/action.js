@@ -85,6 +85,10 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
           body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.updateBookmarksTweetCount(body));
           break;
+        case 'UPDATE_BOOKMARKS_COUNT':
+          body.authUserId = authUser.id;
+          dispatch(TWEET_ACTIONS.updateBookmarksCount(body));
+          break;
         case 'REPLY_TWEET':
           body.authUserId = authUser.id;
           dispatch(TWEET_ACTIONS.updateRepliesTweetCount(body));
