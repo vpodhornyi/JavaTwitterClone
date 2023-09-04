@@ -1,4 +1,4 @@
-package com.twitter.danit.dto.tweet.response;
+package com.twitter.danit.dto.tweet.response.bookmark;
 
 import com.twitter.danit.dto.AbstractResponse;
 import com.twitter.danit.dto.DtoResponseType;

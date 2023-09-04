@@ -7,10 +7,12 @@ import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.tweet.TweetAction;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.AbstractResponse;
+import com.twitter.danit.dto.tweet.response.bookmark.ClearBookmarksTweetsResponse;
 import com.twitter.danit.dto.tweet.response.DeleteTweetResponse;
 import com.twitter.danit.exception.CouldNotFindTweetException;
 import com.twitter.danit.exception.NoTweetAuthorException;
 import com.twitter.danit.exception.TweetViewException;
+import com.twitter.danit.facade.tweet.ClearBookmarksTweetsResponseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +32,7 @@ import java.util.Optional;
 public class TweetService {
   private final TweetRepository tweetRepository;
   private final TweetActionRepository tweetActionRepository;
+  private final ClearBookmarksTweetsResponseMapper clearBookmarksTweetsResponseMapper;
 
   public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
     return tweetRepository.findAllTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
@@ -109,7 +113,24 @@ public class TweetService {
     return save(tweet);
   }
 
-  public void deleteAllUserBookmarks(User user) {
-    tweetActionRepository.deleteAllByUserAndActionType(user, ActionType.BOOKMARK);
+  public List<ClearBookmarksTweetsResponse> deleteAllUserBookmarks(User user) {
+    Optional<List<Tweet>> optionalTweets = tweetRepository.findAllTweetsByUserAndActionType(user.getId(), ActionType.BOOKMARK.toString());
+
+    if (optionalTweets.isPresent()) {
+      List<Tweet> tweets = optionalTweets.get();
+
+      if (tweets.size() != 0) {
+        tweetActionRepository.deleteAllByUserAndActionType(user, ActionType.BOOKMARK);
+        List<Long> list = tweets.stream().map(Tweet::getId).toList();
+        Optional<List<Tweet>> optionalTweetList = tweetRepository.findAllByIdIn(list);
+
+        if (optionalTweetList.isPresent()) {
+          return optionalTweetList.get().stream()
+              .map(clearBookmarksTweetsResponseMapper::convertToDto)
+              .toList();
+        }
+      }
+    }
+    return new ArrayList<>();
   }
 }

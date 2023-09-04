@@ -9,7 +9,6 @@ import com.twitter.danit.dto.tweet.*;
 import com.twitter.danit.dto.tweet.request.QuoteTweetRequest;
 import com.twitter.danit.dto.tweet.request.ReplyTweetRequest;
 import com.twitter.danit.dto.tweet.request.TweetRequest;
-import com.twitter.danit.dto.tweet.response.BookmarkTweetResponse;
 import com.twitter.danit.dto.tweet.response.TweetResponse;
 import com.twitter.danit.facade.tweet.*;
 import com.twitter.danit.facade.tweet.ViewTweetResponseMapper;
