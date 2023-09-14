@@ -9,7 +9,6 @@ const MainMenuButton = ({isActive, isBadge = false, badgeContent, iconName, text
     {isBadge ? <Badge
       badgeContent={badgeContent}
       color="primary"
-
       max={99}
     >
       <IconByName color='text' iconName={iconName}/>
@@ -17,7 +16,6 @@ const MainMenuButton = ({isActive, isBadge = false, badgeContent, iconName, text
     <Typography
       color='text'
       className={`LinkText ${isActive && 'LinkText_active'}`}
-      variant='body1'
     >
       {text}
     </Typography>
