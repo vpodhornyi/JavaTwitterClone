@@ -69,6 +69,15 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     textTransform: 'none',
     color: theme.typography.subtitle1.color,
     fontSize: theme.typography.body1.fontSize,
+
+    '&:hover': {
+      backgroundColor: theme.palette.background[3],
+      transition: '0.1s'
+    },
+
+    '& .MuiTouchRipple-root': {
+      display: 'none'
+    }
   },
 
   '& .TabsWrapper': {

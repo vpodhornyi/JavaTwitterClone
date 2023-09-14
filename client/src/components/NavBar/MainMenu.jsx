@@ -46,7 +46,6 @@ const MenuItem = styled('div')(({theme}) => ({
   margin: '5px 0',
   display: 'flex',
   cursor: 'pointer',
-  // color: theme.palette.action.active,
 
   '& .MainMenuButton': {
     borderRadius: 40,
