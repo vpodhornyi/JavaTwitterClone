@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RetweetResponse extends AbstractResponse {
-  private final DtoResponseType type = DtoResponseType.RETWEET;
+  private final DtoResponseType tweetType = DtoResponseType.RETWEET;
   private Long id;
   private boolean IsTweetRetweeted;
   private long retweetsCount;
