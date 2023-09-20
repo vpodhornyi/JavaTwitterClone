@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   },
   pageNumber: 0,
   pageSize: 7,
+  totalPages: 0,
   tweets: [],
   selectedTweet: {},
 };
@@ -355,6 +356,7 @@ export default (state = INITIAL_STATE, {payload, type}) => {
         ...state,
         pageNumber: 0,
         pageSize: 7,
+        totalPages: 0,
         tweets: [],
       }
     }

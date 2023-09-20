@@ -46,7 +46,40 @@ public class TweetController extends AbstractController {
       @RequestParam int pageSize,
       Principal principal) {
     User authUser = getAuthUser(principal);
-    Page<Tweet> tweets = tweetService.getTweetsPage(pageNumber, pageSize, authUser.getId());
+    Page<Tweet> tweets = tweetService.getTweetsPage(pageNumber, pageSize);
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+  }
+
+  @GetMapping("/user")
+  public ResponseEntity<PageTweetResponse> getUserTweets(
+      @RequestParam int pageNumber,
+      @RequestParam int pageSize,
+      Principal principal) {
+    User authUser = getAuthUser(principal);
+    Page<Tweet> tweets = tweetService.getUserTweetsPage(pageNumber, pageSize, authUser.getId());
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+  }
+
+  @GetMapping("/replies")
+  public ResponseEntity<PageTweetResponse> getReplyTweets(
+      @RequestParam int pageNumber,
+      @RequestParam int pageSize,
+      Principal principal) {
+    User authUser = getAuthUser(principal);
+    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, authUser.getId());
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+  }
+
+  @GetMapping("/likes")
+  public ResponseEntity<PageTweetResponse> getLikeTweets(
+      @RequestParam int pageNumber,
+      @RequestParam int pageSize,
+      Principal principal) {
+    User authUser = getAuthUser(principal);
+    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, authUser.getId());
 
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }

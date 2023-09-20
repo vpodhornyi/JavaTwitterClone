@@ -1,6 +1,5 @@
 package com.twitter.danit.service;
 
-import com.twitter.danit.dao.RefreshJwtStoreDao;
 import com.twitter.danit.dao.TweetActionRepository;
 import com.twitter.danit.dao.TweetRepository;
 import com.twitter.danit.domain.tweet.ActionType;
@@ -29,13 +28,21 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 public class TweetService {
-  private final RefreshJwtStoreDao refreshJwtStoreDao;
   private final TweetRepository tweetRepository;
   private final TweetActionRepository tweetActionRepository;
 
 
-  public Page<Tweet> getTweetsPage(int pageNumber, int pageSize, Long userId) {
-    return tweetRepository.findAllTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  public Page<Tweet> getTweetsPage(int pageNumber, int pageSize) {
+    return tweetRepository.findAllTweetsWithTypeTweet(PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  }
+
+  public Page<Tweet> getUserTweetsPage(int pageNumber, int pageSize, Long userId) {
+    return tweetRepository.findAllUserTweetsWithTypeTweet(userId, PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  }
+
+  public Page<Tweet> getUserLikeTweetsPage(int pageNumber, int pageSize, Long userId) {
+    return tweetRepository.findActionsTweetsPage(userId, ActionType.LIKE.name(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+
   }
 
   public Page<Tweet> getTweetRepliesPage(int pageNumber, int pageSize, Long tweetId) {
@@ -43,7 +50,7 @@ public class TweetService {
   }
 
   public Page<Tweet> getBookmarkTweetsPage(int pageNumber, int pageSize, Long userId) {
-    return tweetRepository.findActionsTweets(userId, ActionType.BOOKMARK.toString(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+    return tweetRepository.findActionsTweetsPage(userId, ActionType.BOOKMARK.name(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
   }
 
   @Transactional

@@ -1,5 +1,4 @@
 import axios from "axios";
-import {Client} from "@stomp/stompjs";
 import {ACTIONS} from '@redux/auth/action';
 import {getTokens, setTokenType, setAuthToken, setHeaderAuthorization, deleteTokens} from "@utils";
 
@@ -60,6 +59,9 @@ export const URLS = {
   },
   TWEETS: {
     ROOT: "/tweets",
+    USER_TWEETS: "/tweets/user",
+    REPLIES_TWEETS: "/tweets/replies",
+    LIKES_TWEETS: "/tweets/likes",
     GET_TWEET_BY_ID: "/tweets/:id",
     getTweetById: id => `/tweets/${id}`,
     REPLY_TWEET: "/tweets/reply-tweet",

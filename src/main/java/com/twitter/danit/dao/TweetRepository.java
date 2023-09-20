@@ -22,7 +22,16 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
       order by t.created_at desc
       """,
       nativeQuery = true)
-  Optional<Page<Tweet>> findAllTweetsWithTypeTweet(@Param("userId") Long userId, Pageable pageable);
+  Optional<Page<Tweet>> findAllTweetsWithTypeTweet(Pageable pageable);
+
+  @Query(value = """
+      select * from tweets t
+      where t.tweet_type = 'TWEET'
+      and t.user_id = :userId
+      order by t.created_at desc
+      """,
+      nativeQuery = true)
+  Optional<Page<Tweet>> findAllUserTweetsWithTypeTweet(@Param("userId") Long userId, Pageable pageable);
 
   @Query(value = """
       select * from tweets t
@@ -40,7 +49,7 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
       order by ta.created_at desc
       """,
       nativeQuery = true)
-  Optional<Page<Tweet>> findActionsTweets(
+  Optional<Page<Tweet>> findActionsTweetsPage(
       @Param("userId") Long userId,
       @Param("actionType") String actionType,
       Pageable pageable);

@@ -1,35 +1,26 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
-import {Box, Tab, Tabs, Typography} from "@mui/material";
-import PropTypes from "prop-types";
+import {Box, Tab, Tabs} from "@mui/material";
 
-function CustomTabPanel(props) {
-  const { children, value, index, ...other } = props;
+import {Tweets} from "@components";
+import {URLS} from "@services/API";
 
-  return (
-      <div
-          role="tabpanel"
-          hidden={value !== index}
-          id={`simple-tabpanel-${index}`}
-          aria-labelledby={`simple-tab-${index}`}
-          {...other}
-      >
-        {value === index && (
-            <Box sx={{ p: 3 }}>
-              <Typography>{children}</Typography>
-            </Box>
-        )}
-      </div>
-  );
-}
+const TABS = [
+  {
+    tabName: 'Tweets',
+    url: URLS.TWEETS.USER_TWEETS
+  },
+  {
+    tabName: 'Replies',
+    url: URLS.TWEETS.REPLIES_TWEETS
+  },
+  {
+    tabName: 'Likes',
+    url: URLS.TWEETS.LIKES_TWEETS
+  }
+];
 
-CustomTabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-const TwitterLists = ({item}) => {
+const TwitterLists = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -47,20 +38,21 @@ const TwitterLists = ({item}) => {
       <BoxWrapper>
         <Box className="TabsWrapper">
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab label="Tweets" {...allProps(0)}/>
-            <Tab label="Retweets" {...allProps(1)}/>
-            <Tab label="Likes" {...allProps(2)}/>
+            {TABS.map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-          Item One
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-          Item Two
-        </CustomTabPanel>
-        <CustomTabPanel value={value} index={2}>
-          Item Three
-        </CustomTabPanel>
+        {TABS.map((el, index) => {
+          return (
+              <Box
+                  role="tabpanel"
+                  hidden={value !== index}
+                  id={`simple-tabpanel-${index}`}
+                  key={`TabPanel_${index}`}
+                  aria-labelledby={`simple-tab-${index}`}
+              >
+                {value === index && <Tweets url={el.url}/>}
+              </Box>)
+        })}
       </BoxWrapper>);
 }
 
@@ -87,11 +79,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
       fontWeight: theme.typography.fontWeightBold,
       color: theme.palette.text.main,
     },
-  },
-
+  }
 }));
 
-TwitterLists.propTypes = {
-  item: PropTypes.object,
-}
 export default TwitterLists;
