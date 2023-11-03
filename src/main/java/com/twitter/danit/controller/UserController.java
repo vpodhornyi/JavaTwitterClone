@@ -89,4 +89,12 @@ public class UserController {
     emailService.sendByNodeMailer(user, password);
     return ResponseEntity.ok(new ResetPasswordResponse());
   }
+
+  @PostMapping("/follow")
+  public ResponseEntity<ResetPasswordResponse> follow(@RequestBody FollowUserRequest followUserRequest, Principal principal) {
+    User authUser = userService.findByUserTagTrowException(principal.getName());
+    userService.addFollower(authUser, followUserRequest.getFollowUserId());
+
+    return ResponseEntity.ok(null);
+  }
 }

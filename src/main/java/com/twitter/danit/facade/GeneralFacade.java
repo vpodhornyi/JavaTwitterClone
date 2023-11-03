@@ -1,6 +1,5 @@
 package com.twitter.danit.facade;
 
-
 import com.twitter.danit.domain.user.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

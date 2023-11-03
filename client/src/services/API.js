@@ -56,6 +56,7 @@ export const URLS = {
     CUSTOMIZE: "/users/customize",
     PROFILE: "/users/profile",
     RESET_PASSWORD: `/users/reset-password`,
+    FOLLOW: '/users/follow'
   },
   TWEETS: {
     ROOT: "/tweets",

@@ -59,6 +59,11 @@ public class User extends BaseEntity {
           inverseJoinColumns = @JoinColumn(name = "followed_id"))
   @JsonIgnore
   private Set<User> followings;
+
+  public void addFollower(User user) {
+    this.followers.add(user);
+  }
+
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
   @JsonIgnore

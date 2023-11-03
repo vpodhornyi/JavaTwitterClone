@@ -80,6 +80,15 @@ public class UserService {
     return true;
   }
 
+  public User findByIdTrowException(Long userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+
+    if (optionalUser.isPresent()) {
+      return optionalUser.get();
+    }
+    throw new CouldNotFindAccountException();
+  }
+
   public User findByUserTagTrowException(String userTag) {
     Optional<User> optionalUser = userRepository.findByUserTag(userTag);
 
@@ -142,5 +151,11 @@ public class UserService {
     user.setCustomStyle(customStyle);
 
     return userRepository.save(user).getCustomStyle();
+  }
+
+  public void addFollower(User followerUser, Long userId) {
+    User user = this.findByIdTrowException(userId);
+    followerUser.addFollower(user);
+    this.save(followerUser);
   }
 }

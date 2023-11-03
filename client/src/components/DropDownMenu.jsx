@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles";
 import {Box, Menu, MenuItem} from "@mui/material";
 import PropTypes from "prop-types";
 
-const DropDownMenu = ({clickElement: ClickElement, items, menuClick, itemKey}) => {
+const DropDownMenu = ({clickElement: ClickElement, items, menuClick}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -16,27 +16,35 @@ const DropDownMenu = ({clickElement: ClickElement, items, menuClick, itemKey}) =
   };
 
   return (<Box onClick={e => e.stopPropagation()}>
-      <Box
-        aria-controls={open ? 'demo-positioned-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
-        <ClickElement/>
+        <Box
+            aria-controls={open ? 'demo-positioned-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+        >
+          <ClickElement/>
+        </Box>
+        <MenuWrapper
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{'aria-labelledby': 'basic-button'}}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+        >
+          {items.map(({key, Element}) => {
+            return (<MenuItem key={key} onClick={() => menuClick(key, setAnchorEl)}>
+              <Element/>
+            </MenuItem>)
+          })}
+        </MenuWrapper>
       </Box>
-      <MenuWrapper
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{'aria-labelledby': 'basic-button'}}
-      >
-        {items.map((Item, i) => {
-          return (<MenuItem key={itemKey + i} onClick={() => menuClick(i, setAnchorEl)}>
-            <Item/>
-          </MenuItem>)
-        })}
-      </MenuWrapper>
-    </Box>
   );
 }
 
@@ -76,6 +84,5 @@ DropDownMenu.propTypes = {
   clickElement: PropTypes.func,
   items: PropTypes.array,
   menuClick: PropTypes.func,
-  itemKey: PropTypes.string.isRequired,
 }
 export default DropDownMenu;

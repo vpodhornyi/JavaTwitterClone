@@ -42,7 +42,7 @@ const More = ({chat}) => {
           open={open}
           onClose={handleClose}
           anchorOrigin={{
-            vertical: 'top',
+            vertical: 'bottom',
             horizontal: 'right',
           }}
           transformOrigin={{

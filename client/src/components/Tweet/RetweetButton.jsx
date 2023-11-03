@@ -15,23 +15,29 @@ const getItems = (tweet) => {
   const location = useLocation();
 
   return [
-    () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
-      <ListItemIcon>
-        <IconByName color='text' iconName="FlipCameraAndroid"/>
-      </ListItemIcon>
-      <Typography fontWeight='bold' variant='body1'>{tweet.isTweetRetweeted ? 'Undo Retweet' : 'Retweet'}</Typography>
-    </Box>),
-    () => (<Link
-        to={PATH.COMPOSE.TWEET}
-        state={{background: location, tweetAction: {tweet, isQuoteTweet: true}}}
-    >
-      <Box sx={{display: 'flex', alignItems: 'center'}}>
+    {
+      key: 'retweet',
+      Element: () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
         <ListItemIcon>
-          <IconByName color='text' iconName="DriveFileRenameOutlineOutlined"/>
+          <IconByName color='text' iconName="FlipCameraAndroid"/>
         </ListItemIcon>
-        <Typography fontWeight='bold' variant='body1'>Quote tweet</Typography>
-      </Box>
-    </Link>)
+        <Typography fontWeight='bold' variant='body1'>{tweet.isTweetRetweeted ? 'Undo Retweet' : 'Retweet'}</Typography>
+      </Box>)
+    },
+    {
+      key: 'quote_tweet',
+      Element: () => (<Link
+          to={PATH.COMPOSE.TWEET}
+          state={{background: location, tweetAction: {tweet, isQuoteTweet: true}}}
+      >
+        <Box sx={{display: 'flex', alignItems: 'center'}}>
+          <ListItemIcon>
+            <IconByName color='text' iconName="DriveFileRenameOutlineOutlined"/>
+          </ListItemIcon>
+          <Typography fontWeight='bold' variant='body1'>Quote tweet</Typography>
+        </Box>
+      </Link>)
+    }
   ]
 };
 const Button = (retweetsCount, isTweetRetweeted, showCounter) => (
@@ -44,11 +50,11 @@ const RetweetButton = ({tweet, showCounter = true}) => {
   const dispatch = useDispatch();
   const menuClick = (index, setAnchorEl) => {
     switch (index) {
-      case 0: {
+      case 'retweet': {
         dispatch(retweet(tweet.id));
         break;
       }
-      case 1: {
+      case 'quote_tweet': {
 
       }
     }

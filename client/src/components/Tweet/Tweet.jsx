@@ -51,7 +51,7 @@ const Tweet = ({tweet}) => {
                 }
               }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
             </Box>
-            {tweet.isTweetOwner && <MoreTweetActionsButton tweet={tweet}/>}
+            <MoreTweetActionsButton tweet={tweet}/>
           </Box>
           <Typography>{tweet.body}</Typography>
           <Box className="ImagesBox">
