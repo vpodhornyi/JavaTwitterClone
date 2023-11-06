@@ -13,6 +13,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Objects;
 
@@ -47,21 +48,30 @@ public class User extends BaseEntity {
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany
   @JoinTable(name = "followers",
-          joinColumns = @JoinColumn(name = "followed_id"),
-          inverseJoinColumns = @JoinColumn(name = "follower_id"))
+      joinColumns = @JoinColumn(name = "followed_id"),
+      inverseJoinColumns = @JoinColumn(name = "follower_id"))
   @JsonIgnore
   private Set<User> followers;
 
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany
   @JoinTable(name = "followers",
-          joinColumns = @JoinColumn(name = "follower_id"),
-          inverseJoinColumns = @JoinColumn(name = "followed_id"))
+      joinColumns = @JoinColumn(name = "follower_id"),
+      inverseJoinColumns = @JoinColumn(name = "followed_id"))
   @JsonIgnore
   private Set<User> followings;
 
-  public void addFollower(User user) {
-    this.followers.add(user);
+  public boolean isFollowUser(User user) {
+    Optional<User> first = this.followings.stream().filter(u -> u.equals(user)).findFirst();
+    return first.isPresent();
+  }
+
+  public void followUser(User user) {
+    this.followings.add(user);
+  }
+
+  public void unfollowUser(User user) {
+    this.followings.remove(user);
   }
 
   @LazyCollection(LazyCollectionOption.EXTRA)
@@ -75,8 +85,8 @@ public class User extends BaseEntity {
   @Override
   public String toString() {
     return "User{" +
-            "userTag='" + userTag + '\'' +
-            '}';
+        "userTag='" + userTag + '\'' +
+        '}';
   }
 
   @Override

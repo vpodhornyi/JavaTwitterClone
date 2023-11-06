@@ -66,6 +66,20 @@ export const uploadImage = (body) => async dispatch => {
   }
 }
 
+
+export const followUser = (id) => async dispatch => {
+  try {
+    const data = await api.post(URLS.USERS.FOLLOW, {followUserId: id});
+    dispatch(SNACK_ACTIONS.open({
+      message: data.message,
+      showMessage: data.showMessage,
+    }));
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+}
+
 export const authUserSocketSubscribe = () => async (dispatch, getState) => {
   try {
     const {user: {authUser}} = getState();

@@ -6,6 +6,7 @@ import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.auth.AccountCheckRequest;
 import com.twitter.danit.dto.user.*;
 import com.twitter.danit.facade.user.CustomStyleResponseMapper;
+import com.twitter.danit.facade.user.FollowUserResponseMapper;
 import com.twitter.danit.facade.user.UserResponseMapper;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
@@ -33,6 +34,7 @@ public class UserController {
   private final CustomStyleResponseMapper customStyleResponseMapper;
   private final EmailService emailService;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final FollowUserResponseMapper followUserResponseMapper;
 
   @GetMapping
   public UserResponse findAuthUser() {
@@ -91,10 +93,11 @@ public class UserController {
   }
 
   @PostMapping("/follow")
-  public ResponseEntity<ResetPasswordResponse> follow(@RequestBody FollowUserRequest followUserRequest, Principal principal) {
+  public ResponseEntity<FollowUserResponse> follow(@RequestBody FollowUserRequest followUserRequest, Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    userService.addFollower(authUser, followUserRequest.getFollowUserId());
+    User followUser = userService.findByIdTrowException(followUserRequest.getFollowUserId());
+    boolean isFollow = userService.addFollower(authUser, followUser);
 
-    return ResponseEntity.ok(null);
+    return ResponseEntity.ok(followUserResponseMapper.getFollowUserResponse(followUser, isFollow));
   }
 }

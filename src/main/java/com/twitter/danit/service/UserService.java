@@ -153,9 +153,17 @@ public class UserService {
     return userRepository.save(user).getCustomStyle();
   }
 
-  public void addFollower(User followerUser, Long userId) {
-    User user = this.findByIdTrowException(userId);
-    followerUser.addFollower(user);
-    this.save(followerUser);
+  public boolean addFollower(User authUser, User followUser) {
+    boolean isFollow = authUser.isFollowUser(followUser);
+
+    if (isFollow) {
+      authUser.unfollowUser(followUser);
+    } else {
+      authUser.followUser(followUser);
+    }
+
+    this.save(authUser);
+
+    return isFollow;
   }
 }
