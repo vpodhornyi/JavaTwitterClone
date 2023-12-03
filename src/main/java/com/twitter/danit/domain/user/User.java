@@ -49,17 +49,19 @@ public class User extends BaseEntity {
   @ManyToMany
   @JoinTable(name = "followers",
       joinColumns = @JoinColumn(name = "followed_id"),
-      inverseJoinColumns = @JoinColumn(name = "follower_id"))
+      inverseJoinColumns = @JoinColumn(name = "follower_id")
+  )
   @JsonIgnore
-  private Set<User> followers;
+  private Set<User> followings;
 
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany
   @JoinTable(name = "followers",
       joinColumns = @JoinColumn(name = "follower_id"),
-      inverseJoinColumns = @JoinColumn(name = "followed_id"))
+      inverseJoinColumns = @JoinColumn(name = "followed_id")
+  )
   @JsonIgnore
-  private Set<User> followings;
+  private Set<User> followers;
 
   public boolean isFollowUser(User user) {
     Optional<User> first = this.followings.stream().filter(u -> u.equals(user)).findFirst();
@@ -85,7 +87,7 @@ public class User extends BaseEntity {
   @Override
   public String toString() {
     return "User{" +
-        "userTag='" + userTag + '\'' +
+        "userTag='" + userTag + '\'' + "id='" + getId() + '\'' +
         '}';
   }
 

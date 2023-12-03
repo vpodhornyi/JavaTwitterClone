@@ -136,12 +136,12 @@ ALTER TABLE ATTACHMENT_IMAGES
         ON DELETE CASCADE
         ON UPDATE CASCADE;
 
-INSERT INTO followers (follower_id, followed_id)
-values (1, 2),
-       (1, 4),
-       (2, 1),
-       (3, 4),
-       (3, 5),
-       (4, 1);
+-- INSERT INTO followers (follower_id, followed_id)
+-- values (1, 2),
+--        (1, 4),
+--        (2, 1),
+--        (3, 4),
+--        (3, 5),
+--        (4, 1);
 
 -- alter table users  alter column id add generated always as identity;

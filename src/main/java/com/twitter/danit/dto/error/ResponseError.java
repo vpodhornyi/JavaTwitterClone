@@ -1,6 +1,5 @@
 package com.twitter.danit.dto.error;
 
-import com.twitter.danit.dto.error.ValidationError;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,14 +14,15 @@ import java.util.Objects;
 public class ResponseError {
   private final int status;
   private final String message;
-  private final Boolean show;
+  private final Boolean showMessage;
   private String stackTrace;
   private List<ValidationError> errors;
+
 
   public ResponseError(int status, String message, Boolean show, String stackTrace) {
     this.status = status;
     this.message = message;
-    this.show = show;
+    this.showMessage = show;
     this.stackTrace = stackTrace;
   }
 

@@ -11,4 +11,5 @@ public class TweetUser {
   private String name;
   private String userTag;
   private String avatarImgUrl;
+  private boolean IsFollowed;
 }

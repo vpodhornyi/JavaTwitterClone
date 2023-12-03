@@ -70,10 +70,7 @@ export const uploadImage = (body) => async dispatch => {
 export const followUser = (id) => async dispatch => {
   try {
     const data = await api.post(URLS.USERS.FOLLOW, {followUserId: id});
-    dispatch(SNACK_ACTIONS.open({
-      message: data.message,
-      showMessage: data.showMessage,
-    }));
+    dispatch(SNACK_ACTIONS.open(data));
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
