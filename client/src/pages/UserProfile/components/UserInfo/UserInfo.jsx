@@ -46,11 +46,11 @@ const UserInfo = () => {
           <Typography>{user?.bio}</Typography>
           <Box sx={{display: 'flex'}}>
             <Typography sx={{mr: 2}} variant='subtitle1'>
-              <span className='FollowCount'>{4}</span>
+              <span className='FollowCount'>{user.followingsCount}</span>
               Following
             </Typography>
             <Typography variant='subtitle1'>
-              <span className='FollowCount'>{1}</span>
+              <span className='FollowCount'>{user.followersCount}</span>
               Follower
             </Typography>
           </Box>

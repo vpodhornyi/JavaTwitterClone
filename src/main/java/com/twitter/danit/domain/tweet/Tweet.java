@@ -1,6 +1,5 @@
 package com.twitter.danit.domain.tweet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.twitter.danit.domain.BaseEntity;
 import com.twitter.danit.domain.attachment.AttachmentImage;
@@ -46,15 +45,12 @@ public class Tweet extends BaseEntity {
   private User user;
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<AttachmentImage> images = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<Notification> notifications = new HashSet<>();
 
   @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL, orphanRemoval = true)
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Set<TweetAction> actions = new HashSet<>();
 
   @OneToMany(mappedBy = "parentTweet", cascade = CascadeType.ALL, orphanRemoval = true)

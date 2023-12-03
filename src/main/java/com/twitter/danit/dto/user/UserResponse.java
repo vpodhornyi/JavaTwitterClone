@@ -22,4 +22,6 @@ public class UserResponse {
   private String headerImgUrl;
   private CustomStyleResponse customize;
   private Integer countUnreadMessages = 0;
+  private Integer FollowingsCount;
+  private Integer FollowersCount;
 }

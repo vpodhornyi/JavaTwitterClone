@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -23,8 +25,9 @@ public class AttachmentImage extends BaseEntity {
 
   private String imgUrl;
 
-  @ManyToOne
+
   @JoinColumn(name = "tweet_id")
   @JsonIgnore
+  @ManyToOne
   private Tweet tweet;
 }
