@@ -45,7 +45,6 @@ const getItems = tweet => {
   ]
 }
 
-
 const MoreTweetActionsButton = ({tweet}) => {
   const dispatch = useDispatch();
   const {toggleModal} = useContext(Context);

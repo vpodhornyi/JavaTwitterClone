@@ -17,7 +17,6 @@ const UserInfo = () => {
   const {authUser: user} = useSelector(state => state.user);
   const location = useLocation();
 
-
   return (
       <BoxWrapper>
         {
