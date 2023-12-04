@@ -12,7 +12,7 @@ import TweetFooter from "./TweetFooter";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
 import {ACTIONS, viewTweet} from "@redux/tweet/action";
 
-const Tweet = ({tweet}) => {
+const Tweet = ({tweet, inViewCheck = true}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +57,7 @@ const Tweet = ({tweet}) => {
           <Box className="ImagesBox">
             {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
           </Box>
-          <InViewElement toggleVisible={toggleVisible}/>
+          {inViewCheck && <InViewElement toggleVisible={toggleVisible}/>}
           <TweetFooter tweet={tweet}/>
         </Box>
       </BoxWrapper>);
@@ -97,5 +97,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
 Tweet.propTypes = {
   tweet: PropTypes.object,
+  inViewCheck: PropTypes.bool,
 }
 export default Tweet;

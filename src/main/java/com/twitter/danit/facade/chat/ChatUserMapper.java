@@ -10,4 +10,11 @@ public class ChatUserMapper extends GeneralFacade<User, ChatUser> {
   public ChatUserMapper() {
     super(User.class, ChatUser.class);
   }
+
+  @Override
+  protected void decorateDto(ChatUser dto, User entity, User user) {
+    dto.setFollowingsCount(entity.getFollowingsCount());
+    dto.setFollowersCount(entity.getFollowersCount());
+    dto.setIsFollowed(user.isFollowUser(entity));
+  }
 }

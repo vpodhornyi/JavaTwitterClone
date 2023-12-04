@@ -8,14 +8,18 @@ import org.springframework.stereotype.Service;
 public class FollowUserResponseMapper {
   private final FollowUserResponse followUserResponse = new FollowUserResponse();
 
-  public FollowUserResponse getFollowUserResponse(User user, boolean isFollow) {
-    followUserResponse.setId(user.getId());
+  public FollowUserResponse getFollowUserResponse(User followUser, boolean isFollow, User authUser) {
+    followUserResponse.setId(followUser.getId());
     followUserResponse.setShowMessage(true);
 
+    followUserResponse.setAuthUserId(authUser.getId());
+    followUserResponse.setFollowingsCount(authUser.getFollowingsCount());
+    followUserResponse.setFollowersCount(authUser.getFollowersCount());
+
     if (isFollow) {
-      followUserResponse.setMessage("You unfollowed @" + user.getUserTag());
+      followUserResponse.setMessage("You unfollowed @" + followUser.getUserTag());
     } else {
-      followUserResponse.setMessage("You followed @" + user.getUserTag());
+      followUserResponse.setMessage("You followed @" + followUser.getUserTag());
     }
 
     return followUserResponse;

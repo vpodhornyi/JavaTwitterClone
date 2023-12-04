@@ -1,12 +1,13 @@
-import React, {useContext} from "react";
-import {useDispatch} from "react-redux";
-import {ListItemIcon, Box, Typography} from "@mui/material";
+import React, { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { ListItemIcon, Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
-import {IconByName, MoreButton, DropDownMenu} from "@components";
+import { IconByName, MoreButton, DropDownMenu } from "@components";
 import DeleteTweetConfirm from "./DeleteTweetConfirm";
-import {Context} from "@utils/context";
-import {followUser} from "@redux/user/action";
+import { Context } from "@utils/context";
+import { followUser } from "@redux/user/action";
+import UnfollowConfirm from "../UnfollowConfirm";
 
 const getItems = tweet => {
   const user = tweet.user;
@@ -14,16 +15,16 @@ const getItems = tweet => {
   return tweet.isTweetOwner ? [
     {
       key: 'delete',
-      Element: () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
+      Element: () => (<Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ListItemIcon>
-          <IconByName iconStyle={{color: 'red'}} iconName="DeleteOutline"/>
+          <IconByName iconStyle={{ color: 'red' }} iconName="DeleteOutline"/>
         </ListItemIcon>
         <Typography color='red' fontWeight='bold' variant='body1'>Delete</Typography>
       </Box>)
     },
     {
       key: 'reply',
-      Element: () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
+      Element: () => (<Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ListItemIcon>
           <IconByName color='text' iconName="ChatBubbleOutline"/>
         </ListItemIcon>
@@ -33,21 +34,22 @@ const getItems = tweet => {
   ] : [
     {
       key: 'follow',
-      Element: () => (<Box sx={{display: 'flex', alignItems: 'center'}}>
+      Element: () => (<Box sx={{ display: 'flex', alignItems: 'center' }}>
         <ListItemIcon>
           <IconByName color='text' iconName="PersonAddAlt"/>
         </ListItemIcon>
         <Typography color='text' fontWeight='bold' variant='body1'>
-          {user?.isFollowed ? 'Unfollow': 'Follow'} @{user?.userTag}
+          {user?.isFollowed ? 'Unfollow' : 'Follow'} @{user?.userTag}
         </Typography>
       </Box>)
     },
   ]
 }
 
-const MoreTweetActionsButton = ({tweet}) => {
+const MoreTweetActionsButton = ({ tweet }) => {
   const dispatch = useDispatch();
-  const {toggleModal} = useContext(Context);
+  const { toggleModal } = useContext(Context);
+  const { user } = tweet;
   const menuClick = (key, setAnchorEl) => {
     switch (key) {
       case 'delete': {
@@ -58,7 +60,15 @@ const MoreTweetActionsButton = ({tweet}) => {
       }
         break;
       case 'follow': {
-        dispatch(followUser(tweet?.user?.id));
+        if (user.isFollowed) {
+          toggleModal(<UnfollowConfirm
+              toggleModal={toggleModal}
+              userId={user.id}
+              userTag={user.userTag}
+          />, true);
+        } else {
+          dispatch(followUser(tweet?.user?.id));
+        }
         setAnchorEl(null);
       }
     }

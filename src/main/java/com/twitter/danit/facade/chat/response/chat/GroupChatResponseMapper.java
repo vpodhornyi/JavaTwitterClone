@@ -29,7 +29,7 @@ public class GroupChatResponseMapper extends GeneralFacade<Chat, GroupChatRespon
   @Override
   protected void decorateDto(GroupChatResponse dto, Chat entity, User user) {
     List<ChatUser> users = entity.getUsers().stream()
-      .map(chatUserMapper::convertToDto)
+      .map(guestUser -> chatUserMapper.convertToDto(guestUser, user))
       .toList();
     dto.setUsers(users);
     dto.setAvatarImgUrl(entity.getAvatarImgUrl());

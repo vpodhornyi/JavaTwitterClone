@@ -86,7 +86,7 @@ const CustomizationModal = () => {
         this
         browser.</Typography>
       <Box className='TweetBox' style={{pointerEvents: "none"}}>
-        <Tweet tweet={tweetInfo}/>
+        <Tweet tweet={tweetInfo} inViewCheck={false}/>
       </Box>
       <StyledTitle>Font size</StyledTitle>
       <StyledBox className='StyledFontSizeBox'>

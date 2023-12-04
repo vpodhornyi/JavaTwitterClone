@@ -98,6 +98,6 @@ public class UserController {
     User followUser = userService.findByIdTrowException(followUserRequest.getFollowUserId());
     boolean isFollow = userService.addFollower(authUser, followUser);
 
-    return ResponseEntity.ok(followUserResponseMapper.getFollowUserResponse(followUser, isFollow));
+    return ResponseEntity.ok(followUserResponseMapper.getFollowUserResponse(followUser, isFollow, authUser));
   }
 }

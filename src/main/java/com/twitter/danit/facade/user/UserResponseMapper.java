@@ -32,7 +32,8 @@ public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
       dto.setCustomize(customStyleDtoMapper.convertToDto(customStyle));
     }
 
-    dto.setFollowingsCount(entity.getFollowings().size());
-    dto.setFollowersCount(entity.getFollowers().size());
+    dto.setFollowingsCount(entity.getFollowingsCount());
+    dto.setFollowersCount(entity.getFollowersCount());
+    dto.setTweetsCount(entity.getTweetsCount());
   }
 }

@@ -45,6 +45,10 @@ public class User extends BaseEntity {
   @JsonIgnore
   private Set<Tweet> tweets;
 
+  public Integer getTweetsCount() {
+    return this.tweets.size();
+  }
+
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany
   @JoinTable(name = "followers",
@@ -62,6 +66,14 @@ public class User extends BaseEntity {
   )
   @JsonIgnore
   private Set<User> followers;
+
+  public Integer getFollowingsCount() {
+    return this.followings.size();
+  }
+
+  public Integer getFollowersCount() {
+    return this.followers.size();
+  }
 
   public boolean isFollowUser(User user) {
     Optional<User> first = this.followings.stream().filter(u -> u.equals(user)).findFirst();

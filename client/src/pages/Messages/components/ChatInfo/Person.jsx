@@ -19,7 +19,7 @@ const Person = ({user}) => {
           <Typography variant='body2'>@{user.userTag}</Typography>
         </Box>
       </Box>
-      <FollowButton name='Follow'/>
+      <FollowButton isFollowed={user.isFollowed} userId={user.id} userTag={user.userTag}/>
     </BoxWrapper>
   );
 }

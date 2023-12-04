@@ -11,7 +11,7 @@ const CustomFabButton = ({onClick, className, name, disabled}) => {
       disabled={disabled}
       className={className}
       variant="extended">
-      <Typography className='CustomFabButtonName' variant='body1'>{name}</Typography>
+      <Typography className='CustomFabButtonName' variant='body1'><span>{name}</span></Typography>
     </FabWrapper>
   );
 };

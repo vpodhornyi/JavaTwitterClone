@@ -32,6 +32,7 @@ import SnackBar from './SnackBar';
 import EmojiPicker from './EmojiPicker';
 import InViewElement from './InViewElement';
 import DropDownMenu from './DropDownMenu';
+import UnfollowConfirm from "./UnfollowConfirm";
 
 export {
   Header,
@@ -75,4 +76,5 @@ export {
   EmojiPicker,
   InViewElement,
   DropDownMenu,
+  UnfollowConfirm,
 }

@@ -3,6 +3,8 @@ package com.twitter.danit.dto.chat;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class ChatUser {
@@ -11,4 +13,8 @@ public class ChatUser {
   private String name;
   private String userTag;
   private String avatarImgUrl;
+  private LocalDateTime createdAt;
+  private boolean IsFollowed;
+  private Integer followingsCount;
+  private Integer followersCount;
 }
