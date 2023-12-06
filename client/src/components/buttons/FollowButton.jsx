@@ -10,7 +10,7 @@ import { Context } from "@utils/context";
 import { CustomFabButton } from "./.";
 
 const FollowButton = ({
-                        isFollowed = false,
+                        isFollowing = false,
                         name = 'Follow',
                         disabled = false,
                         userId,
@@ -20,7 +20,7 @@ const FollowButton = ({
   const { toggleModal } = useContext(Context);
 
   const click = () => {
-    if (isFollowed) {
+    if (isFollowing) {
       toggleModal(<UnfollowConfirm
           toggleModal={toggleModal}
           userId={userId}
@@ -34,8 +34,8 @@ const FollowButton = ({
   return (
       <BoxWrapper onClick={click}>
         <CustomFabButton
-            className={`${disabled ? 'Disabled' : ''} ${isFollowed ? 'FollowingClass' : ''}`}
-            name={isFollowed ? 'Following' : name}
+            className={`${disabled ? 'Disabled' : ''} ${isFollowing ? 'FollowingClass' : ''}`}
+            name={isFollowing ? 'Following' : name}
             disabled={disabled}
         />
       </BoxWrapper>);
@@ -88,7 +88,7 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
 }));
 
 FollowButton.propTypes = {
-  isFollowed: PropTypes.bool,
+  isFollowing: PropTypes.bool,
   name: PropTypes.string,
   disabled: PropTypes.bool,
   userId: PropTypes.number,

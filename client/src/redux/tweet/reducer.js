@@ -1,4 +1,4 @@
-import {ACTIONS} from "./action";
+import { ACTIONS } from "./action";
 
 
 const INITIAL_STATE = {
@@ -18,7 +18,7 @@ const INITIAL_STATE = {
   selectedTweet: {},
 };
 
-export default (state = INITIAL_STATE, {payload, type}) => {
+export default (state = INITIAL_STATE, { payload, type }) => {
   switch (type) {
     case String(ACTIONS.setPageNumber): {
       return {
@@ -343,6 +343,16 @@ export default (state = INITIAL_STATE, {payload, type}) => {
       return {
         ...state,
         loading: false,
+      }
+    }
+    case String(ACTIONS.updateUserTweetInfo): {
+      state.tweets.forEach(t => {
+        if (t.user.id === payload.id) {
+          t.user.isFollowing = payload.isFollowing;
+        }
+      })
+      return {
+        ...state,
       }
     }
     case String(ACTIONS.replyTweet.fail): {

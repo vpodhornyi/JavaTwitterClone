@@ -1,4 +1,4 @@
-import {ACTIONS} from "./action";
+import { ACTIONS } from "./action";
 
 const init = {
   loading: false,
@@ -10,7 +10,7 @@ const init = {
   onBottom: false,
 }
 
-export default (state = init, {payload, type}) => {
+export default (state = init, { payload, type }) => {
   switch (type) {
     case String(ACTIONS.setPageNumber):
       return {
@@ -23,7 +23,7 @@ export default (state = init, {payload, type}) => {
         state.chats = [payload, ...state.chats];
       }
     }
-      return {...state};
+      return { ...state };
     case String(ACTIONS.addNewGroupChat): {
       const index = state.chats.findIndex(ch => ch.id === payload.id);
       if (index === -1) {
@@ -32,7 +32,7 @@ export default (state = init, {payload, type}) => {
         state.chats[index] = payload;
       }
     }
-      return {...state};
+      return { ...state };
     case String(ACTIONS.updateNewChat): {
       if (payload.oldKey) {
         const index = state.chats.findIndex(v => v.key === payload.oldKey);
@@ -40,7 +40,7 @@ export default (state = init, {payload, type}) => {
       } else {
         state.chats.unshift(payload);
       }
-      return {...state};
+      return { ...state };
     }
     case String(ACTIONS.deleteChat): {
       const index = state.chats.findIndex(c => c.id === payload.chatId);
@@ -48,9 +48,9 @@ export default (state = init, {payload, type}) => {
         state.chats.splice(index, 1);
       }
     }
-      return {...state};
+      return { ...state };
     case String(ACTIONS.setMessage):
-      const {chatId, text} = payload;
+      const { chatId, text } = payload;
       const chat = state.chats.find(v => v.id === chatId);
       chat.message = text;
       return {
@@ -110,7 +110,7 @@ export default (state = init, {payload, type}) => {
         ...state,
       };
     case String(ACTIONS.updateCountUnreadMessages): {
-      const {chatId, messageId, countUnreadSelectedChatMessages} = payload;
+      const { chatId, messageId, countUnreadSelectedChatMessages } = payload;
       const existChat = state.chats.find(ch => ch.id === chatId);
       if (existChat) {
         if (messageId > existChat.lastMessage.lastSeenChatMessageId) {
@@ -123,7 +123,7 @@ export default (state = init, {payload, type}) => {
         ...state,
       };
     case String(ACTIONS.addUsersToGroupChat): {
-      const {chatId, addedUsers} = payload;
+      const { chatId, addedUsers } = payload;
       const existChat = state.chats.find(ch => ch.id === chatId);
       if (existChat) {
         addedUsers.forEach(u => {
@@ -136,7 +136,7 @@ export default (state = init, {payload, type}) => {
         ...state,
       };
     case String(ACTIONS.deleteUserFromChat): {
-      const {chatId, user} = payload;
+      const { chatId, user } = payload;
       const existChat = state.chats.find(ch => ch.id === chatId);
       if (existChat) {
         const index = existChat.users.findIndex(u => u.id === user.id);
@@ -148,6 +148,23 @@ export default (state = init, {payload, type}) => {
       return {
         ...state,
       };
+    case String(ACTIONS.updateChatUserInfo): {
+      state.chats.forEach(ch => {
+        if (ch.isPrivate) {
+          if (ch?.guestUser?.id === payload.id) {
+            ch.guestUser.isFollowing = payload.isFollowing;
+            ch.guestUser.followingsCount = payload.guestUserFollowingsCount;
+            ch.guestUser.followersCount = payload.guestUserFollowersCount;
+          }
+        }
+        if (ch.isGroup) {
+
+        }
+      })
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.resetData):
       state = init;
       return {

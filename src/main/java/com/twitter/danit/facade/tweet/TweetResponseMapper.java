@@ -40,6 +40,6 @@ public class TweetResponseMapper extends GeneralFacade<Tweet, TweetResponse> {
     dto.setBookmarksCount(entity.getBookmarksCount());
     dto.setIsTweetInBookmark(entity.isTweetInBookmark(user));
 
-    dto.getUser().setIsFollowed(user.isFollowUser(entity.getUser()));
+    dto.getUser().setIsFollowing(user.isFollowUser(entity.getUser()));
   }
 }

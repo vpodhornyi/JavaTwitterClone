@@ -15,6 +15,9 @@ public class FollowUserResponseMapper {
     followUserResponse.setAuthUserId(authUser.getId());
     followUserResponse.setFollowingsCount(authUser.getFollowingsCount());
     followUserResponse.setFollowersCount(authUser.getFollowersCount());
+    followUserResponse.setGuestUserFollowingsCount(followUser.getFollowingsCount());
+    followUserResponse.setGuestUserFollowersCount(followUser.getFollowersCount());
+    followUserResponse.setIsFollowing(authUser.isFollowUser(followUser));
 
     if (isFollow) {
       followUserResponse.setMessage("You unfollowed @" + followUser.getUserTag());

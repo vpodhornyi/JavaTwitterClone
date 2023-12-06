@@ -14,7 +14,7 @@ public class ChatUser {
   private String userTag;
   private String avatarImgUrl;
   private LocalDateTime createdAt;
-  private boolean IsFollowed;
+  private boolean IsFollowing;
   private Integer followingsCount;
   private Integer followersCount;
 }

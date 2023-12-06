@@ -1,4 +1,4 @@
-import {ACTIONS} from "./action";
+import { ACTIONS } from "./action";
 
 const init = {
   preloader: false,
@@ -11,7 +11,7 @@ const init = {
   }
 }
 
-export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
+export default (state = JSON.parse(JSON.stringify(init)), { payload, type }) => {
   switch (type) {
     case String(ACTIONS.getAuthUser.request):
       return {
@@ -31,13 +31,13 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         error: payload
       }
     case String(ACTIONS.setCustomize):
-      state.authUser.customize = {...payload};
+      state.authUser.customize = { ...payload };
       return {
         ...state,
-        customize: {...state.customize, ...payload}
+        customize: { ...state.customize, ...payload }
       }
     case String(ACTIONS.updateCountUnreadMessages):
-      const {countUnreadAllChatMessages} = payload;
+      const { countUnreadAllChatMessages } = payload;
       if (countUnreadAllChatMessages || countUnreadAllChatMessages === 0) {
         state.authUser.countUnreadMessages = countUnreadAllChatMessages;
       }
@@ -46,8 +46,17 @@ export default (state = JSON.parse(JSON.stringify(init)), {payload, type}) => {
         preloader: false,
         error: payload
       }
+    case String(ACTIONS.updateAuthUserInfo): {
+      if (state.authUser.id === payload.authUserId) {
+        state.authUser.followingsCount = payload.followingsCount;
+        state.authUser.followersCount = payload.followersCount;
+      }
+      return {
+        ...state,
+      }
+    }
     case String(ACTIONS.updateUserProfile.success):
-      state.authUser = {...payload};
+      state.authUser = { ...payload };
       return {
         ...state,
       };

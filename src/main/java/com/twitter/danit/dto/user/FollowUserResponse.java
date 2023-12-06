@@ -10,5 +10,7 @@ public class FollowUserResponse extends AbstractResponse {
   private Long authUserId;
   private Integer followingsCount;
   private Integer followersCount;
-
+  private Integer guestUserFollowingsCount;
+  private Integer guestUserFollowersCount;
+  private boolean IsFollowing;
 }

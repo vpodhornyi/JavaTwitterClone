@@ -1,16 +1,20 @@
-import {createActions} from '../utils';
-import api, {URLS} from "../../services/API";
-import {ACTIONS as AUTH_ACTIONS} from '../auth/action';
-import {ACTIONS as CHAT_ACTIONS} from "../chat/action";
-import {ACTIONS as TWEET_ACTIONS} from "../tweet/action";
-import {ACTIONS as MESSAGE_ACTIONS} from "../chat/message/action";
-import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
-import {PATH} from "../../utils/constants";
-
+import { createActions } from '../utils';
+import api, { URLS } from "../../services/API";
+import { ACTIONS as AUTH_ACTIONS } from '../auth/action';
+import { ACTIONS as CHAT_ACTIONS } from "../chat/action";
+import { ACTIONS as TWEET_ACTIONS } from "../tweet/action";
+import { ACTIONS as MESSAGE_ACTIONS } from "../chat/message/action";
+import { ACTIONS as SNACK_ACTIONS } from "../snack/action";
+import { PATH } from "../../utils/constants";
 
 const actions = createActions(
     {
-      actions: ['UPDATE_COUNT_UNREAD_MESSAGES', 'RESET_DATA', 'SET_CUSTOMIZE'],
+      actions: [
+        'UPDATE_COUNT_UNREAD_MESSAGES',
+        'RESET_DATA',
+        'SET_CUSTOMIZE',
+        'UPDATE_AUTH_USER_INFO'
+      ],
       async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
     },
     {
@@ -61,6 +65,7 @@ export const updateUserProfile = body => async dispatch => {
 export const uploadImage = (body) => async dispatch => {
   try {
     return await api.post(URLS.CLOUD.IMAGE, body);
+
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
@@ -69,8 +74,11 @@ export const uploadImage = (body) => async dispatch => {
 
 export const followUser = (id) => async dispatch => {
   try {
-    const data = await api.post(URLS.USERS.FOLLOW, {followUserId: id});
+    const data = await api.post(URLS.USERS.FOLLOW, { followUserId: id });
     dispatch(SNACK_ACTIONS.open(data));
+    dispatch(ACTIONS.updateAuthUserInfo(data));
+    dispatch(TWEET_ACTIONS.updateUserTweetInfo(data));
+    dispatch(CHAT_ACTIONS.updateChatUserInfo(data));
 
   } catch (err) {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
@@ -79,9 +87,9 @@ export const followUser = (id) => async dispatch => {
 
 export const authUserSocketSubscribe = () => async (dispatch, getState) => {
   try {
-    const {user: {authUser}} = getState();
+    const { user: { authUser } } = getState();
     authUser?.id && api.stompClient.subscribe(`/topic/tweets`, async (data) => {
-      const {body} = JSON.parse(data.body);
+      const { body } = JSON.parse(data.body);
       console.log('redit - ', body);
       switch (body?.type) {
         case 'TWEET_LIKE':
@@ -123,10 +131,10 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     });
 
     authUser?.id && api.stompClient.subscribe(`/queue/user.${authUser.id}`, async (data) => {
-      const {body} = JSON.parse(data.body);
+      const { body } = JSON.parse(data.body);
       switch (body?.type) {
         case 'MESSAGE_ADD':
-          const {chat} = body;
+          const { chat } = body;
           if (chat && chat.isPrivate) {
             dispatch(CHAT_ACTIONS.addNewPrivateChat(chat));
           } else {
@@ -136,7 +144,7 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
           dispatch(ACTIONS.updateCountUnreadMessages(body));
           break;
         case 'MESSAGE_DELETE':
-          const {lastMessage} = body;
+          const { lastMessage } = body;
           dispatch(MESSAGE_ACTIONS.deleteMessage(body));
           dispatch(ACTIONS.updateCountUnreadMessages(lastMessage));
           dispatch(CHAT_ACTIONS.setLastChatAction(lastMessage));
@@ -172,11 +180,11 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
 export const resetPassword = (login, navigate, background) => async dispatch => {
   try {
     // dispatch(ACTIONS.resetPassword.request());
-    const data = await api.post(URLS.USERS.RESET_PASSWORD, {login});
+    const data = await api.post(URLS.USERS.RESET_PASSWORD, { login });
     // dispatch(ACTIONS.resetPassword.success(data));
     dispatch(SNACK_ACTIONS.open(data));
     navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_IN.LOGIN}`, {
-      state: {background}
+      state: { background }
     });
     //TODO add reset password loading
 

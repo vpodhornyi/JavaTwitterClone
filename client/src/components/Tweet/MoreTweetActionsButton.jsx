@@ -39,7 +39,7 @@ const getItems = tweet => {
           <IconByName color='text' iconName="PersonAddAlt"/>
         </ListItemIcon>
         <Typography color='text' fontWeight='bold' variant='body1'>
-          {user?.isFollowed ? 'Unfollow' : 'Follow'} @{user?.userTag}
+          {user?.isFollowing ? 'Unfollow' : 'Follow'} @{user?.userTag}
         </Typography>
       </Box>)
     },
@@ -60,7 +60,7 @@ const MoreTweetActionsButton = ({ tweet }) => {
       }
         break;
       case 'follow': {
-        if (user.isFollowed) {
+        if (user.isFollowing) {
           toggleModal(<UnfollowConfirm
               toggleModal={toggleModal}
               userId={user.id}

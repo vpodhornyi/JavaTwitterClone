@@ -22,6 +22,7 @@ const actions = createActions(
         'SET_PAGE_NUMBER',
         'RESET_GET_TWEETS',
         'DELETE_BOOKMARK',
+        'UPDATE_USER_TWEET_INFO',
       ],
       async: [
         "DELETE_TWEET",

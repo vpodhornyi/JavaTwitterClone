@@ -15,6 +15,6 @@ public class ChatUserMapper extends GeneralFacade<User, ChatUser> {
   protected void decorateDto(ChatUser dto, User entity, User user) {
     dto.setFollowingsCount(entity.getFollowingsCount());
     dto.setFollowersCount(entity.getFollowersCount());
-    dto.setIsFollowed(user.isFollowUser(entity));
+    dto.setIsFollowing(user.isFollowUser(entity));
   }
 }
