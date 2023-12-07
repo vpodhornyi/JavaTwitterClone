@@ -9,6 +9,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.security.Principal;
 
 public abstract class AbstractController {
+  public final String userQueue = "/queue/user.";
+  public final String tweetTopic = "/topic/tweets";
+
   @Autowired
   private UserService userService;
   @Autowired

@@ -1,20 +1,19 @@
 import React from "react";
-import {useSelector} from "react-redux";
-import {Link, useLocation} from "react-router-dom";
-import {styled} from "@mui/material/styles";
-import {Box, Typography, Tabs, Tab} from "@mui/material";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { Box, Typography, Tabs, Tab } from "@mui/material";
 import PropTypes from "prop-types";
 
 import UserPhotoBlock from "./UserPhotoBlock";
 import DateInfo from "./DateInfo";
 import TwittersLists from "./TwittersLists";
-import {IconByName} from "../../../../components";
-import {PATH} from "../../../../utils/constants";
-
+import { IconByName } from "../../../../components";
+import { PATH } from "../../../../utils/constants";
 
 
 const UserInfo = () => {
-  const {authUser: user} = useSelector(state => state.user);
+  const { authUser: user } = useSelector(state => state.user);
   const location = useLocation();
 
   return (
@@ -23,34 +22,34 @@ const UserInfo = () => {
           user.headerImgUrl === '' ? <Box className="HeaderPhotoWrapper"></Box> :
               <Link
                   to={PATH.USER.header_photo(user.userTag)}
-                  state={{background: location}}
+                  state={{ background: location }}
                   className="HeaderImgLink">
                 <img className="HeaderImg" src={user.headerImgUrl} alt=""/>
               </Link>
         }
-        <Box className="UserInfoBlock" sx={{p: 2}}>
+        <Box className="UserInfoBlock" sx={{ p: 2 }}>
           <UserPhotoBlock user={user}/>
           <Typography fontWeight='bold' variant="h2">{user.name}</Typography>
-          <Typography variant='subtitle1' sx={{pb: 1}}>@{user.userTag}</Typography>
-          <Box sx={{display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1}}>
+          <Typography variant='subtitle1' sx={{ pb: 1 }}>@{user.userTag}</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
             {user?.location &&
-                <Box className="Location" sx={{mr: 2}}>
+                <Box className="Location" sx={{ mr: 2 }}>
                   <IconByName iconName={'LocationOn'}/>
-                  <Typography variant="subtitle1" sx={{ml: 0.5}}>{user?.location}</Typography>
+                  <Typography variant="subtitle1" sx={{ ml: 0.5 }}>{user?.location}</Typography>
                 </Box>
             }
             <DateInfo title="Born" date={user?.birthDate} icoName="Cake"/>
             <DateInfo title="Joined" date={user?.createdAt} icoName="CalendarMonth"/>
           </Box>
           <Typography>{user?.bio}</Typography>
-          <Box sx={{display: 'flex'}}>
-            <Typography sx={{mr: 2}} variant='subtitle1'>
+          <Box sx={{ display: 'flex' }}>
+            <Typography sx={{ mr: 2 }} variant='subtitle1'>
               <span className='FollowCount'>{user.followingsCount}</span>
               Following
             </Typography>
             <Typography variant='subtitle1'>
               <span className='FollowCount'>{user.followersCount}</span>
-              Follower
+              {`Follower${user.followersCount === 1 ? '' : 's'}`}
             </Typography>
           </Box>
         </Box>
@@ -58,7 +57,7 @@ const UserInfo = () => {
       </BoxWrapper>);
 }
 
-const BoxWrapper = styled(Box)(({theme}) => ({
+const BoxWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
 
   '& .HeaderImgLink': {

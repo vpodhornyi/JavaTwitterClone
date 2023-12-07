@@ -7,6 +7,7 @@ import com.twitter.danit.dto.auth.AccountCheckRequest;
 import com.twitter.danit.dto.user.*;
 import com.twitter.danit.facade.user.CustomStyleResponseMapper;
 import com.twitter.danit.facade.user.FollowUserResponseMapper;
+import com.twitter.danit.facade.user.FollowUserWebsocketResponseMapper;
 import com.twitter.danit.facade.user.UserResponseMapper;
 import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @RequestMapping("${api.version}/users")
-public class UserController {
+public class UserController extends AbstractController {
 
   private final JwtAuthService jwtAuthService;
   private final UserService userService;
@@ -35,6 +36,7 @@ public class UserController {
   private final EmailService emailService;
   private final BCryptPasswordEncoder passwordEncoder;
   private final FollowUserResponseMapper followUserResponseMapper;
+  private final FollowUserWebsocketResponseMapper followUserWebsocketResponseMapper;
 
   @GetMapping
   public UserResponse findAuthUser() {
@@ -58,7 +60,7 @@ public class UserController {
 
   @PutMapping("/profile")
   public ResponseEntity<UserResponse> editUserProfile(@RequestBody UserRequest userRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     User updatedUser = userService.updateUser(authUser, userRequest);
     return ResponseEntity.ok(userResponseMapper.convertToDto(updatedUser));
   }
@@ -77,7 +79,7 @@ public class UserController {
 
   @PutMapping("/customize")
   public ResponseEntity<CustomStyleResponse> updateCustomize(@RequestBody CustomStyleRequest customStyleRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     CustomStyle savwdCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
     return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
   }
@@ -94,10 +96,13 @@ public class UserController {
 
   @PostMapping("/follow")
   public ResponseEntity<FollowUserResponse> follow(@RequestBody FollowUserRequest followUserRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     User followUser = userService.findByIdTrowException(followUserRequest.getFollowUserId());
     boolean isFollow = userService.addFollower(authUser, followUser);
 
-    return ResponseEntity.ok(followUserResponseMapper.getFollowUserResponse(followUser, isFollow, authUser));
+    sendStompMessage(userQueue + followUser.getId(),
+        followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
+
+    return ResponseEntity.ok(followUserResponseMapper.convertToDto(followUser, isFollow, authUser));
   }
 }

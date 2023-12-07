@@ -132,7 +132,12 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
 
     authUser?.id && api.stompClient.subscribe(`/queue/user.${authUser.id}`, async (data) => {
       const { body } = JSON.parse(data.body);
+      console.log('redit - ', body);
       switch (body?.type) {
+        case 'FOLLOW_USER': {
+          dispatch(ACTIONS.updateAuthUserInfo(body));
+          break;
+        }
         case 'MESSAGE_ADD':
           const { chat } = body;
           if (chat && chat.isPrivate) {

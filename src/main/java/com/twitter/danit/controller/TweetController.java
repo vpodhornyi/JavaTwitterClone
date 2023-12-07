@@ -29,7 +29,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class TweetController extends AbstractController {
-  private final String topic = "/topic/tweets";
   private final TweetService tweetService;
   private final TweetRequestMapper tweetRequestMapper;
   private final PageTweetResponseMapper pageTweetResponseMapper;
@@ -126,7 +125,7 @@ public class TweetController extends AbstractController {
     User authUser = getAuthUser(principal);
     Tweet tweet = tweetRequestMapper.convertToEntity(tweetRequest, authUser);
     AbstractResponse tweetResponse = tweetResponseMapper.convertToDto(tweetService.save(tweet), authUser);
-    sendStompMessage(topic, tweetResponse);
+    sendStompMessage(tweetTopic, tweetResponse);
 
     return ResponseEntity.ok(tweetResponse);
   }
@@ -154,7 +153,7 @@ public class TweetController extends AbstractController {
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
     AbstractResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
-    sendStompMessage(topic, likeTweetResponse);
+    sendStompMessage(tweetTopic, likeTweetResponse);
 
     return ResponseEntity.ok(likeTweetResponse);
   }
@@ -166,7 +165,7 @@ public class TweetController extends AbstractController {
     tweetService.isUserNoTweetAuthorException(tweet, authUser);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.VIEW);
     AbstractResponse viewTweetResponse = viewTweetResponseMapper.convertToDto(savedTweet, authUser);
-    sendStompMessage(topic, viewTweetResponse);
+    sendStompMessage(tweetTopic, viewTweetResponse);
 
     return ResponseEntity.ok(viewTweetResponse);
   }
@@ -177,7 +176,7 @@ public class TweetController extends AbstractController {
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.BOOKMARK);
     AbstractResponse bookmarkTweetResponse = bookmarkTweetResponseMapper.convertToDto(savedTweet, authUser);
-    sendStompMessage(topic, bookmarkTweetResponse);
+    sendStompMessage(tweetTopic, bookmarkTweetResponse);
 
     return ResponseEntity.ok(bookmarkTweetResponse);
   }
@@ -187,7 +186,7 @@ public class TweetController extends AbstractController {
     User authUser = getAuthUser(principal);
     List<Tweet> tweets = tweetService.deleteAllUserBookmarks(authUser);
     ClearBookmarksResponse clearBookmarksResponse = clearBookmarksResponseMapper.convertToDto(tweets);
-    sendStompMessage(topic, clearBookmarksResponse);
+    sendStompMessage(tweetTopic, clearBookmarksResponse);
 
     return ResponseEntity.ok(clearBookmarksResponse);
   }
@@ -198,7 +197,7 @@ public class TweetController extends AbstractController {
     Tweet tweet = tweetService.findById(tweetId);
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.RETWEET);
     AbstractResponse retweetResponse = retweetResponseMapper.convertToDto(savedTweet, authUser);
-    sendStompMessage(topic, retweetResponse);
+    sendStompMessage(tweetTopic, retweetResponse);
 
     return ResponseEntity.ok(retweetResponse);
   }

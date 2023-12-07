@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class FollowUserResponseMapper {
   private final FollowUserResponse followUserResponse = new FollowUserResponse();
 
-  public FollowUserResponse getFollowUserResponse(User followUser, boolean isFollow, User authUser) {
+  public FollowUserResponse convertToDto(User followUser, boolean isFollow, User authUser) {
     followUserResponse.setId(followUser.getId());
     followUserResponse.setShowMessage(true);
 

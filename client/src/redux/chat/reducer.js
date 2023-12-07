@@ -158,7 +158,13 @@ export default (state = init, { payload, type }) => {
           }
         }
         if (ch.isGroup) {
-
+          ch.users.forEach(u => {
+            if (u.id === payload.id) {
+              u.isFollowing = payload.isFollowing;
+              u.followingsCount = payload.guestUserFollowingsCount;
+              u.followersCount = payload.guestUserFollowersCount;
+            }
+          })
         }
       })
       return {

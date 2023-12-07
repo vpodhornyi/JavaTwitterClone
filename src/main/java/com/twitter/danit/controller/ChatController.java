@@ -42,8 +42,7 @@ import java.util.Objects;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.version}/chats")
-public class ChatController {
-  private final String queue = "/queue/user.";
+public class ChatController extends AbstractController {
   private final SimpMessagingTemplate simpMessagingTemplate;
   private final ChatService chatService;
   private final UserService userService;
@@ -84,7 +83,7 @@ public class ChatController {
     if (leaveChatRequest.isGroupChat()) {
       Chat chat = chatService.deleteUserFromGroupChat(chatId, authUser);
       LeaveChatResponse finalLeaveChatResponse = leaveChatResponseMapper.convertToDto(chat, authUser);
-      chat.getUsers().forEach(u -> simpMessagingTemplate.convertAndSend(queue + u.getId(), ResponseEntity.ok(finalLeaveChatResponse)));
+      chat.getUsers().forEach(u -> simpMessagingTemplate.convertAndSend(userQueue + u.getId(), ResponseEntity.ok(finalLeaveChatResponse)));
       return ResponseEntity.ok(finalLeaveChatResponse);
     }
 
@@ -117,7 +116,7 @@ public class ChatController {
     PrivateChatResponse privateChatResponseGuest = privateChatResponseMapper.convertToDto(savedChat, guestUser);
     privateChatResponseAuth.setOldKey(oldKey);
     privateChatResponseGuest.setOldKey(oldKey);
-    simpMessagingTemplate.convertAndSend(queue + guestUserId, ResponseEntity.ok(privateChatResponseGuest));
+    simpMessagingTemplate.convertAndSend(userQueue + guestUserId, ResponseEntity.ok(privateChatResponseGuest));
 
     return ResponseEntity.ok(privateChatResponseAuth);
   }
@@ -134,7 +133,7 @@ public class ChatController {
     savedChat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       groupChatResponse.setOldKey(oldKey);
-      simpMessagingTemplate.convertAndSend(queue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
     });
 
     GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, authUser);
@@ -154,7 +153,7 @@ public class ChatController {
 
     chat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(chat, user);
-      simpMessagingTemplate.convertAndSend(queue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
     });
 
     return ResponseEntity.ok(groupChatResponseMapper.convertToDto(chat, authUser));
@@ -175,12 +174,12 @@ public class ChatController {
 
     Chat savedChat = chatService.addUsersToChat(chatId, usersForAdd);
     oldChat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> simpMessagingTemplate
-      .convertAndSend(queue + user.getId(), ResponseEntity.ok(new AddUsersToGroupResponse(chatId,
+      .convertAndSend(userQueue + user.getId(), ResponseEntity.ok(new AddUsersToGroupResponse(chatId,
         chatUserMapper.convertToDto(authUser), chatUsers))));
 
     usersForAdd.forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
-      simpMessagingTemplate.convertAndSend(queue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
     });
 
     return ResponseEntity.ok(new AddUsersToGroupResponse(chatId, chatUserMapper.convertToDto(authUser), chatUsers));
@@ -219,7 +218,7 @@ public class ChatController {
         }
       }
       responseAbstract.setOldKey(oldKey);
-      simpMessagingTemplate.convertAndSend(queue + user.getId(), ResponseEntity.ok(responseAbstract));
+      simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(responseAbstract));
     });
 
     MessageResponseAbstract responseAbstract;
@@ -249,7 +248,7 @@ public class ChatController {
       messageService.deleteMessageForAll(messageId, authUser);
       List<User> users = message.getChat().getUsers();
       users.stream().filter(u -> !u.equals(authUser)).forEach(u -> {
-        simpMessagingTemplate.convertAndSend(queue + u.getId(), ResponseEntity.ok(deletedMessageMapper.convertToDto(message, u)));
+        simpMessagingTemplate.convertAndSend(userQueue + u.getId(), ResponseEntity.ok(deletedMessageMapper.convertToDto(message, u)));
       });
     }
 
@@ -264,7 +263,7 @@ public class ChatController {
 
     MessageSeen savedMessageSeen = messageService.saveMessageSeen(messageSeen);
     Long userId = savedMessageSeen.getMessage().getUser().getId();
-    simpMessagingTemplate.convertAndSend(queue + userId, ResponseEntity.ok(messageOwnerSeenResponseMapper.convertToDto(savedMessageSeen)));
+    simpMessagingTemplate.convertAndSend(userQueue + userId, ResponseEntity.ok(messageOwnerSeenResponseMapper.convertToDto(savedMessageSeen)));
 
     return ResponseEntity.ok(foreignerMessageSeenResponseMapper.convertToDto(savedMessageSeen));
   }
