@@ -8,9 +8,8 @@ import PropTypes from "prop-types";
 import UserPhotoBlock from "./UserPhotoBlock";
 import DateInfo from "./DateInfo";
 import TwittersLists from "./TwittersLists";
-import { IconByName } from "../../../../components";
-import { PATH } from "../../../../utils/constants";
-
+import { IconByName } from "@components";
+import { PATH } from "@utils/constants";
 
 const UserInfo = () => {
   const { authUser: user } = useSelector(state => state.user);
