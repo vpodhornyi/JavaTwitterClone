@@ -55,6 +55,7 @@ export const URLS = {
     SEARCH: "/users/search",
     CUSTOMIZE: "/users/customize",
     PROFILE: "/users/profile",
+    getProfile: userTag => `/users${userTag}`,
     RESET_PASSWORD: `/users/reset-password`,
     FOLLOW: '/users/follow'
   },

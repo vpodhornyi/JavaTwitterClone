@@ -15,7 +15,7 @@ const actions = createActions(
         'SET_CUSTOMIZE',
         'UPDATE_AUTH_USER_INFO'
       ],
-      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD'],
+      async: ['GET_AUTH_USER', 'UPDATE_USER_PROFILE', 'RESET_PASSWORD', 'GET_GUEST_USER'],
     },
     {
       prefix: "user",
@@ -39,6 +39,18 @@ export const getAuthUser = () => async (dispatch) => {
     console.log(e);
     dispatch(ACTIONS.getAuthUser.fail(e));
     dispatch(AUTH_ACTIONS.authorize.fail());
+  }
+}
+
+export const findByUserTag = url => async dispatch => {
+  try {
+    dispatch(ACTIONS.getGuestUser.request());
+    const data = await api.get(url);
+    dispatch(ACTIONS.getGuestUser.success(data));
+
+  } catch (e) {
+    console.log(e);
+    dispatch(ACTIONS.getGuestUser.fail(e));
   }
 }
 
@@ -70,7 +82,6 @@ export const uploadImage = (body) => async dispatch => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
-
 
 export const followUser = (id) => async dispatch => {
   try {

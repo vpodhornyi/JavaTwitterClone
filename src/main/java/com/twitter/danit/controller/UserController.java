@@ -52,11 +52,11 @@ public class UserController extends AbstractController {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/{id}")
-  public UserResponse findById(@PathVariable(name = "id") Long id) {
-    User user = userService.findById(id);
-    return userResponseMapper.convertToDto(user);
-  }
+//  @GetMapping("/{id}")
+//  public UserResponse findById(@PathVariable(name = "id") Long id) {
+//    User user = userService.findById(id);
+//    return userResponseMapper.convertToDto(user);
+//  }
 
   @PutMapping("/profile")
   public ResponseEntity<UserResponse> editUserProfile(@RequestBody UserRequest userRequest, Principal principal) {
@@ -71,8 +71,8 @@ public class UserController extends AbstractController {
     return ResponseEntity.ok(users.stream().map(userResponseMapper::convertToDto).collect(Collectors.toList()));
   }
 
-  @GetMapping("/")
-  public ResponseEntity<UserResponse> findByUserTag(@RequestParam(name = "userTag") String userTag) {
+  @GetMapping("/{userTag}")
+  public ResponseEntity<UserResponse> findByUserTag(@PathVariable(name = "userTag") String userTag) {
     User user = userService.findByUserTagTrowException(userTag);
     return ResponseEntity.ok(userResponseMapper.convertToDto(user));
   }

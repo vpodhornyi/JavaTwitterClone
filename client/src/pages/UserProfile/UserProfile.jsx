@@ -2,6 +2,7 @@ import React from 'react';
 import {ColumnWrapper, PrimaryColumn, SitebarColumn, StickyHeader, PrimaryHeader} from "../../components";
 import UserInfo from "./components/UserInfo/UserInfo";
 import Header from "./Header";
+
 const UserProfile = () => {
   return (
     <ColumnWrapper>

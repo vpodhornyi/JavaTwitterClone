@@ -2,7 +2,9 @@ import { ACTIONS } from "./action";
 
 const init = {
   preloader: false,
+  guestUserLoader: false,
   authUser: {},
+  guestUser: {},
   error: "",
   customize: {
     color: 'blue',
@@ -29,6 +31,22 @@ export default (state = JSON.parse(JSON.stringify(init)), { payload, type }) => 
         ...state,
         preloader: false,
         error: payload
+      }
+    case String(ACTIONS.getGuestUser.request):
+      return {
+        ...state,
+        guestUserLoader: true
+      }
+    case String(ACTIONS.getGuestUser.success):
+      return {
+        ...state,
+        guestUser: payload,
+        guestUserLoader: false
+      }
+    case String(ACTIONS.getGuestUser.fail):
+      return {
+        ...state,
+        guestUserLoader: false,
       }
     case String(ACTIONS.setCustomize):
       state.authUser.customize = { ...payload };

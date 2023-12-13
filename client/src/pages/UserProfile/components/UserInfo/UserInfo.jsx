@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, {useEffect} from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { Box, Typography, Tabs, Tab } from "@mui/material";
@@ -10,10 +10,17 @@ import DateInfo from "./DateInfo";
 import TwittersLists from "./TwittersLists";
 import { IconByName } from "@components";
 import { PATH } from "@utils/constants";
+import {URLS} from "@services/API";
+import {findByUserTag} from "@redux/user/action";
 
 const UserInfo = () => {
+  const dispatch = useDispatch();
   const { authUser: user } = useSelector(state => state.user);
   const location = useLocation();
+
+  useEffect(() => {
+    dispatch(findByUserTag(URLS.USERS.getProfile(location.pathname)));
+  }, [])
 
   return (
       <BoxWrapper>
@@ -60,7 +67,6 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
 
   '& .HeaderImgLink': {
-
     '& .HeaderImg': {
       height: '200px',
       width: '100%',
