@@ -15,7 +15,7 @@ import {findByUserTag} from "@redux/user/action";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
-  const { authUser: user } = useSelector(state => state.user);
+  const { guestUser: user } = useSelector(state => state.user);
   const location = useLocation();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const UserInfo = () => {
             </Typography>
           </Box>
         </Box>
-        <TwittersLists/>
+        <TwittersLists user={user}/>
       </BoxWrapper>);
 }
 

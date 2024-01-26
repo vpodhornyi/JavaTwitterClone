@@ -4,23 +4,24 @@ import {Box, Tab, Tabs} from "@mui/material";
 
 import {Tweets} from "@components";
 import {URLS} from "@services/API";
+import PropTypes from "prop-types";
 
-const TABS = [
+const getTabs = userId => [
   {
     tabName: 'Tweets',
-    url: URLS.TWEETS.USER_TWEETS
+    url: URLS.TWEETS.getUserTweets(userId),
   },
   {
     tabName: 'Replies',
-    url: URLS.TWEETS.REPLIES_TWEETS
+    url: URLS.TWEETS.getRepliesTweets(userId),
   },
   {
     tabName: 'Likes',
-    url: URLS.TWEETS.LIKES_TWEETS
+    url: URLS.TWEETS.getLikesTweets(userId),
   }
 ];
 
-const TwitterLists = () => {
+const TwitterLists = ({user}) => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -38,10 +39,10 @@ const TwitterLists = () => {
       <BoxWrapper>
         <Box className="TabsWrapper">
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            {TABS.map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
+            {getTabs(user.id).map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
           </Tabs>
         </Box>
-        {TABS.map((el, index) => {
+        {getTabs(user.id).map((el, index) => {
           return (
               <Box
                   role="tabpanel"
@@ -81,5 +82,9 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     },
   }
 }));
+
+TwitterLists.propTypes = {
+  user: PropTypes.object,
+}
 
 export default TwitterLists;

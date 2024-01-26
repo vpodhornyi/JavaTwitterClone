@@ -50,37 +50,37 @@ public class TweetController extends AbstractController {
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
-  @GetMapping("/user")
+  @GetMapping("/{userId}")
   public ResponseEntity<PageTweetResponse> getUserTweets(
       @RequestParam int pageNumber,
       @RequestParam int pageSize,
-      Principal principal) {
-    User authUser = getAuthUser(principal);
-    Page<Tweet> tweets = tweetService.getUserTweetsPage(pageNumber, pageSize, authUser.getId());
+      @PathVariable Long userId) {
+    User user = getUserById(userId);
+    Page<Tweet> tweets = tweetService.getUserTweetsPage(pageNumber, pageSize, user.getId());
 
-    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, user));
   }
 
-  @GetMapping("/replies")
+  @GetMapping("/replies/{userId}")
   public ResponseEntity<PageTweetResponse> getReplyTweets(
       @RequestParam int pageNumber,
       @RequestParam int pageSize,
-      Principal principal) {
-    User authUser = getAuthUser(principal);
-    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, authUser.getId());
+      @PathVariable Long userId) {
+    User user = getUserById(userId);
+    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, user.getId());
 
-    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, user));
   }
 
-  @GetMapping("/likes")
+  @GetMapping("/likes/{userId}")
   public ResponseEntity<PageTweetResponse> getLikeTweets(
       @RequestParam int pageNumber,
       @RequestParam int pageSize,
-      Principal principal) {
-    User authUser = getAuthUser(principal);
-    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, authUser.getId());
+      @PathVariable Long userId) {
+    User user = getUserById(userId);
+    Page<Tweet> tweets = tweetService.getUserLikeTweetsPage(pageNumber, pageSize, user.getId());
 
-    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, user));
   }
 
   @PostMapping

@@ -21,6 +21,10 @@ public abstract class AbstractController {
     return this.userService.findByUserTagTrowException(principal.getName());
   }
 
+  public User getUserById(Long userId) {
+    return this.userService.findByIdTrowException(userId);
+  }
+
   public void sendStompMessage(String destination, Object payload) {
     simpMessagingTemplate.convertAndSend(destination, ResponseEntity.ok(payload));
   }

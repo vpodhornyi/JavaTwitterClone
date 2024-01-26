@@ -61,9 +61,12 @@ export const URLS = {
   },
   TWEETS: {
     ROOT: "/tweets",
-    USER_TWEETS: "/tweets/user",
+    USER_TWEETS: "/tweets/userId",
+    getUserTweets: id => `/tweets/${id}`,
     REPLIES_TWEETS: "/tweets/replies",
+    getRepliesTweets: id => `/tweets/replies/${id}`,
     LIKES_TWEETS: "/tweets/likes",
+    getLikesTweets: id => `/tweets/likes/${id}`,
     GET_TWEET_BY_ID: "/tweets/:id",
     getTweetById: id => `/tweets/${id}`,
     REPLY_TWEET: "/tweets/reply-tweet",
