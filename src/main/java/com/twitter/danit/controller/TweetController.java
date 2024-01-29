@@ -50,7 +50,7 @@ public class TweetController extends AbstractController {
     return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/user/{userId}")
   public ResponseEntity<PageTweetResponse> getUserTweets(
       @RequestParam int pageNumber,
       @RequestParam int pageSize,

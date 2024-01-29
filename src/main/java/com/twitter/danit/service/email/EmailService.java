@@ -53,7 +53,7 @@ public class EmailService {
     emails.add(user.getEmail());
     String from = "No reply email <noreply@fake.com>";
     String subject = "Welcome message";
-    String html = Email.getWelcomeHtml(password);
+    String html = Email.getWelcomeHtml(password, user);
     EmailDetails emailDetails = new EmailDetails(emails, from, subject, html);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);

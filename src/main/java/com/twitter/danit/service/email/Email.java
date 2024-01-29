@@ -1,5 +1,6 @@
 package com.twitter.danit.service.email;
 
+import com.twitter.danit.domain.user.User;
 import lombok.Getter;
 
 public class Email {
@@ -35,6 +36,8 @@ public class Email {
 <body>
 <div class="container">
     <h3>Hello, welcome to Twitter!</h3>
+    <p>Your nickname is:</p>
+    <p>%s</p>
     <p>Your password is:</p>
     <div class="password_container">
         <p class="password">%s</p>
@@ -44,7 +47,7 @@ public class Email {
 </html>\s
       """;
 
-  public static String getWelcomeHtml(String password) {
-    return String.format(welcome, password);
+  public static String getWelcomeHtml(String password, User user) {
+    return String.format(welcome, user.getUserTag(), password);
   }
 }

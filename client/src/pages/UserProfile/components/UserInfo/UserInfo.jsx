@@ -1,29 +1,29 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { Box, Typography, Tabs, Tab } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 import UserPhotoBlock from "./UserPhotoBlock";
 import DateInfo from "./DateInfo";
 import TwittersLists from "./TwittersLists";
-import { IconByName } from "@components";
+import { CircularLoader, IconByName } from "@components";
 import { PATH } from "@utils/constants";
-import {URLS} from "@services/API";
-import {findByUserTag} from "@redux/user/action";
+import { URLS } from "@services/API";
+import { findByUserTag } from "@redux/user/action";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
-  const { guestUser: user } = useSelector(state => state.user);
+  const { guestUser: user, guestUserLoader } = useSelector(state => state.user);
   const location = useLocation();
 
   useEffect(() => {
     dispatch(findByUserTag(URLS.USERS.getProfile(location.pathname)));
-  }, [])
+  }, [location.pathname])
 
-  return (
-      <BoxWrapper>
+  return (guestUserLoader ? <CircularLoader/> :
+      (user.id && <BoxWrapper>
         {
           user.headerImgUrl === '' ? <Box className="HeaderPhotoWrapper"></Box> :
               <Link
@@ -60,7 +60,7 @@ const UserInfo = () => {
           </Box>
         </Box>
         <TwittersLists user={user}/>
-      </BoxWrapper>);
+      </BoxWrapper>));
 }
 
 const BoxWrapper = styled(Box)(({ theme }) => ({

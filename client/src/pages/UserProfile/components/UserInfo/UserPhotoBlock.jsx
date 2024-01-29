@@ -1,13 +1,15 @@
 import React from "react";
-import {Link, useLocation} from "react-router-dom";
-import {styled} from "@mui/material/styles";
-import {Avatar, Box} from "@mui/material";
-import {CustomFabButton} from "../../../../components"
+import { Link, useLocation } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { Avatar, Box } from "@mui/material";
+import { CustomFabButton } from "../../../../components"
 import PropTypes from "prop-types";
 
-import {PATH} from "@utils/constants";
+import { PATH } from "@utils/constants";
+import { useSelector } from "react-redux";
 
-const UserPhotoBlock = ({user}) => {
+const UserPhotoBlock = ({ user }) => {
+  const { authUser } = useSelector(state => state.user);
   const location = useLocation();
 
   return (
@@ -15,19 +17,19 @@ const UserPhotoBlock = ({user}) => {
         <Link
             className="UserPhotoLink"
             to={PATH.USER.photo(user.userTag)}
-            state={{background: location}}>
+            state={{ background: location }}>
           <Avatar className="Avatar" src={user.avatarImgUrl}/>
         </Link>
         <Link
             to={PATH.SETTINGS.PROFILE}
-            state={{background: location}}
+            state={{ background: location }}
         >
-        <CustomFabButton name="Edit profile" className="EditProfile"/>
+          {authUser.id === user.id && <CustomFabButton name="Edit profile" className="EditProfile"/>}
         </Link>
       </BoxWrapper>);
 }
 
-const BoxWrapper = styled(Box)(({theme}) => ({
+const BoxWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   paddingBottom: '25px',
   display: 'flex',

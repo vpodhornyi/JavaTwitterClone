@@ -2,7 +2,7 @@ import { ACTIONS } from "./action";
 
 const init = {
   preloader: false,
-  guestUserLoader: false,
+  guestUserLoader: true,
   authUser: {},
   guestUser: {},
   error: "",
