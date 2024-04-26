@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useEffect} from "react";
+import React, {lazy, Suspense} from "react";
 
 import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader, Tweets} from '@components';
 import Loading from "../../components/Loader/Loading";

@@ -1,6 +1,6 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
-import {Box, Typography} from "@mui/material";
+import {Box} from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import {IconByName} from "@components";
 
@@ -33,7 +33,7 @@ const Search = styled('div')(({theme}) => ({
   borderRadius: 20,
   border: `1px solid ${theme.palette.border.main}`,
   backgroundColor: 'rgb(239, 243, 244)',
-  width: '90%',
+  width: '100%',
 
   '& .SearchIconWrapper': {
     position: 'absolute',
