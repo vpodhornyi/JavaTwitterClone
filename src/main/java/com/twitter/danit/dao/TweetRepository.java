@@ -1,8 +1,6 @@
 package com.twitter.danit.dao;
 
-import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
-import com.twitter.danit.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +21,9 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
       """,
       nativeQuery = true)
   Optional<Page<Tweet>> findAllTweetsWithTypeTweet(Pageable pageable);
+
+  @Query("select t from Tweet t where t.body like %:body%")
+  Optional<Page<Tweet>> exploreTweets(Pageable pageable, String body);
 
   @Query(value = """
       select * from tweets t
