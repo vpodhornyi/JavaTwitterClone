@@ -34,12 +34,12 @@ const NewMessageHeader = ({isAdd, isGroup, isNext, next, addPeople}) => {
           </>}
       </Box>
       {isAdd ?
-        <Box sx={{mr: 1}} onClick={() => addPeople()}>
-          <FollowButton name='Add' disabled={isNext}/>
+        <Box sx={{mr: 1}}>
+          <FollowButton action={() => addPeople()} name='Add' disabled={isNext}/>
         </Box>
         :
-        <Box sx={{mr: 1}} onClick={() => next(isGroup)}>
-          <FollowButton name='Next' disabled={isNext}/>
+        <Box sx={{mr: 1}}>
+          <FollowButton action={() => next(isGroup)} name='Next' disabled={isNext}/>
         </Box>
       }
     </BoxWrapper>);

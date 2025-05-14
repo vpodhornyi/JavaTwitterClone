@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
-import {Box, TextField, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 
 import {Context} from "@utils/context";
 import {ModalPage, CustomIconButton, FollowButton, CircularLoader, StickyHeader} from "../../../../components";
@@ -77,8 +77,8 @@ const UserProfileEditPage = () => {
             <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit
               profile</Typography>
           </Box>
-          <Box onClick={save}>
-            <FollowButton name='Save' disabled={formData.disabled}/>
+          <Box>
+            <FollowButton action={save} name='Save' disabled={formData.disabled}/>
           </Box>
         </StickyHeader>
         <Box sx={{position: 'relative', mb: 2}}>
