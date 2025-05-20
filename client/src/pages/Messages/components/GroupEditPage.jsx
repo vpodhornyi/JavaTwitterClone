@@ -58,8 +58,8 @@ const GroupEditPage = () => {
           <CustomIconButton name='Close' color='text'/>
           <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit</Typography>
         </Box>
-        <Box onClick={save}>
-          <FollowButton name='Save' disabled={disabled}/>
+        <Box>
+          <FollowButton action={save} name='Save' disabled={disabled}/>
         </Box>
       </Box>
       <Box className='AddPhoto'>

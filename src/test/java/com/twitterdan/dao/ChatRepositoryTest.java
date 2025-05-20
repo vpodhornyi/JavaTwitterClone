@@ -1,8 +1,11 @@
+/*
 package com.twitterdan.dao;
 
-import com.twitterdan.domain.chat.Chat;
-import com.twitterdan.domain.chat.ChatType;
-import com.twitterdan.domain.user.User;
+import com.twitter.danit.dao.ChatRepository;
+import com.twitter.danit.dao.UserRepository;
+import com.twitter.danit.domain.chat.Chat;
+import com.twitter.danit.domain.chat.ChatType;
+import com.twitter.danit.domain.user.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,6 @@ public class ChatRepositoryTest {
   private UserRepository userRepository;
   @Autowired
   private ChatRepository chatRepository;
-/*
   @Test
   public void test_findByUsersId_success() {
     Optional<List<Chat>> byUsersId = chatRepository.findByUsersId(1L);
@@ -55,13 +57,16 @@ public class ChatRepositoryTest {
     Optional<List<Chat>> byUsersId = chatRepository.findByUsersId(6L);
     List<Chat> chats = byUsersId.get();
     assertEquals(1, chats.size());
-  }*/
+  }
 
-/*  @Test
+
+  @Test
   public void test_findChatByTypeAndUsers_success() {
     Optional<Chat> optionalChat = chatRepository
-      .findPrivateChatByUsersIds(ChatType.PRIVATE, 1L, 5L);
+      .findPrivateChatByUsersIds(String.valueOf(ChatType.PRIVATE), 1L, 5L);
 
     assertTrue(optionalChat.isPresent());
-  }*/
+  }
+
 }
+*/

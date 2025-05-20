@@ -1,7 +1,6 @@
 package com.twitter.danit.service.email;
 
 import com.twitter.danit.domain.user.User;
-import lombok.Getter;
 
 public class Email {
   private static final String welcome = """
@@ -44,7 +43,7 @@ public class Email {
     </div>
 </div>
 </body>
-</html>\s
+</html>
       """;
 
   public static String getWelcomeHtml(String password, User user) {

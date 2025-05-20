@@ -15,6 +15,7 @@ const FollowButton = ({
                         disabled = false,
                         userId,
                         userTag,
+                        action,
                       }) => {
   const dispatch = useDispatch();
   const { toggleModal } = useContext(Context);
@@ -32,7 +33,7 @@ const FollowButton = ({
   }
 
   return (
-      <BoxWrapper onClick={click}>
+      <BoxWrapper onClick={action || click}>
         <CustomFabButton
             className={`${disabled ? 'Disabled' : ''} ${isFollowing ? 'FollowingClass' : ''}`}
             name={isFollowing ? 'Following' : name}
@@ -93,5 +94,6 @@ FollowButton.propTypes = {
   disabled: PropTypes.bool,
   userId: PropTypes.number,
   userTag: PropTypes.string,
+  action: PropTypes.func || undefined,
 }
 export default FollowButton;
