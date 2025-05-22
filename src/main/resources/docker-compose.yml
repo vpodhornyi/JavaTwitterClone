@@ -1,8 +1,8 @@
 version: '3'
 services:
   postgres:
-    image: postgres:14.5
-    container_name: postgres_14_5
+    image: postgres:17
+    container_name: 'postgres_17'
     restart: always
     environment:
       - POSTGRES_USER=postgres
@@ -11,7 +11,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgresqldata14:/var/lib/postgresql/data
+      - postgresqldata17:/var/lib/postgresql/data
   rabbitmq:
     image: pcloud/rabbitmq-stomp:latest
     container_name: 'rabbitmq'
@@ -21,7 +21,13 @@ services:
       - 61613:61613
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq/mnesia
+  node-mailer:
+    image: vpodhornyi/node-mailer:latest
+    container_name: 'node-mailer'
+    ports:
+      - 587:587
+      - 8081:8081
 volumes:
-  postgresqldata14:
+  postgresqldata17:
   rabbitmq-data:
 
