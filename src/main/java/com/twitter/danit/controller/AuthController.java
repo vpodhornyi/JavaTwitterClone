@@ -8,7 +8,7 @@ import com.twitter.danit.dto.auth.JwtRequest;
 import com.twitter.danit.dto.auth.RefreshJwtRequest;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.UserRequest;
-import com.twitter.danit.dto.user.UserResponse;
+import com.twitter.danit.dto.user.NewUserResponse;
 import com.twitter.danit.facade.user.NewUserResponseMapper;
 import com.twitter.danit.facade.user.UserRequestMapper;
 import com.twitter.danit.service.email.EmailService;
@@ -74,7 +74,7 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<UserResponse> signup(@RequestBody UserRequest userRequest) throws JsonProcessingException {
+  public ResponseEntity<NewUserResponse> signup(@RequestBody UserRequest userRequest) throws JsonProcessingException {
     String password = Password.getRandomPassword();
     userRequest.setPassword(password);
     User user = userService.createNewUser(userRequestMapper.convertToEntity(userRequest));

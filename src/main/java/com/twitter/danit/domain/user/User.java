@@ -13,6 +13,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Objects;
@@ -43,10 +44,10 @@ public class User extends BaseEntity {
   @OneToMany
   @JoinColumn(name = "user_id")
   @JsonIgnore
-  private Set<Tweet> tweets;
+  private Set<Tweet> tweets = new HashSet<>();
 
   public Integer getTweetsCount() {
-    return this.tweets.size();
+    return this.tweets != null ? this.tweets.size() : 0;
   }
 
   @LazyCollection(LazyCollectionOption.EXTRA)
@@ -56,7 +57,7 @@ public class User extends BaseEntity {
       inverseJoinColumns = @JoinColumn(name = "follower_id")
   )
   @JsonIgnore
-  private Set<User> followings;
+  private Set<User> followings = new HashSet<>();
 
   @LazyCollection(LazyCollectionOption.EXTRA)
   @ManyToMany
@@ -65,14 +66,14 @@ public class User extends BaseEntity {
       inverseJoinColumns = @JoinColumn(name = "followed_id")
   )
   @JsonIgnore
-  private Set<User> followers;
+  private Set<User> followers = new HashSet<>();
 
   public Integer getFollowingsCount() {
-    return this.followings.size();
+    return this.followings != null ? this.followings.size() : 0;
   }
 
   public Integer getFollowersCount() {
-    return this.followers.size();
+    return this.followers != null ? this.followers.size() : 0;
   }
 
   public boolean isFollowUser(User user) {
