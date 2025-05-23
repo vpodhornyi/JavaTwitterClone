@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 
 import {CustomIconButton} from "@components"
 
-const CounterButton = ({name, count, showCounter = true}) => {
+const CounterButton = ({name, count, showCounter = true, title}) => {
 
   return (
     <BoxWrapper>
-      <CustomIconButton sizeButton='small' iconSize='small' name={name}/>
+      <CustomIconButton sizeButton='small' title={title} iconSize='small' name={name}/>
       {showCounter && <Typography variant="body2" sx={{ml: '2px'}}>{count}</Typography>}
     </BoxWrapper>);
 }
@@ -24,5 +24,6 @@ CounterButton.propTypes = {
   name: PropTypes.string,
   count: PropTypes.number,
   showCounter: PropTypes.bool,
+  title: PropTypes.string,
 }
 export default CounterButton;

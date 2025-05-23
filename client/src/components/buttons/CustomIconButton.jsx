@@ -6,13 +6,24 @@ import {styled} from "@mui/material/styles";
 
 const CustomIconButton = ({name, title, sizeButton, disabled = false, iconSize, color}) => {
   return (
-    // <Tooltip title={title}>
-    <Box className='CustomIconButtonWrapper'>
-      <StyledIconButton color={color} size={sizeButton} disabled={disabled}>
-        <IconsByName iconName={name}/>
-      </StyledIconButton>
-    </Box>
-    // </Tooltip>
+    <Tooltip
+      title={title}
+      arrow
+      placement="left-start"
+      componentsProps={{
+        tooltip: {
+          sx: {
+            fontSize: '1.05rem',
+          },
+        },
+      }}
+    >
+      <Box className='CustomIconButtonWrapper'>
+        <StyledIconButton color={color} size={sizeButton} disabled={disabled}>
+          <IconsByName iconName={name}/>
+        </StyledIconButton>
+      </Box>
+    </Tooltip>
   )
 };
 
