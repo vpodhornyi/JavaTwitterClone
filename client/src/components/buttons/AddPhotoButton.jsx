@@ -1,11 +1,10 @@
-import React, {useRef} from "react";
+import React from "react";
 import {styled} from "@mui/material/styles";
 import {Fab} from "@mui/material";
 import PropTypes from "prop-types";
 import {IconByName} from "../icons";
 
 const AddPhotoButton = ({
-                          setFile, setImageUrl, setDisabled,
                           fieldUrlName, fieldFileName, inputFileRef,
                           formData, setFormData
                         }) => {
@@ -14,9 +13,6 @@ const AddPhotoButton = ({
     const file = event.target.files[0];
 
     if (file) {
-      // setFile(file);
-      // setImageUrl(URL.createObjectURL(file));
-      // setDisabled(false);
       setFormData({
         ...formData,
         [fieldUrlName]: URL.createObjectURL(file),

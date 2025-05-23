@@ -1,12 +1,12 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext, useState, useRef} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Avatar, Box, TextField, Typography} from "@mui/material";
-
-import {Context} from "../../../utils/context";
-import {ModalPage, CustomIconButton, FollowButton, CircularLoader,
-  AddPhotoButton} from "../../../components";
+import {Context} from "@utils/context";
+import {
+  ModalPage, CustomIconButton, FollowButton, CircularLoader, AddPhotoButton
+} from "@components";
 import {getChatsData} from '@redux/chat/selector';
 import {editGroupChat} from '@redux/chat/action';
 import {PATH} from '@utils/constants';
@@ -17,91 +17,97 @@ const GroupEditPage = () => {
   const navigate = useNavigate();
   const {selectedChat: chat} = useSelector(getChatsData);
   const [name, setName] = useState(chat.title);
-  const [disabled, setDisabled] = useState(true);
-  const [imageUrl, setImageUrl] = useState('');
   const [loader, setLoader] = useState(false);
   const [file, setFile] = useState(null);
-
-  useEffect(() => {
-    setImageUrl(chat?.avatarImgUrl);
-  }, [])
-
+  const inputFileRef = useRef();
+  const [formData, setFormData] = useState({
+    name: chat.title,
+    fieldUrlName: '',
+    uploadFile: '',
+    disabled: true,
+    chatId: chat.id,
+  });
+  console.log(chat);
   const onChangeName = e => {
     setName(() => e.target.value);
     const text = e.target.value.trim();
-    setDisabled(text === chat.title || text === '');
+
+    if (text === chat.title || text === '') {
+      setFormData({
+        ...formData,
+        name: text,
+        disabled: true,
+      })
+    } else {
+      setFormData({
+        ...formData,
+        name: text,
+        disabled: false,
+      })
+    }
   }
 
   const save = async () => {
-    if (!disabled) {
+    if (!formData.disabled) {
       setLoader(true);
-      const formData = new FormData();
-      formData.append('uploadFile', file);
-      formData.append('name', name);
-      formData.append('chatId', chat.id);
+
       await dispatch(editGroupChat(formData));
       setLoader(false);
       navigate(background?.pathname || PATH.ROOT);
     }
   }
 
-  return (
-    <BoxWrapper>
-      <Box className='EditHeader'>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-          onClick={() => navigate(background?.pathname || PATH.ROOT)}>
-          <CustomIconButton name='Close' color='text'/>
-          <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit</Typography>
-        </Box>
-        <Box>
-          <FollowButton action={save} name='Save' disabled={disabled}/>
-        </Box>
+  return (<BoxWrapper>
+    <Box className='EditHeader'>
+      <Box
+        sx={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}
+        onClick={() => navigate(background?.pathname || PATH.ROOT)}>
+        <CustomIconButton name='Close' color='text'/>
+        <Typography sx={{ml: 2}} fontWeight='fontWeightBold' fontSize='1.5rem' variant='h2'>Edit</Typography>
       </Box>
-      <Box className='AddPhoto'>
-        {loader && <CircularLoader/>}
-        <Avatar sx={{width: '6rem', height: '6rem'}} src={imageUrl}/>
-        <AddPhotoButton setFile={setFile} setImageUrl={setImageUrl} setDisabled={setDisabled}/>
+      <Box>
+        <FollowButton action={save} name='Save' disabled={formData.disabled}/>
       </Box>
-      <Box className='GroupNameFieldWrapper'>
-        <TextField
-          color='primary'
-          sx={{width: '100%'}}
-          onChange={e => onChangeName(e)}
-          value={name}
-          id="groupName"
-          label="Group name"
-          variant="outlined"/>
+    </Box>
+    <Box className='AddPhoto'>
+      {loader && <CircularLoader/>}
+      <Avatar sx={{width: '6rem', height: '6rem'}} src={formData.avatarImgUrl}/>
+      <Box sx={{position: 'absolute'}}>
+        <AddPhotoButton
+          fieldUrlName={'avatarImgUrl'}
+          fieldFileName={'uploadFile'}
+          inputFileRef={inputFileRef}
+          formData={formData}
+          setFormData={setFormData}
+        />
       </Box>
-    </BoxWrapper>
-  );
+    </Box>
+    <Box className='GroupNameFieldWrapper'>
+      <TextField
+        color='primary'
+        sx={{width: '100%'}}
+        onChange={e => onChangeName(e)}
+        value={name}
+        id="groupName"
+        label="Group name"
+        variant="outlined"/>
+    </Box>
+  </BoxWrapper>);
 }
 
 const Foo = () => <ModalPage element={<GroupEditPage/>}/>;
 
 const BoxWrapper = styled(Box)(({theme}) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: theme.palette.background.main,
-  height: '100%',
+  display: 'flex', flexDirection: 'column', backgroundColor: theme.palette.background.main, height: '100%',
 
   [theme.breakpoints.up('sm')]: {
-    width: 600,
-    maxWidth: '80vw',
-    minWidth: '600px',
-    borderRadius: '16px',
+    width: 600, maxWidth: '80vw', minWidth: '600px', borderRadius: '16px',
   },
 
   '& > .EditHeader': {
-    width: '100%',
-    padding: '0 15px 0 5px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: '100%', padding: '0 15px 0 5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
 
   },
 
@@ -137,8 +143,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   },
 
   '& > .GroupNameFieldWrapper': {
-    width: '100%',
-    padding: '11px 15px',
+    width: '100%', padding: '11px 15px',
 
     '& .MuiInputBase-input': {
       color: theme.palette.text.main,

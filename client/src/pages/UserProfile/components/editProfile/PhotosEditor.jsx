@@ -9,25 +9,25 @@ const PhotosEditor = ({formData, setFormData}) => {
   const inputFileRef = useRef();
 
   return (
-      <BoxWrapper>
-        <HeaderPhoto formData={formData} setFormData={setFormData}/>
-        <Box className='AddPhoto'>
-          <Box sx={{position: 'absolute', left: 15, bottom: -10}}>
-            <Box className="AvatarWrapper">
-              <Avatar className="Avatar" src={formData.avatarImgUrl}/>
-              <Box sx={{position: 'absolute'}}>
-                <AddPhotoButton
-                    fieldUrlName={'avatarImgUrl'}
-                    fieldFileName={'avatarImgFile'}
-                    inputFileRef={inputFileRef}
-                    formData={formData}
-                    setFormData={setFormData}
-                />
-              </Box>
+    <BoxWrapper>
+      <HeaderPhoto formData={formData} setFormData={setFormData}/>
+      <Box className='AddPhoto'>
+        <Box sx={{position: 'absolute', left: 15, bottom: -10}}>
+          <Box className="AvatarWrapper">
+            <Avatar className="Avatar" src={formData.avatarImgUrl}/>
+            <Box sx={{position: 'absolute'}}>
+              <AddPhotoButton
+                fieldUrlName={'avatarImgUrl'}
+                fieldFileName={'avatarImgFile'}
+                inputFileRef={inputFileRef}
+                formData={formData}
+                setFormData={setFormData}
+              />
             </Box>
           </Box>
         </Box>
-      </BoxWrapper>);
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({

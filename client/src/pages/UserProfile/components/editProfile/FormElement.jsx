@@ -21,7 +21,10 @@ const FormElement = ({user, formData, setFormData}) => {
 
   return (
       <BoxWrapper>
-        <PhotosEditor formData={formData} setFormData={setFormData}/>
+        <PhotosEditor
+          formData={formData}
+          setFormData={setFormData}
+        />
         <Box className='GroupNameFieldWrapper'>
           <TextField
               color='primary'
