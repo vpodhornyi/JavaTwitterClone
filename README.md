@@ -1,6 +1,6 @@
 # 🐦 Java Twitter Clone + Real-Time Chat
 
-A full-featured Twitter clone built with **Java 17**, **Spring Boot**, **PostgreSQL**, and **RabbitMQ**, including a modern **React frontend** and **real-time messaging** over **WebSocket**.
+A base-featured Twitter clone built with **Java 17**, **Spring Boot**, **PostgreSQL**, and **RabbitMQ**, including a modern **React frontend** and **real-time messaging** over **WebSocket**.
 
 ---
 
