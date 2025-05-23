@@ -34,4 +34,3 @@ A full-featured Twitter clone built with **Java 17**, **Spring Boot**, **Postgre
 | Project Mgmt| Trello                                    |
 
 ---
-
