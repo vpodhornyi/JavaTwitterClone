@@ -50,6 +50,7 @@ const TweetFooter = ({tweet}) => {
         <CounterButton
           name={tweet?.isTweetViewed ? 'Visibility' : 'VisibilityOutlined'}
           count={tweet?.viewsCount}
+          title={'View'}
         />
       </Box>
       <Box onClick={e => e.stopPropagation()}>
