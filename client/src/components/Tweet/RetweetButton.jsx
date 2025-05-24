@@ -40,16 +40,25 @@ const getItems = (tweet) => {
 };
 const Button = (retweetsCount, isTweetRetweeted, showCounter, disableTooltip) => (
   <Tooltip
-    title={'Retweet'}
-    arrow
+    title={'Repost'}
     disableHoverListener={disableTooltip}
-    placement="left-start"
+    placement="bottom-start"
     componentsProps={{
       tooltip: {
         sx: {
-          fontSize: '1rem',
+          fontSize: '0.8rem',
         },
       },
+    }}
+    PopperProps={{
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [-5, -10],
+          },
+        },
+      ],
     }}
   >
     <Box className={isTweetRetweeted ? 'Retweet Retweet_active' : 'Retweet'}>

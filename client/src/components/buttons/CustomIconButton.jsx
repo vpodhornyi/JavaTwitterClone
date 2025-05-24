@@ -8,14 +8,23 @@ const CustomIconButton = ({name, title, sizeButton, disabled = false, iconSize, 
   return (
     <Tooltip
       title={title}
-      arrow
-      placement="left-start"
+      placement="bottom"
       componentsProps={{
         tooltip: {
           sx: {
-            fontSize: '1.05rem',
+            fontSize: '0.8rem',
           },
         },
+      }}
+      PopperProps={{
+        modifiers: [
+          {
+            name: 'offset',
+            options: {
+              offset: [0, -10],
+            },
+          },
+        ],
       }}
     >
       <Box className='CustomIconButtonWrapper'>
