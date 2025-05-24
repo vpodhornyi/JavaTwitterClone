@@ -9,6 +9,7 @@ import {
 } from "@components";
 import {getChatsData} from '@redux/chat/selector';
 import {editGroupChat} from '@redux/chat/action';
+import {uploadImage} from '@redux/user/action';
 import {PATH} from '@utils/constants';
 
 const GroupEditPage = () => {
@@ -18,16 +19,16 @@ const GroupEditPage = () => {
   const {selectedChat: chat} = useSelector(getChatsData);
   const [name, setName] = useState(chat.title);
   const [loader, setLoader] = useState(false);
-  const [file, setFile] = useState(null);
   const inputFileRef = useRef();
   const [formData, setFormData] = useState({
-    name: chat.title,
+    chatId: chat.id,
+    title: chat.title,
+    avatarImgUrl: chat.avatarImgUrl,
     fieldUrlName: '',
     uploadFile: '',
     disabled: true,
-    chatId: chat.id,
   });
-  console.log(chat);
+
   const onChangeName = e => {
     setName(() => e.target.value);
     const text = e.target.value.trim();
@@ -35,13 +36,13 @@ const GroupEditPage = () => {
     if (text === chat.title || text === '') {
       setFormData({
         ...formData,
-        name: text,
+        title: text,
         disabled: true,
       })
     } else {
       setFormData({
         ...formData,
-        name: text,
+        title: text,
         disabled: false,
       })
     }
@@ -50,6 +51,16 @@ const GroupEditPage = () => {
   const save = async () => {
     if (!formData.disabled) {
       setLoader(true);
+
+      if (formData.avatarImgUrl !== '') {
+        const data = new FormData();
+        data.append('uploadFile', formData.uploadFile);
+        formData.imgUrl = await dispatch(uploadImage(data));
+        delete formData.uploadFile;
+        delete formData.fieldUrlName;
+        delete formData.avatarImgUrl;
+        delete formData.disabled;
+      }
 
       await dispatch(editGroupChat(formData));
       setLoader(false);

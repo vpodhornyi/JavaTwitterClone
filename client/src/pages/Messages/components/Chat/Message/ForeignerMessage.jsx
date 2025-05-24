@@ -36,7 +36,7 @@ const ForeignerMessage = ({chat, message, sameMessage}) => {
       <MessageBox ref={ref}>
         {message.isGroupChat && (sameMessage ?
             <Box sx={{mr: '10px', width: '2.7rem', height: '2.7rem'}}></Box> :
-          <Link to={`${PATH.USER.profile(message.user.id)}`}>
+          <Link to={`${PATH.USER.profile(message.user.userTag)}`}>
             <Avatar sx={{mr: '10px', width: '2.7rem', height: '2.7rem'}} src={message.user.avatarImgUrl}/>
           </Link>
         )}

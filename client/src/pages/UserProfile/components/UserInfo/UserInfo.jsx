@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
@@ -15,15 +15,17 @@ import { findByUserTag } from "@redux/user/action";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
+  const [load, setLoad] = useState(false)
   const { guestUser: user, guestUserLoader } = useSelector(state => state.user);
   const location = useLocation();
 
   useEffect(() => {
     dispatch(findByUserTag(URLS.USERS.getProfile(location.pathname)));
+    setLoad(true);
   }, [location.pathname])
 
   return (guestUserLoader ? <CircularLoader/> :
-      (user.id && <BoxWrapper>
+      (<BoxWrapper>
         {
           user.headerImgUrl === '' ? <Box className="HeaderPhotoWrapper"></Box> :
               <Link
@@ -59,7 +61,7 @@ const UserInfo = () => {
             </Typography>
           </Box>
         </Box>
-        <TwittersLists user={user}/>
+        { load && <TwittersLists user={user}/>}
       </BoxWrapper>));
 }
 

@@ -143,13 +143,13 @@ public class ChatController extends AbstractController {
   }
 
   @PutMapping("/group")
-  public ResponseEntity<GroupChatResponse> editGroupChat(@RequestParam MultipartFile uploadFile,
-                                                         @RequestParam String name,
-                                                         @RequestParam Long chatId,
+  public ResponseEntity<GroupChatResponse> editGroupChat(@RequestBody GroupChatInfoRequest groupChatInfoRequest,
                                                          Principal principal) {
     User authUser = userService.findByUserTagTrowException(principal.getName());
-    String imgUrl = cloudinaryService.uploadImage(uploadFile);
-    Chat chat = chatService.editGroupChat(chatId, name, imgUrl, authUser);
+    Long chatId = groupChatInfoRequest.getChatId();
+    String title = groupChatInfoRequest.getTitle();
+    String imgUrl = groupChatInfoRequest.getImgUrl();
+    Chat chat = chatService.editGroupChat(chatId, title, imgUrl, authUser);
 
     chat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(chat, user);
