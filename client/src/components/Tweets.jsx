@@ -12,11 +12,8 @@ const Tweets = ({url}) => {
   const {tweets, pageNumber, totalPages, loading} = useSelector(state => state.tweet);
 
   useEffect(() => {
-    const fetch = async () => {
-      await dispatch(ACTIONS.resetGetTweets());
-      await dispatch(getTweets(url));
-    }
-    fetch();
+       dispatch(ACTIONS.resetGetTweets());
+       dispatch(getTweets(url));
   }, []);
 
   const toggleVisible = async (inView) => {

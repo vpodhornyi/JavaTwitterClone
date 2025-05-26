@@ -6,13 +6,12 @@ import {useDebouncedCallback} from "use-debounce";
 import {Box, LinearProgress} from "@mui/material";
 import PropTypes from "prop-types";
 
-import {IconByName} from "@components";
+import {IconByName, ModalPage} from "@components";
 import SearchTextField from "./SearchTextField";
 import FoundUser from "./FoundUser";
 import NewMassageHeader from "./NewMassageHeader";
 import GrabbedUser from "./GrabbedUser";
 import GroupButton from "./GroupButton";
-import {ModalPage} from '../../../../components';
 import {ACTIONS, searchUser, getPrivateChatByUsersId, addPeopleToChat} from "@redux/chat/action";
 import {PATH} from "@utils/constants";
 import {getRandomKey} from '@utils';

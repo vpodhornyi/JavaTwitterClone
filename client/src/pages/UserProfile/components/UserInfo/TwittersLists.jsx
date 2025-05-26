@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {styled} from "@mui/material/styles";
 import {Box, Tab, Tabs} from "@mui/material";
 
 import {Tweets} from "@components";
 import {URLS} from "@services/API";
-import PropTypes from "prop-types";
 
 const getTabs = userId => [
   {

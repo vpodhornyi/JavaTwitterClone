@@ -9,7 +9,7 @@ const api = axios.create({
 
 export const interceptor = store => {
   api.interceptors.request.use(conf => {
-    // you can do something before send it.
+    // do something before send it.
     return conf;
   });
 

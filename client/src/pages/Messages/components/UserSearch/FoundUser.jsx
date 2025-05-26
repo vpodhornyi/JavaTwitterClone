@@ -3,7 +3,7 @@ import {styled} from "@mui/material/styles";
 import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
-const FoundUser = ({user, grabUser}) => {
+const FoundUser = ({user, grabUser = () => {}}) => {
   return (
     <BoxWrapper onClick={() => user?.isNotSelectable || grabUser(user)}>
       <Box className={user?.isNotSelectable ? 'NotSelectable' : 'Selectable'}>

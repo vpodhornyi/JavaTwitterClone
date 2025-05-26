@@ -1,11 +1,12 @@
 import React from "react";
 import {styled} from "@mui/material/styles";
+import {useSelector} from "react-redux";
 import {Box, Typography} from "@mui/material";
-import PropTypes from "prop-types";
 
 import ClearAllBookmarks from "./ClearAllBookmarks";
 
-const Header = ({user}) => {
+const Header = () => {
+  const {authUser: user} = useSelector(state => state.user);
 
   return (
     <BoxWrapper>
@@ -27,8 +28,4 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
 }));
-
-Header.propTypes = {
-  user: PropTypes.object,
-}
 export default Header;

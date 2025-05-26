@@ -9,7 +9,7 @@ import {StickyHeader, CustomIconButton, MobileDrawer} from "../components";
 
 const PrimaryHeader = ({isBack = false, pageElement: PageElement}) => {
   const [open, setOpen] = useState(false);
-  const {authUser: user} = useSelector(state => state.user);
+  const {authUser: user, guestUser} = useSelector(state => state.user);
   const navigate = useNavigate();
 
   const toggleDrawer = () => event => {
@@ -25,7 +25,7 @@ const PrimaryHeader = ({isBack = false, pageElement: PageElement}) => {
       {isBack && <Box sx={{mr: 3}} onClick={() => navigate(-1)}>
         <CustomIconButton name='ArrowBackOutlined' title='Back' color='text'/>
       </Box>}
-      <PageElement user={user}/>
+      <PageElement user={guestUser}/>
       <Drawer anchor='left'
               open={open}
               onClose={toggleDrawer()}>

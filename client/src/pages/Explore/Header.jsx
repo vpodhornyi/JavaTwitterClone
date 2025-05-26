@@ -1,10 +1,35 @@
-import React from "react";
+import React, {useRef} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useDebouncedCallback} from "use-debounce";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import InputBase from "@mui/material/InputBase";
+
 import {IconByName} from "@components";
+import {searchUser} from "@redux/chat/action";
+import {ACTIONS} from "@redux/explore/action";
+
 
 const Header = () => {
+  const inputRef = useRef();
+  const dispatch = useDispatch();
+  const {searchText} = useSelector(state => state.explore);
+  const debounced = useDebouncedCallback(async text => {
+    if (text.trim() !== '') {
+      dispatch(ACTIONS.setLoaderTrue());
+      const users = await dispatch(searchUser({text}));
+      dispatch(ACTIONS.setFoundedUsers(users));
+      dispatch(ACTIONS.setLoaderFalse());
+    } else {
+      dispatch(ACTIONS.setFoundedUsers([]));
+      dispatch(ACTIONS.setLoaderFalse());
+    }
+  }, 500);
+
+  const onChange = (e) => {
+    dispatch(ACTIONS.setSearchText(e.target.value));
+    debounced(e.target.value);
+  }
 
   return (
     <BoxWrapper>
@@ -13,6 +38,9 @@ const Header = () => {
           <IconByName iconName='SearchOutlined'/>
         </Box>
         <StyledInputBase
+          inputRef={inputRef}
+          value={searchText}
+          onChange={onChange}
           placeholder="Search Twitter"
           inputProps={{'aria-label': 'search'}}
         />

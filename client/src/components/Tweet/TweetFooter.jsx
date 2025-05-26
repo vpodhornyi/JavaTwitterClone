@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 
 import CounterButton from "./CounterButton";
 import RetweetButton from "./RetweetButton";
-import {CustomIconButton} from "@components";
 import {likeTweet, bookmarkTweet} from "@redux/tweet/action";
 import {PATH} from "@utils/constants";
 
@@ -22,34 +21,48 @@ const TweetFooter = ({tweet}) => {
   }, 300);
 
   return (
-      <BoxWrapper>
-        <Box onClick={e => e.stopPropagation()}>
-          <Link
-              to={PATH.COMPOSE.TWEET}
-              state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}
-          >
-            <Box className={tweet?.isTweetReplied ? 'Reply Reply_active' : 'Reply'}>
-              <CounterButton name="ChatBubbleOutlineOutlined" count={tweet?.repliesTweetCount}/>
-            </Box>
-          </Link>
-        </Box>
-        <RetweetButton tweet={tweet}/>
-        <Box onClick={e => e.stopPropagation()}>
-          <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
-            <CounterButton name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'} count={tweet?.likesCount}/>
+    <BoxWrapper>
+      <Box onClick={e => e.stopPropagation()}>
+        <Link
+          to={PATH.COMPOSE.TWEET}
+          state={{background: location, tweetAction: {tweet, isReplyTweet: true}}}
+        >
+          <Box className={tweet?.isTweetReplied ? 'Reply Reply_active' : 'Reply'}>
+            <CounterButton
+              name="ChatBubbleOutlineOutlined"
+              count={tweet?.repliesTweetCount}
+              title={'Reply'}
+            />
           </Box>
+        </Link>
+      </Box>
+      <RetweetButton tweet={tweet} disableTooltip={false}/>
+      <Box onClick={e => e.stopPropagation()}>
+        <Box className={tweet?.isTweetLiked ? 'Like Like_active' : 'Like'} onClick={like}>
+          <CounterButton
+            name={tweet?.isTweetLiked ? 'Favorite' : 'FavoriteBorder'}
+            count={tweet?.likesCount}
+            title={'Like'}
+          />
         </Box>
-        <Box className={tweet?.isTweetViewed ? 'View View_active' : 'View'} onClick={e => e.stopPropagation()}>
-          <CounterButton name={tweet?.isTweetViewed ? 'Visibility' : 'VisibilityOutlined'}
-                         count={tweet?.viewsCount}/>
+      </Box>
+      <Box className={tweet?.isTweetViewed ? 'View View_active' : 'View'} onClick={e => e.stopPropagation()}>
+        <CounterButton
+          name={tweet?.isTweetViewed ? 'Visibility' : 'VisibilityOutlined'}
+          count={tweet?.viewsCount}
+          title={'View'}
+        />
+      </Box>
+      <Box onClick={e => e.stopPropagation()}>
+        <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
+          <CounterButton
+            name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}
+            count={tweet?.bookmarksCount}
+            title={'Bookmark'}
+          />
         </Box>
-        <Box onClick={e => e.stopPropagation()}>
-          <Box className={tweet?.isTweetInBookmark ? 'Bookmark Bookmark_active' : 'Bookmark'} onClick={bookmark}>
-            <CounterButton name={tweet?.isTweetInBookmark ? 'BookmarkAdd' : 'BookmarkAddOutlined'}
-                           count={tweet?.bookmarksCount}/>
-          </Box>
-        </Box>
-      </BoxWrapper>);
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({

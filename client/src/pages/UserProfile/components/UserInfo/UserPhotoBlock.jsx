@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { Avatar, Box } from "@mui/material";
-import { CustomFabButton } from "../../../../components"
+import { CustomFabButton } from "@components"
 import PropTypes from "prop-types";
 
 import { PATH } from "@utils/constants";
