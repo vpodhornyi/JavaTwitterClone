@@ -7,7 +7,7 @@ import {FollowButton} from "@components";
 
 const Person = ({user}) => {
 
-  return ( user &&
+  return (user &&
     <BoxWrapper>
       <Box sx={{display: 'flex'}}>
         <Avatar sx={{mr: 2, width: '3.3rem', height: '3.3rem'}} src={user.avatarImgUrl}/>
@@ -19,7 +19,14 @@ const Person = ({user}) => {
           <Typography variant='body2'>@{user.userTag}</Typography>
         </Box>
       </Box>
-      <FollowButton isFollowing={user.isFollowing} userId={user.id} userTag={user.userTag}/>
+      <Box onClick={e => e.stopPropagation()}>
+        <FollowButton
+          isFollowing={user.isFollowing}
+          userId={user.id}
+          userTag={user.userTag}
+          user={user}
+        />
+      </Box>
     </BoxWrapper>
   );
 }

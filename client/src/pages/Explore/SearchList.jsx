@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Box, Tab, Tabs, Typography} from "@mui/material";
 import PropTypes from "prop-types";
@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import {URLS} from "@services/API";
 import {PATH} from "@utils/constants";
 import {CircularLoader} from "@components";
-import FoundUser from "../Messages/components/UserSearch/FoundUser";
+import Person from "../Messages/components/ChatInfo/Person";
 
 const getTabs = (userId = 1) => [
   {
@@ -32,6 +32,7 @@ const getTabs = (userId = 1) => [
 const Index = ({}) => {
   const [value, setValue] = React.useState(0);
   const {foundedUsers, loader} = useSelector(state => state.explore);
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,14 +78,16 @@ const Index = ({}) => {
                 id={`simple-tabpanel-${2}`}
                 key={`TabPanel_${2}`}
                 aria-labelledby={`simple-tab-${2}`}
+                onClick={e => e.stopPropagation()}
               >
                 {
-                  foundedUsers?.map(user => <Link
+                  foundedUsers?.map(user => <Box
                     to={PATH.USER.profile(user?.userTag)}
                     key={user?.key}
-                    onClick={e => e.stopPropagation()}>
-                    <FoundUser key={user?.key} user={user}/>
-                  </Link>)
+                    onClick={() => navigate(PATH.USER.profile(user?.userTag))}
+                  >
+                    <Person key={user?.key} user={user}/>
+                  </Box>)
                 }
               </Box>
               <Box
