@@ -1,6 +1,7 @@
 import {ACTIONS} from "./action";
 
 const init = {
+  loader: false,
   searchText: '',
   foundedUsers: [],
   foundedTweets: [],
@@ -8,6 +9,16 @@ const init = {
 
 export default (state = init, {payload, type}) => {
   switch (type) {
+    case String(ACTIONS.setLoaderTrue):
+      return {
+        ...state,
+        loader: true,
+      };
+    case String(ACTIONS.setLoaderFalse):
+      return {
+        ...state,
+        loader: false,
+      };
     case String(ACTIONS.setSearchText):
       return {
         ...state,

@@ -1,15 +1,16 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import { styled } from "@mui/material/styles";
-import { Box, Tab, Tabs } from "@mui/material";
+import {styled} from "@mui/material/styles";
+import {Box, Tab, Tabs, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
-import { URLS } from "@services/API";
+import {URLS} from "@services/API";
+import { CircularLoader } from "@components";
 import FoundUser from "../Messages/components/UserSearch/FoundUser";
 
 const getTabs = (userId = 1) => [
   {
-    tabName: 'Top',
+    tabName: 'Users',
     url: URLS.TWEETS.getUserTweets(userId),
   },
   {
@@ -28,7 +29,7 @@ const getTabs = (userId = 1) => [
 
 const Index = ({}) => {
   const [value, setValue] = React.useState(0);
-  const { foundedUsers } = useSelector(state => state.explore);
+  const {foundedUsers, loader} = useSelector(state => state.explore);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -42,36 +43,68 @@ const Index = ({}) => {
   }
 
   return (
-      <BoxWrapper>
-        <Box className="TabsWrapper">
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            {getTabs().map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
-          </Tabs>
-          {getTabs(1).map((el, index) => {
-            return (
+    <BoxWrapper>
+      <Box className="TabsWrapper">
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          {getTabs().map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
+        </Tabs>
+        <Box sx={{position: 'relative'}}>
+          {loader ? <CircularLoader styles={{mt: 4}}/> :
+            <Box>
               <Box
                 role="tabpanel"
-                hidden={value !== index}
-                id={`simple-tabpanel-${index}`}
-                key={`TabPanel_${index}`}
-                aria-labelledby={`simple-tab-${index}`}
+                hidden={value !== 0}
+                id={`simple-tabpanel-${0}`}
+                key={`TabPanel_${0}`}
+                aria-labelledby={`simple-tab-${0}`}
               >
                 {
                   foundedUsers?.map(user => <FoundUser
                     key={user?.key}
                     user={user}
-                    grabUser={() => {}}
+                    grabUser={() => {
+                    }}
                   />)
                 }
-              </Box>)
-          })}
+              </Box>
+              <Box
+                role="tabpanel"
+                hidden={value !== 1}
+                id={`simple-tabpanel-${1}`}
+                key={`TabPanel_${1}`}
+                aria-labelledby={`simple-tab-${1}`}
+              >
+                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+              </Box>
+              <Box
+                role="tabpanel"
+                hidden={value !== 2}
+                id={`simple-tabpanel-${2}`}
+                key={`TabPanel_${2}`}
+                aria-labelledby={`simple-tab-${2}`}
+              >
+                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+              </Box>
+              <Box
+                role="tabpanel"
+                hidden={value !== 3}
+                id={`simple-tabpanel-${3}`}
+                key={`TabPanel_${3}`}
+                aria-labelledby={`simple-tab-${3}`}
+              >
+                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+              </Box>
+            </Box>
+          }
         </Box>
-      </BoxWrapper>);
+      </Box>
+    </BoxWrapper>);
 }
 
-const BoxWrapper = styled(Box)(({ theme }) => ({
+const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'flex',
+  textAlign: 'center',
 
   '& .MuiButtonBase-root': {
     width: '25%',
@@ -91,7 +124,7 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
 
   '& .TabsWrapper': {
     width: '100%',
-    borderBottom: `1px solid ${theme.palette.border.main}`,
+    // borderBottom: `1px solid ${theme.palette.border.main}`,
 
     '& .Mui-selected': {
       fontWeight: theme.typography.fontWeightBold,

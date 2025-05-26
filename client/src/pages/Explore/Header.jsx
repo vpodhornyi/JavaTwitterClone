@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useDebouncedCallback} from "use-debounce";
 import {styled} from "@mui/material/styles";
@@ -13,15 +13,16 @@ import {ACTIONS} from "@redux/explore/action";
 const Header = () => {
   const inputRef = useRef();
   const dispatch = useDispatch();
-  const { searchText } = useSelector(state => state.explore);
+  const {searchText} = useSelector(state => state.explore);
   const debounced = useDebouncedCallback(async text => {
     if (text.trim() !== '') {
-      // setLoading(true);
+      dispatch(ACTIONS.setLoaderTrue());
       const users = await dispatch(searchUser({text}));
       dispatch(ACTIONS.setFoundedUsers(users));
-      // setLoading(false);
+      dispatch(ACTIONS.setLoaderFalse());
     } else {
       dispatch(ACTIONS.setFoundedUsers([]));
+      dispatch(ACTIONS.setLoaderFalse());
     }
   }, 500);
 
