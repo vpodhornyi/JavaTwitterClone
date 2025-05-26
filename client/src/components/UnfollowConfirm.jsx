@@ -11,7 +11,7 @@ const UnfollowConfirm = ({ toggleModal, userId, userTag, user }) => {
   const confirm = () => {
     dispatch(followUser(userId))
     toggleModal();
-    user.isFollowing = false;
+    if (user) user.isFollowing = false;
   }
 
   return <Confirm

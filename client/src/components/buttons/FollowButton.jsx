@@ -31,7 +31,7 @@ const FollowButton = ({
       />, true);
     } else {
       dispatch(followUser(userId));
-      user.isFollowing = true;
+      if (user) user.isFollowing = false;
     }
   }
 
