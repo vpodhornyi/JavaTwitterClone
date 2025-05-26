@@ -1,16 +1,18 @@
 import React from "react";
 import {useSelector} from "react-redux";
+import {Link} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Box, Tab, Tabs, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {URLS} from "@services/API";
-import { CircularLoader } from "@components";
+import {PATH} from "@utils/constants";
+import {CircularLoader} from "@components";
 import FoundUser from "../Messages/components/UserSearch/FoundUser";
 
 const getTabs = (userId = 1) => [
   {
-    tabName: 'Users',
+    tabName: 'Top',
     url: URLS.TWEETS.getUserTweets(userId),
   },
   {
@@ -58,14 +60,7 @@ const Index = ({}) => {
                 key={`TabPanel_${0}`}
                 aria-labelledby={`simple-tab-${0}`}
               >
-                {
-                  foundedUsers?.map(user => <FoundUser
-                    key={user?.key}
-                    user={user}
-                    grabUser={() => {
-                    }}
-                  />)
-                }
+                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
               </Box>
               <Box
                 role="tabpanel"
@@ -83,7 +78,14 @@ const Index = ({}) => {
                 key={`TabPanel_${2}`}
                 aria-labelledby={`simple-tab-${2}`}
               >
-                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+                {
+                  foundedUsers?.map(user => <Link
+                    to={PATH.USER.profile(user?.userTag)}
+                    key={user?.key}
+                    onClick={e => e.stopPropagation()}>
+                    <FoundUser key={user?.key} user={user}/>
+                  </Link>)
+                }
               </Box>
               <Box
                 role="tabpanel"
