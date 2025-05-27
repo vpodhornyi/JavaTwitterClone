@@ -66,9 +66,10 @@ public class UserController extends AbstractController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text) {
+  public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text, Principal principal) {
+    User authUser = getAuthUser(principal);
     List<User> users = userService.findByMatchesInNameOrUserTag(text.trim());
-    return ResponseEntity.ok(users.stream().map(userResponseMapper::convertToDto).collect(Collectors.toList()));
+    return ResponseEntity.ok(users.stream().map(user -> userResponseMapper.convertToDto(user, authUser)).collect(Collectors.toList()));
   }
 
   @GetMapping("/{userTag}")

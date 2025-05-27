@@ -21,6 +21,7 @@ public class UserResponse {
   private String avatarImgUrl;
   private String headerImgUrl;
   private CustomStyleResponse customize;
+  private boolean IsFollowing;
   private Integer countUnreadMessages;
   private Integer followingsCount;
   private Integer followersCount;
