@@ -207,4 +207,12 @@ public class TweetController extends AbstractController {
 
     return ResponseEntity.ok(retweetResponse);
   }
+
+  @GetMapping("/search")
+  public ResponseEntity<PageAbstract<TweetResponse>> search(@RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String text, Principal principal) {
+    User authUser = getAuthUser(principal);
+    Page<Tweet> tweets = tweetService.findByMatchesInBody(text, pageNumber, pageSize);
+
+    return ResponseEntity.ok(pageTweetResponseMapper.convertToDto(tweets, authUser));
+  }
 }

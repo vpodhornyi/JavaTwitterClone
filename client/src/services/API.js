@@ -78,6 +78,7 @@ export const URLS = {
     retweet: id => `/tweets/${id}/retweet`,
     BOOKMARKS: "/tweets/bookmarks",
     CLEAR_BOOKMARKS: "/tweets/clear-bookmarks",
+    SEARCH: "/tweets/search",
   },
   CHATS: {
     ROOT: '/chats',
