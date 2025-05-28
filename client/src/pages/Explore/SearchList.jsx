@@ -12,15 +12,15 @@ import Person from "../Messages/components/ChatInfo/Person";
 
 const getTabs = (userId = 1) => [
   {
+    tabName: 'People',
+    url: URLS.TWEETS.getUserTweets(userId),
+  },
+  {
     tabName: 'Top',
     url: URLS.TWEETS.getUserTweets(userId),
   },
   {
     tabName: 'Latest',
-    url: URLS.TWEETS.getUserTweets(userId),
-  },
-  {
-    tabName: 'People',
     url: URLS.TWEETS.getUserTweets(userId),
   },
   {
@@ -60,8 +60,17 @@ const Index = ({}) => {
                 id={`simple-tabpanel-${0}`}
                 key={`TabPanel_${0}`}
                 aria-labelledby={`simple-tab-${0}`}
+                onClick={e => e.stopPropagation()}
               >
-                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+                {
+                  foundedUsers?.map(user => <Box
+                    to={PATH.USER.profile(user?.userTag)}
+                    key={user?.key}
+                    onClick={() => navigate(PATH.USER.profile(user?.userTag))}
+                  >
+                    <Person key={user?.key} user={user}/>
+                  </Box>)
+                }
               </Box>
               <Box
                 role="tabpanel"
@@ -78,17 +87,8 @@ const Index = ({}) => {
                 id={`simple-tabpanel-${2}`}
                 key={`TabPanel_${2}`}
                 aria-labelledby={`simple-tab-${2}`}
-                onClick={e => e.stopPropagation()}
               >
-                {
-                  foundedUsers?.map(user => <Box
-                    to={PATH.USER.profile(user?.userTag)}
-                    key={user?.key}
-                    onClick={() => navigate(PATH.USER.profile(user?.userTag))}
-                  >
-                    <Person key={user?.key} user={user}/>
-                  </Box>)
-                }
+                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
               </Box>
               <Box
                 role="tabpanel"

@@ -18,8 +18,7 @@ public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
     this.customStyleDtoMapper = customStyleDtoMapper;
   }
 
-  @Override
-  protected void decorateDto(UserResponse dto, User entity, User user) {
+  private void decorateUser(UserResponse dto, User entity, User user) {
     dto.setCountUnreadMessages(messageService.getCountAllUnreadChatMessagesByUserId(entity.getId()));
     CustomStyle customStyle = entity.getCustomStyle();
 
@@ -32,10 +31,21 @@ public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
       dto.setCustomize(customStyleDtoMapper.convertToDto(customStyle));
     }
 
-    dto.setIsFollowing(user.isFollowUser(entity));
+    if(user != null) {
+      dto.setIsFollowing(user.isFollowUser(entity));
+    }
 
     dto.setFollowingsCount(entity.getFollowingsCount());
     dto.setFollowersCount(entity.getFollowersCount());
     dto.setTweetsCount(entity.getTweetsCount());
+  }
+
+  protected void decorateDto(UserResponse dto, User entity) {
+    this.decorateUser(dto, entity, null);
+  }
+
+  @Override
+  protected void decorateDto(UserResponse dto, User entity, User authUser) {
+    this.decorateUser(dto, entity, authUser);
   }
 }

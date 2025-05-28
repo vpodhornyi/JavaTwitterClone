@@ -81,8 +81,8 @@ public class UserController extends AbstractController {
   @PutMapping("/customize")
   public ResponseEntity<CustomStyleResponse> updateCustomize(@RequestBody CustomStyleRequest customStyleRequest, Principal principal) {
     User authUser = getAuthUser(principal);
-    CustomStyle savwdCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
-    return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
+    CustomStyle savedCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
+    return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savedCustomStyle));
   }
 
   @PostMapping("/reset-password")
