@@ -4,44 +4,44 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 
 
 const actions = createActions(
-    {
-      actions: [
-        'SET_TWEET_FORM_CAN_REPLY',
-        'SET_TWEET_FORM_TEXT',
-        'SET_TWEET_FORM_IMAGES',
-        'SET_TWEET_FORM_IMAGES_SRC',
-        'SET_TWEET_FORM_DELETE_IMAGE',
-        'UPDATE_LIKES_TWEET_COUNT',
-        'UPDATE_VIEWS_TWEET_COUNT',
-        'UPDATE_BOOKMARKS_TWEET_COUNT',
-        'UPDATE_BOOKMARKS_COUNT',
-        'UPDATE_REPLIES_TWEET_COUNT',
-        'UPDATE_RETWEET_COUNT',
-        'SET_SELECTED_TWEET',
-        'RESET_SELECTED_TWEET',
-        'SET_PAGE_NUMBER',
-        'RESET_GET_TWEETS',
-        'DELETE_BOOKMARK',
-        'UPDATE_USER_TWEET_INFO',
-      ],
-      async: [
-        "DELETE_TWEET",
-        "CREATE_TWEET",
-        "QUOTE_TWEET",
-        "GET_TWEETS",
-        "GET_TWEET_BY_ID",
-        "ACTIONS_TWEET",
-        "RETWEET",
-        "LIKE_TWEET",
-        "REPLY_TWEET",
-        "VIEW_TWEET",
-        'BOOKMARK_TWEET',
-        'CLEAR_BOOKMARKS',
-      ],
-    },
-    {
-      prefix: "tweet",
-    }
+  {
+    actions: [
+      'SET_TWEET_FORM_CAN_REPLY',
+      'SET_TWEET_FORM_TEXT',
+      'SET_TWEET_FORM_IMAGES',
+      'SET_TWEET_FORM_IMAGES_SRC',
+      'SET_TWEET_FORM_DELETE_IMAGE',
+      'UPDATE_LIKES_TWEET_COUNT',
+      'UPDATE_VIEWS_TWEET_COUNT',
+      'UPDATE_BOOKMARKS_TWEET_COUNT',
+      'UPDATE_BOOKMARKS_COUNT',
+      'UPDATE_REPLIES_TWEET_COUNT',
+      'UPDATE_RETWEET_COUNT',
+      'SET_SELECTED_TWEET',
+      'RESET_SELECTED_TWEET',
+      'SET_PAGE_NUMBER',
+      'RESET_GET_TWEETS',
+      'DELETE_BOOKMARK',
+      'UPDATE_USER_TWEET_INFO',
+    ],
+    async: [
+      "DELETE_TWEET",
+      "CREATE_TWEET",
+      "QUOTE_TWEET",
+      "GET_TWEETS",
+      "GET_TWEET_BY_ID",
+      "ACTIONS_TWEET",
+      "RETWEET",
+      "LIKE_TWEET",
+      "REPLY_TWEET",
+      "VIEW_TWEET",
+      'BOOKMARK_TWEET',
+      'CLEAR_BOOKMARKS',
+    ],
+  },
+  {
+    prefix: "tweet",
+  }
 );
 
 export const ACTIONS = {
@@ -61,9 +61,10 @@ export const getTweetById = id => async (dispatch) => {
 };
 export const getTweets = (url) => async (dispatch, getState) => {
   try {
-    const {tweet: {pageNumber, pageSize}} = getState();
+    const {tweet: {pageNumber, pageSize}, explore: {searchText}} = getState();
     dispatch(ACTIONS.getTweets.request());
-    const data = await api.get(url, {params: {pageNumber, pageSize}});
+    const params = searchText ? {pageNumber, pageSize, text: searchText} : {pageNumber, pageSize};
+    const data = await api.get(url, {params});
 
     if (data?.elements.length > 0) dispatch(ACTIONS.setPageNumber({pageNumber: pageNumber + 1}));
 

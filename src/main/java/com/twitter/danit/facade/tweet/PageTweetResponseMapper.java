@@ -23,8 +23,7 @@ public class PageTweetResponseMapper {
 
     List<Tweet> tweets = entity.getContent();
 
-    dto.setElements(tweets.size() > 0 ? tweets.stream().map(t -> tweetResponseMapper.convertToDto(t, authUser)).toList() :
-        new ArrayList<>());
+    dto.setElements(tweets.isEmpty() ? new ArrayList<>() : tweets.stream().map(t -> tweetResponseMapper.convertToDto(t, authUser)).toList());
 
     return dto;
   }

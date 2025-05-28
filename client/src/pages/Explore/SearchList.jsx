@@ -1,13 +1,13 @@
 import React from "react";
 import {useSelector} from "react-redux";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Box, Tab, Tabs, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {URLS} from "@services/API";
 import {PATH} from "@utils/constants";
-import {CircularLoader} from "@components";
+import {CircularLoader, Tweets} from "@components";
 import Person from "../Messages/components/ChatInfo/Person";
 
 const getTabs = (userId = 1) => [
@@ -31,7 +31,7 @@ const getTabs = (userId = 1) => [
 
 const Index = ({}) => {
   const [value, setValue] = React.useState(0);
-  const {foundedUsers, loader} = useSelector(state => state.explore);
+  const {foundedUsers, loader, searchText} = useSelector(state => state.explore);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
@@ -49,7 +49,8 @@ const Index = ({}) => {
     <BoxWrapper>
       <Box className="TabsWrapper">
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          {getTabs().map((el, i) => <Tab key={`Tab_${i}`} label={el.tabName} {...allProps(i)}/>)}
+          {getTabs().map((el, i) => <Tab className='ExploreListTab' key={`Tab_${i}`}
+                                         label={el.tabName} {...allProps(i)}/>)}
         </Tabs>
         <Box sx={{position: 'relative'}}>
           {loader ? <CircularLoader styles={{mt: 4}}/> :
@@ -88,7 +89,7 @@ const Index = ({}) => {
                 key={`TabPanel_${2}`}
                 aria-labelledby={`simple-tab-${2}`}
               >
-                <Typography variant="h2" gutterBottom>In progress!!!</Typography>
+                {!!searchText && <Tweets url={URLS.TWEETS.SEARCH}/>}
               </Box>
               <Box
                 role="tabpanel"
@@ -109,10 +110,13 @@ const Index = ({}) => {
 const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   display: 'flex',
-  textAlign: 'center',
+
+  '& .ExploreListTab': {
+    width: '25%',
+    textAlign: 'center',
+  },
 
   '& .MuiButtonBase-root': {
-    width: '25%',
     textTransform: 'none',
     color: theme.typography.subtitle1.color,
     fontSize: theme.typography.body1.fontSize,
