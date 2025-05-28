@@ -15,18 +15,18 @@ const getTabs = (userId = 1) => [
     tabName: 'People',
     url: URLS.TWEETS.getUserTweets(userId),
   },
-  {
+/*  {
     tabName: 'Top',
     url: URLS.TWEETS.getUserTweets(userId),
-  },
+  },*/
   {
     tabName: 'Latest',
     url: URLS.TWEETS.getUserTweets(userId),
   },
-  {
+/*  {
     tabName: 'Media',
     url: URLS.TWEETS.getRepliesTweets(userId),
-  }
+  }*/
 ];
 
 const Index = ({}) => {
@@ -73,7 +73,7 @@ const Index = ({}) => {
                   </Box>)
                 }
               </Box>
-              <Box
+{/*              <Box
                 role="tabpanel"
                 hidden={value !== 1}
                 id={`simple-tabpanel-${1}`}
@@ -81,17 +81,17 @@ const Index = ({}) => {
                 aria-labelledby={`simple-tab-${1}`}
               >
                 <Typography variant="h2" gutterBottom>In progress!!!</Typography>
-              </Box>
+              </Box>*/}
               <Box
                 role="tabpanel"
-                hidden={value !== 2}
-                id={`simple-tabpanel-${2}`}
-                key={`TabPanel_${2}`}
-                aria-labelledby={`simple-tab-${2}`}
+                hidden={value !== 1}
+                id={`simple-tabpanel-${1}`}
+                key={`TabPanel_${1}`}
+                aria-labelledby={`simple-tab-${1}`}
               >
                 {!!searchText && <Tweets url={URLS.TWEETS.SEARCH}/>}
               </Box>
-              <Box
+{/*              <Box
                 role="tabpanel"
                 hidden={value !== 3}
                 id={`simple-tabpanel-${3}`}
@@ -99,7 +99,7 @@ const Index = ({}) => {
                 aria-labelledby={`simple-tab-${3}`}
               >
                 <Typography variant="h2" gutterBottom>In progress!!!</Typography>
-              </Box>
+              </Box>*/}
             </Box>
           }
         </Box>
@@ -112,8 +112,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
 
   '& .ExploreListTab': {
-    width: '25%',
-    textAlign: 'center',
+    width: '50%',
   },
 
   '& .MuiButtonBase-root': {
