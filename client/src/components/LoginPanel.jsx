@@ -36,7 +36,7 @@ const Index = () => {
                   to={`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_UP.ROOT}`}
                   state={{background: location}}
                   style={{textDecoration: 'none'}}>
-                  <CustomFabButton name='Sing up'/>
+                  <CustomFabButton name='Sign up'/>
                 </Link>
               </Box>
             </Box>

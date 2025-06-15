@@ -82,7 +82,7 @@ const SingUpSecondStep = () => {
             className='NextStepBtn'
             disabled={false}
             onClick={() => submit()}
-            name='Sing up'
+            name='Sign up'
           />
         </ButtonWrapperStyled>
       </Box>

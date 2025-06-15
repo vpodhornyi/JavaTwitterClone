@@ -23,7 +23,7 @@ const Login = () => {
     <Container>
       <Typography className='StepTitle' variant='h1'>{"Sign in to Twitter"}</Typography>
       <ButtonWrapper>
-        <CustomFabButton className='GoogleSingIn' name='Sing in with Google'/>
+        <CustomFabButton className='GoogleSingIn' name='Sign in with Google'/>
       </ButtonWrapper>
       <OrLine/>
       <TextField
