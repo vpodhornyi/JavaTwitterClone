@@ -1,6 +1,7 @@
 package com.twitter.danit.domain.chat;
 
 import com.twitter.danit.domain.BaseEntity;
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Entity
 @Table(name = "chats")
@@ -36,6 +35,9 @@ public class Chat extends BaseEntity {
   @OneToMany(mappedBy = "chat")
   @ToString.Exclude
   private transient List<Message> messages = new ArrayList<>();
+
+  @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Notification> notifications = new HashSet<>();
 
   @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "chat")
   private List<ChatDeleted> deleted = new ArrayList<>();
