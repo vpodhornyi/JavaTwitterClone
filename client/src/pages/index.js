@@ -18,12 +18,12 @@ import UserProfileEdit from './UserProfile/components/editProfile/UserProfileEdi
 import HeaderPhotoPage from './UserProfile/HeaderPhotoPage';
 import UserPhotoPage from './UserProfile/UserPhotoPage';
 import Auth from './Auth/Auth';
-import Login from './Auth/SingIn/Login';
-import Password from './Auth/SingIn/Password';
-import ForgotPassword from './Auth/SingIn/ForgotPassword';
-import SingUp from './Auth/SingUp/SingUp';
-import UserData from './Auth/SingUp/UserData';
-import CreateAccount from './Auth/SingUp/CreateAccount';
+import Login from './Auth/SignIn/Login';
+import Password from './Auth/SignIn/Password';
+import ForgotPassword from './Auth/SignIn/ForgotPassword';
+import SingUp from './Auth/SignUp/SingUp';
+import UserData from './Auth/SignUp/UserData';
+import CreateAccount from './Auth/SignUp/CreateAccount';
 
 export {
 
