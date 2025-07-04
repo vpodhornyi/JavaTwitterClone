@@ -17,5 +17,4 @@ public enum NotificationType {
   NotificationType(String messageTemplate) {
     this.messageTemplate = messageTemplate;
   }
-
 }

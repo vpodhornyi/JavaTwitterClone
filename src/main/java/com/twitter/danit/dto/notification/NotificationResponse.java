@@ -16,5 +16,5 @@ public class NotificationResponse {
   private UserResponse userInitiator;
   private UserResponse userReceiver;
   private Date createdAt;
-  private boolean isRead;
+  private boolean isIsRead;
 }

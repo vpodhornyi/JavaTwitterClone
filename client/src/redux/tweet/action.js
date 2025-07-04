@@ -59,6 +59,7 @@ export const getTweetById = id => async (dispatch) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
 export const getTweets = (url) => async (dispatch, getState) => {
   try {
     const {tweet: {pageNumber, pageSize}, explore: {searchText}} = getState();
