@@ -15,14 +15,14 @@ const Auth = () => {
     <Container>
       <Typography className='StepTitle' variant='h1'>Join Twitter today</Typography>
       <ButtonWrapper>
-        <CustomFabButton className='GoogleSingIn' name='Sing up with Google'/>
+        <CustomFabButton className='GoogleSingIn' name='Sign up with Google'/>
       </ButtonWrapper>
       <OrLine/>
       <ButtonWrapper>
         <CustomFabButton
           onClick={() => navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_UP.SET_DATA}`, {state: {background}})}
           className='NextStepBtn'
-          name='Sing up with email'/>
+          name='Sign up with email'/>
       </ButtonWrapper>
       <Box sx={{mt: 4}}>
         <Question
