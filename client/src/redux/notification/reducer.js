@@ -4,6 +4,7 @@ const INIT = {
   loading: false,
   pageNumber: 0,
   pageSize: 10,
+  totalPages: 0,
   countUnreadNotifications: 0,
   notifications: []
 };
@@ -19,7 +20,8 @@ export default (state = INIT, {payload, type}) => {
     case String(ACTIONS.addNotification): {
       return {
         ...state,
-        notifications: [...state.notifications, payload]
+        notifications: [...state.notifications, payload],
+        countUnreadNotifications: payload.countUnreadNotifications
       }
     }
     case String(ACTIONS.getNotifications.request): {
@@ -30,9 +32,8 @@ export default (state = INIT, {payload, type}) => {
     }
     case String(ACTIONS.getNotifications.success): {
       const notifications = payload.elements.filter(e => !state.notifications.find(n => e.id === n.id));
-      const count = notifications.length ? notifications[0]?.countUnreadNotifications : 0;
-      console.log('count = ', count);
-      console.log('count = ', notifications[0]);
+      const count = payload.elements.length ? payload.elements[0]?.countUnreadNotifications : 0;
+      console.log(payload.elements.length);
       return {
         ...state,
         loading: false,
@@ -45,6 +46,15 @@ export default (state = INIT, {payload, type}) => {
       return {
         ...state,
         loading: false,
+      }
+    }
+    case String(ACTIONS.resetGetNotifications): {
+      return {
+        ...state,
+        pageNumber: 0,
+        pageSize: 7,
+        totalPages: 0,
+        notifications: [],
       }
     }
     default:

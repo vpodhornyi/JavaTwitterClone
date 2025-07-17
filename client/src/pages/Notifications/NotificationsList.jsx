@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, styled} from "@mui/material";
 
-import {getNotifications} from "@redux/notification/action";
+import {ACTIONS, getNotifications} from "@redux/notification/action";
 import Notification from "./Notification";
 
 const NotificationsList = () => {
@@ -10,6 +10,7 @@ const NotificationsList = () => {
   const {notifications} = useSelector(state => state.notification);
 
   useEffect(() => {
+    dispatch(ACTIONS.resetGetNotifications());
     dispatch(getNotifications());
   }, []);
 

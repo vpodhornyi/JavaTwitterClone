@@ -4,7 +4,11 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 
 const actions = createActions(
   {
-    actions: ['SET_PAGE_NUMBER', 'ADD_NOTIFICATION'],
+    actions: [
+      'SET_PAGE_NUMBER',
+      'ADD_NOTIFICATION',
+      'RESET_GET_NOTIFICATIONS'
+    ],
     async: [
       'GET_NOTIFICATIONS'
     ]
