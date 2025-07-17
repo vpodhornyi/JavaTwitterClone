@@ -1,9 +1,7 @@
 package com.twitter.danit.domain;
 
-import com.twitter.danit.domain.Auditable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.UUID;
 import javax.persistence.MappedSuperclass;

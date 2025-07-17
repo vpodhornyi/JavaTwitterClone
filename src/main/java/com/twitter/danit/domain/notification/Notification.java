@@ -4,6 +4,7 @@ import com.twitter.danit.domain.BaseEntity;
 import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Notification extends BaseEntity {
 
   @Column(length = 500)

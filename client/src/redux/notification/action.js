@@ -4,7 +4,7 @@ import {ACTIONS as SNACK_ACTIONS} from "../snack/action";
 
 const actions = createActions(
   {
-    actions: ['SET_PAGE_NUMBER'],
+    actions: ['SET_PAGE_NUMBER', 'ADD_NOTIFICATION'],
     async: [
       'GET_NOTIFICATIONS'
     ]
@@ -24,7 +24,6 @@ export const getNotifications = () => async (dispatch, getState) => {
     const {notification: {pageNumber, pageSize}} = getState();
     const params = {pageNumber, pageSize};
     dispatch(ACTIONS.getNotifications.request());
-    console.log('kuku')
     const data = await api.get(URLS.NOTIFICATIONS.ROOT, {params});
 
     if (data?.elements.length > 0) dispatch(ACTIONS.setPageNumber({pageNumber: pageNumber + 1}));

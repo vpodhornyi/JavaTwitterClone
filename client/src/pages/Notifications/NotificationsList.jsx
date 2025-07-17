@@ -1,20 +1,27 @@
 import React, {useEffect} from "react";
-import {useDispatch} from "react-redux";
-import Box from "@mui/material/Box";
+import {useDispatch, useSelector} from "react-redux";
+import {Box, styled} from "@mui/material";
 
 import {getNotifications} from "@redux/notification/action";
+import Notification from "./Notification";
 
-
-const NotificationsList =() => {
+const NotificationsList = () => {
   const dispatch = useDispatch();
+  const {notifications} = useSelector(state => state.notification);
 
   useEffect(() => {
     dispatch(getNotifications());
   }, []);
 
   return (
-    <Box>!!!</Box>
+    <BoxWrapper>
+      {notifications.map(ntfn => <Notification key={ntfn?.id + ntfn?.key} notification={ntfn}/>)}
+    </BoxWrapper>
   )
 }
+
+const BoxWrapper = styled(Box)(({theme}) => ({
+  borderTop: `1px solid ${theme.palette.border.main}`,
+}))
 
 export default NotificationsList;

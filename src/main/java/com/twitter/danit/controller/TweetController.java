@@ -1,5 +1,6 @@
 package com.twitter.danit.controller;
 
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.tweet.ActionType;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
@@ -11,6 +12,7 @@ import com.twitter.danit.dto.tweet.request.ReplyTweetRequest;
 import com.twitter.danit.dto.tweet.request.TweetRequest;
 import com.twitter.danit.dto.tweet.response.TweetResponse;
 import com.twitter.danit.dto.tweet.response.bookmark.ClearBookmarksResponse;
+import com.twitter.danit.facade.notification.NotificationResponseMapping;
 import com.twitter.danit.facade.tweet.*;
 import com.twitter.danit.facade.tweet.ViewTweetResponseMapper;
 import com.twitter.danit.service.TweetService;
@@ -38,6 +40,7 @@ public class TweetController extends AbstractController {
   private final ViewTweetResponseMapper viewTweetResponseMapper;
   private final BookmarkTweetResponseMapper bookmarkTweetResponseMapper;
   private final ClearBookmarksResponseMapper clearBookmarksResponseMapper;
+  private final NotificationResponseMapping notificationResponseMapping;
 
   @GetMapping
   public ResponseEntity<PageTweetResponse> getAll(
@@ -160,6 +163,12 @@ public class TweetController extends AbstractController {
     Tweet savedTweet = tweetService.addOrRemoveTweetAction(tweet, authUser, ActionType.LIKE);
     AbstractResponse likeTweetResponse = likeTweetResponseMapper.convertToDto(savedTweet, authUser);
     sendStompMessage(tweetTopic, likeTweetResponse);
+    boolean isTweetLiked = savedTweet.isTweetLiked(authUser);
+
+    if (isTweetLiked && notificationService.isLikeTweetNotificationNotExist(savedTweet, authUser)) {
+      Notification notification = notificationService.likeTweetNotification(authUser, savedTweet);
+      sendStompMessage(userQueue + savedTweet.getUser().getId(), notificationResponseMapping.convertToDto(notification));
+    }
 
     return ResponseEntity.ok(likeTweetResponse);
   }

@@ -1,6 +1,7 @@
 package com.twitter.danit.controller;
 
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.service.NotificationService;
 import com.twitter.danit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ public abstract class AbstractController {
   public final String userQueue = "/queue/user.";
   public final String tweetTopic = "/topic/tweets";
 
+  @Autowired
+  public NotificationService notificationService;
   @Autowired
   private UserService userService;
   @Autowired

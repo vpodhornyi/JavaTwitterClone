@@ -1,6 +1,6 @@
 import {PATH} from "./constants";
 
-export const menu = (userTag, authorized, isChatSelected, countUnreadMessages, chatId) => {
+export const menu = (userTag, authorized, isChatSelected, countUnreadMessages, countUnreadNotifications, chatId) => {
 
   return authorized ? [
       {
@@ -19,6 +19,8 @@ export const menu = (userTag, authorized, isChatSelected, countUnreadMessages, c
         path: PATH.NOTIFICATIONS,
         iconName: "NotificationsOutlined",
         iconActive: "Notifications",
+        isBadge: true,
+        badgeContent: countUnreadNotifications,
         text: 'Notifications',
       },
       {

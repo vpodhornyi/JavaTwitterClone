@@ -1,10 +1,13 @@
 package com.twitter.danit.dao;
 
+import com.twitter.danit.domain.notification.NotificationType;
+import com.twitter.danit.domain.tweet.Tweet;
 import org.springframework.data.domain.Page;
 import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,4 +16,14 @@ import java.util.Optional;
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
   Optional<Page<Notification>> getNotReadNotificationByUserReceiver(PageRequest pageable, User user);
+
+  Optional<Notification> findByTweetAndUserInitiatorAndNotificationType(Tweet tweet, User user, NotificationType notificationType);
+
+  @Query(value = """
+      select count(*) from notifications n
+      where n.receiver_id = :userId
+      and n.is_read = false
+      """,
+      nativeQuery = true)
+  Optional<Integer> getCountOfNotReadNotification(Long userId);
 }
