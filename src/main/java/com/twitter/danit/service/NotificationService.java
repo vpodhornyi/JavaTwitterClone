@@ -100,6 +100,16 @@ public class NotificationService {
     );
   }
 
+  public Notification addUserToChat(User userInitiator, Chat chat, User userReceiver) {
+    return createNotification(
+        NotificationType.ADD_TO_CHAT,
+        userInitiator,
+        userReceiver,
+        null,
+        chat
+    );
+  }
+
   public Page<Notification> getNotReadTweetsPage(int pageNumber, int pageSize, User user) {
     return notificationRepository.getNotReadNotificationByUserReceiver(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
   }

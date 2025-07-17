@@ -186,6 +186,7 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
           dispatch(CHAT_ACTIONS.deleteUserFromChat(body));
           break;
         case 'LIKE_TWEET':
+        case 'ADD_TO_CHAT':
           dispatch(NOTIFICATION_ACTIONS.addNotification(body));
           dispatch(SNACK_ACTIONS.open(body));
           break;

@@ -4,6 +4,7 @@ import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.chat.ChatType;
 import com.twitter.danit.domain.chat.Message;
 import com.twitter.danit.domain.chat.MessageSeen;
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.chat.ChatUser;
 import com.twitter.danit.dto.chat.request.*;
@@ -180,6 +181,8 @@ public class ChatController extends AbstractController {
     usersForAdd.forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      Notification notification = notificationService.addUserToChat(authUser, savedChat, user);
+      sendStompMessage(userQueue + user.getId(), notification);
     });
 
     return ResponseEntity.ok(new AddUsersToGroupResponse(chatId, chatUserMapper.convertToDto(authUser), chatUsers));

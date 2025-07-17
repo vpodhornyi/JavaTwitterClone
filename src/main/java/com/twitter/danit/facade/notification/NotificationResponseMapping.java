@@ -6,8 +6,6 @@ import com.twitter.danit.facade.GeneralFacade;
 import com.twitter.danit.service.NotificationService;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 public class NotificationResponseMapping extends GeneralFacade<Notification, NotificationResponse> {
   private final NotificationService notificationService;
