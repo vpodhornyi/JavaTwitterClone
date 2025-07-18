@@ -1,6 +1,7 @@
 package com.twitter.danit.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.auth.AccountCheckRequest;
@@ -100,9 +101,13 @@ public class UserController extends AbstractController {
     User authUser = getAuthUser(principal);
     User followUser = userService.findByIdTrowException(followUserRequest.getFollowUserId());
     boolean isFollow = userService.addFollower(authUser, followUser);
+    String queue = userQueue + followUser.getId();
+    sendStompMessage(queue, followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
 
-    sendStompMessage(userQueue + followUser.getId(),
-        followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
+    if (isFollow) {
+      Notification notification = notificationService.followUser(authUser, followUser);
+      sendStompMessage(queue, notificationResponseMapping.convertToDto(notification));
+    }
 
     return ResponseEntity.ok(followUserResponseMapper.convertToDto(followUser, isFollow, authUser));
   }

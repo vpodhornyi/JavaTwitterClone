@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-  Optional<Page<Notification>> getNotReadNotificationByUserReceiver(PageRequest pageable, User user);
+  Optional<Page<Notification>> getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest pageable, User user);
 
   Optional<Notification> findByTweetAndUserInitiatorAndNotificationType(Tweet tweet, User user, NotificationType notificationType);
 

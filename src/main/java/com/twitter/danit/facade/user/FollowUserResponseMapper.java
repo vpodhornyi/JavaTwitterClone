@@ -20,9 +20,9 @@ public class FollowUserResponseMapper {
     followUserResponse.setIsFollowing(authUser.isFollowUser(followUser));
 
     if (isFollow) {
-      followUserResponse.setMessage("You unfollowed @" + followUser.getUserTag());
-    } else {
       followUserResponse.setMessage("You followed @" + followUser.getUserTag());
+    } else {
+      followUserResponse.setMessage("You unfollowed @" + followUser.getUserTag());
     }
 
     return followUserResponse;

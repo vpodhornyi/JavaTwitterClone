@@ -110,7 +110,18 @@ public class NotificationService {
     );
   }
 
+  public Notification followUser(User userInitiator, User userReceiver) {
+    return createNotification(
+        NotificationType.FOLLOW,
+        userInitiator,
+        userReceiver,
+        null,
+        null
+    );
+  }
+
   public Page<Notification> getNotReadTweetsPage(int pageNumber, int pageSize, User user) {
-    return notificationRepository.getNotReadNotificationByUserReceiver(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
+    return notificationRepository
+        .getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
   }
 }

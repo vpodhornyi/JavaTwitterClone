@@ -40,7 +40,6 @@ public class TweetController extends AbstractController {
   private final ViewTweetResponseMapper viewTweetResponseMapper;
   private final BookmarkTweetResponseMapper bookmarkTweetResponseMapper;
   private final ClearBookmarksResponseMapper clearBookmarksResponseMapper;
-  private final NotificationResponseMapping notificationResponseMapping;
 
   @GetMapping
   public ResponseEntity<PageTweetResponse> getAll(

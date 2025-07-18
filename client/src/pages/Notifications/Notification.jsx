@@ -3,10 +3,11 @@ import {Avatar, Box, Typography, styled} from "@mui/material";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 
+import {moment} from "@utils";
 import {PATH} from "@utils/constants";
 
 const Notification = ({notification}) => {
-  const {message, userInitiator} = notification;
+  const {message, userInitiator, createdAt} = notification;
   return (
     <BoxWrapper>
       <Box className="AvatarLinkBox">
@@ -16,6 +17,13 @@ const Notification = ({notification}) => {
         </Link>
       </Box>
       <Typography>{message}</Typography>
+      <Typography variant='body2' sx={{
+        '&:before': {
+          content: '"·"',
+          marginLeft: '5px',
+          marginRight: '5px',
+        }
+      }}>{moment(createdAt).fromNow(true)}</Typography>
     </BoxWrapper>
   )
 }
@@ -25,6 +33,10 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   alignItems: 'center',
   padding: '10px',
   borderBottom: `1px solid ${theme.palette.border.main}`,
+
+  '&:hover': {
+    backgroundColor: theme.palette.background[1],
+  },
 
   '& .AvatarLinkBox': {
     marginRight: 12,

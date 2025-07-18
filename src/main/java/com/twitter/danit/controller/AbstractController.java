@@ -1,6 +1,7 @@
 package com.twitter.danit.controller;
 
 import com.twitter.danit.domain.user.User;
+import com.twitter.danit.facade.notification.NotificationResponseMapping;
 import com.twitter.danit.service.NotificationService;
 import com.twitter.danit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,14 @@ public abstract class AbstractController {
   public final String tweetTopic = "/topic/tweets";
 
   @Autowired
+  public NotificationResponseMapping notificationResponseMapping;
+  @Autowired
   public NotificationService notificationService;
   @Autowired
   private UserService userService;
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
+
 
   public User getAuthUser(Principal principal) {
     return this.userService.findByUserTagTrowException(principal.getName());

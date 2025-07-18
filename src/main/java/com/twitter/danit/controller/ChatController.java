@@ -67,6 +67,11 @@ public class ChatController extends AbstractController {
   private final PageChatsResponseMapper pageChatsResponseMapper;
   private final CloudinaryService cloudinaryService;
 
+  private void sendAddToChatNotification(User authUser, Chat chat, User user) {
+    Notification notification = notificationService.addUserToChat(authUser, chat, user);
+    sendStompMessage(userQueue + user.getId(), notificationResponseMapping.convertToDto(notification));
+  }
+
   @GetMapping
   public ResponseEntity<PageChatResponse> getChats(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
     User authUser = getAuthUser(principal);
@@ -135,6 +140,7 @@ public class ChatController extends AbstractController {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       groupChatResponse.setOldKey(oldKey);
       simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      sendAddToChatNotification(authUser, savedChat, user);
     });
 
     GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, authUser);
@@ -181,8 +187,7 @@ public class ChatController extends AbstractController {
     usersForAdd.forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
-      Notification notification = notificationService.addUserToChat(authUser, savedChat, user);
-      sendStompMessage(userQueue + user.getId(), notification);
+      sendAddToChatNotification(authUser, savedChat, user);
     });
 
     return ResponseEntity.ok(new AddUsersToGroupResponse(chatId, chatUserMapper.convertToDto(authUser), chatUsers));
@@ -270,9 +275,4 @@ public class ChatController extends AbstractController {
 
     return ResponseEntity.ok(foreignerMessageSeenResponseMapper.convertToDto(savedMessageSeen));
   }
-
-//  @GetMapping("/test")
-//  public List<Chat> test(@RequestParam Long userId){
-//    return chatService.test(userId);
-//  }
 }
