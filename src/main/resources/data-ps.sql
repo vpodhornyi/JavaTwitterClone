@@ -150,8 +150,11 @@ values ('3fa85f64-5717-4562-b3fc-2c963f66afa6', 'liked your tweet', 'LIKE_TWEET'
        ('6a0b301d-802e-4038-987b-77cf8bca8bba','quoted your tweet', 'QUOTE_TWEET', 'en'),
        ('e894e746-f2d9-4a48-915b-abc1f4f2c905','retweeted your tweet', 'RETWEET', 'en'),
        ('24de21f0-19b5-40a7-98df-9832e62cd22b','started following you', 'FOLLOW', 'en'),
+       ('018b29ab-136e-77b3-a542-447dff8f3c8a', 'unfollowed you', 'UNFOLLOW', 'en'),
        ('946b9cd7-3125-47d1-8774-85fcd29f84d4','sent you a new chat message', 'NEW_CHAT_MESSAGE', 'en'),
        ('8c1d5e94-2db8-4c42-8a21-2ff0a5c9d663','added you to a chat', 'ADD_TO_CHAT', 'en');
 
+INSERT INTO notification_templates (uuid, message, notification_type, locale_type)
+values ('018b29ab-136e-77b3-a542-447dff8f3c8a', 'unfollowed you', 'UNFOLLOW', 'en');
 
 -- alter table users  alter column id add generated always as identity;

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import {moment} from "@utils";
 import {PATH} from "@utils/constants";
+import More from './More';
 
 const Notification = ({notification}) => {
   const {message, userInitiator, createdAt} = notification;
@@ -24,11 +25,13 @@ const Notification = ({notification}) => {
           marginRight: '5px',
         }
       }}>{moment(createdAt).fromNow(true)}</Typography>
+      <More notification={notification}/>
     </BoxWrapper>
   )
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   padding: '10px',

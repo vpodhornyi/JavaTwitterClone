@@ -74,9 +74,10 @@ public class UserController extends AbstractController {
   }
 
   @GetMapping("/{userTag}")
-  public ResponseEntity<UserResponse> findByUserTag(@PathVariable(name = "userTag") String userTag) {
+  public ResponseEntity<UserResponse> findByUserTag(@PathVariable(name = "userTag") String userTag, Principal principal) {
+    User authUser = getAuthUser(principal);
     User user = userService.findByUserTagTrowException(userTag);
-    return ResponseEntity.ok(userResponseMapper.convertToDto(user));
+    return ResponseEntity.ok(userResponseMapper.convertToDto(user, authUser));
   }
 
   @PutMapping("/customize")
@@ -104,10 +105,9 @@ public class UserController extends AbstractController {
     String queue = userQueue + followUser.getId();
     sendStompMessage(queue, followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
 
-    if (isFollow) {
-      Notification notification = notificationService.followUser(authUser, followUser);
-      sendStompMessage(queue, notificationResponseMapping.convertToDto(notification));
-    }
+    Notification notification = isFollow ? notificationService.followUser(authUser, followUser) :
+        notificationService.unfollowUser(authUser, followUser);
+    sendStompMessage(queue, notificationResponseMapping.convertToDto(notification));
 
     return ResponseEntity.ok(followUserResponseMapper.convertToDto(followUser, isFollow, authUser));
   }

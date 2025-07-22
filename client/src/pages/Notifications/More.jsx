@@ -1,13 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {styled} from "@mui/material/styles";
-import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {MoreButton, IconByName} from "@components";
-import LeaveChatConfirm from "../confirms/LeaveChatConfirm";
 import {Context} from "@utils/context";
+import {Box, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
+import {styled} from "@mui/material/styles";
 
-const More = ({chat}) => {
+const More = ({notification}) => {
   const {toggleModal} = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -17,11 +16,6 @@ const More = ({chat}) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const openLeaveChatConfirm = () => {
-    toggleModal(<LeaveChatConfirm toggleModal={toggleModal} chat={chat}/>, true);
-    handleClose();
-  }
 
   return (
     <BoxWrapper onClick={e => e.stopPropagation()}>
@@ -50,39 +44,34 @@ const More = ({chat}) => {
             horizontal: 'right',
           }}
         >
-          <MenuList openLeaveChatConfirm={openLeaveChatConfirm}/>
+          <MenuList notification={notification}/>
         </MenuWrapper>
       </Box>
     </BoxWrapper>
   );
 }
 
-const MenuList = ({openLeaveChatConfirm}) => (<>
-  <MenuItem>
-    <ListItemIcon>
-      <IconByName iconName='PushPinOutlined' color='text'/>
-    </ListItemIcon>
-    <ListItemText>
-      <Typography variant='body1' fontWeight='bold'>Pin conversation</Typography>
-    </ListItemText>
-  </MenuItem>
-  <MenuItem>
-    <ListItemIcon>
-      <IconByName iconName='NotificationsOffOutlined' color='text'/>
-    </ListItemIcon>
-    <ListItemText>
-      <Typography variant='body1' fontWeight='bold'>Snooze conversation</Typography>
-    </ListItemText>
-  </MenuItem>
-  <MenuItem onClick={openLeaveChatConfirm}>
-    <ListItemIcon>
-      <IconByName iconStyle={{color: 'red'}} iconName='DeleteOutlined'/>
-    </ListItemIcon>
-    <ListItemText>
-      <Typography color='red' variant='body1' fontWeight='bold'>Delete conversation</Typography>
-    </ListItemText>
-  </MenuItem>
-</>)
+const MenuList = ({notification}) => {
+  const {userInitiator: {userTag, isFollowing}} = notification;
+  return <>
+    <MenuItem>
+      <ListItemIcon>
+        <IconByName iconName='Person' color='text'/>
+      </ListItemIcon>
+      <ListItemText>
+        <Typography variant='body1' fontWeight='bold'>{isFollowing ? 'Unfollow' : 'Follow'} @{userTag}</Typography>
+      </ListItemText>
+    </MenuItem>
+    <MenuItem>
+      <ListItemIcon>
+        <IconByName iconName='MarkChatRead' color='text'/>
+      </ListItemIcon>
+      <ListItemText>
+        <Typography variant='body1' fontWeight='bold'>Set as read notification</Typography>
+      </ListItemText>
+    </MenuItem>
+  </>
+}
 
 const MenuWrapper = styled(Menu)(({theme}) => ({
   '& .MuiPaper-root': {
@@ -113,8 +102,11 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
     }
   },
 }));
-
 const BoxWrapper = styled(Box)(({theme}) => ({
+  position: 'absolute',
+  top: 5,
+  right: 5,
+
   '& .MuiButtonBase-root:hover': {
     transition: '0.5s',
     color: theme.palette.primary.main,
@@ -125,20 +117,13 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     display: 'none',
   },
 }));
-const MobileBoxWrapper = styled(Box)(({theme}) => ({
-  '& .MuiButtonBase-root': {
-    borderBottom: `1px solid ${theme.palette.border.main}`,
 
-    '& .MuiTouchRipple-root': {
-      display: 'none'
-    },
-  }
-}));
 More.propTypes = {
-  chat: PropTypes.object,
+  notification: PropTypes.object,
 }
 
 MenuList.propTypes = {
-  openLeaveChatConfirm: PropTypes.func,
+  notification: PropTypes.object,
 }
+
 export default More;

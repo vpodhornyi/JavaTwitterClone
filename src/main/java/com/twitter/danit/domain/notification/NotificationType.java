@@ -9,6 +9,7 @@ public enum NotificationType {
   QUOTE_TWEET,
   RETWEET,
   FOLLOW,
+  UNFOLLOW,
   NEW_CHAT_MESSAGE,
   ADD_TO_CHAT
 }

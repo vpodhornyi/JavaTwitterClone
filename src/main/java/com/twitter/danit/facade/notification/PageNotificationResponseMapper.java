@@ -1,6 +1,7 @@
 package com.twitter.danit.facade.notification;
 
 import com.twitter.danit.domain.notification.Notification;
+import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.notification.PageNotificationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

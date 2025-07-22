@@ -18,9 +18,10 @@ export default (state = INIT, {payload, type}) => {
       }
     }
     case String(ACTIONS.addNotification): {
+      const notifications = [...state.notifications, payload].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       return {
         ...state,
-        notifications: [...state.notifications, payload],
+        notifications,
         countUnreadNotifications: payload.countUnreadNotifications
       }
     }
@@ -33,7 +34,6 @@ export default (state = INIT, {payload, type}) => {
     case String(ACTIONS.getNotifications.success): {
       const notifications = payload.elements.filter(e => !state.notifications.find(n => e.id === n.id));
       const count = payload.elements.length ? payload.elements[0]?.countUnreadNotifications : 0;
-      console.log(payload.elements.length);
       return {
         ...state,
         loading: false,

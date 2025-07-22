@@ -120,6 +120,16 @@ public class NotificationService {
     );
   }
 
+  public Notification unfollowUser(User userInitiator, User userReceiver) {
+    return createNotification(
+        NotificationType.UNFOLLOW,
+        userInitiator,
+        userReceiver,
+        null,
+        null
+    );
+  }
+
   public Page<Notification> getNotReadTweetsPage(int pageNumber, int pageSize, User user) {
     return notificationRepository
         .getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
