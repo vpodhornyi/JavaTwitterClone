@@ -2,6 +2,7 @@ package com.twitter.danit.controller;
 
 
 import com.twitter.danit.domain.notification.NotificationType;
+import com.twitter.danit.dto.notification.NotificationReadRequest;
 import com.twitter.danit.dto.notification.PageNotificationResponse;
 import com.twitter.danit.facade.notification.PageNotificationResponseMapper;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -34,7 +36,13 @@ public class NotificationController extends AbstractController {
                                                            Principal principal) {
     User authUser = getAuthUser(principal);
     Page<Notification> notReadTweetsPage = notificationService.getNotReadTweetsPage(pageNumber, pageSize, authUser);
-
     return ResponseEntity.ok(pageNotificationResponseMapper.convertToDto(notReadTweetsPage));
+  }
+
+  @PutMapping("/mark-read")
+  public ResponseEntity<Void> markAsRead(@RequestBody List<Long> ids, Principal principal) {
+    User authUser = getAuthUser(principal);
+    notificationService.markAsReadByIds(ids, authUser);
+    return ResponseEntity.ok().build();
   }
 }

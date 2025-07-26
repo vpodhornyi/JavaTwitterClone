@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -133,5 +134,10 @@ public class NotificationService {
   public Page<Notification> getNotReadTweetsPage(int pageNumber, int pageSize, User user) {
     return notificationRepository
         .getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
+  }
+
+  @Transactional
+  public void markAsReadByIds(List<Long> ids, User user) {
+    notificationRepository.markAsReadByIds(ids, user.getId());
   }
 }

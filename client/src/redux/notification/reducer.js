@@ -25,6 +25,14 @@ export default (state = INIT, {payload, type}) => {
         countUnreadNotifications: payload.countUnreadNotifications
       }
     }
+    case String(ACTIONS.updateIsFollowing): {
+      const notification = state.notifications.find(n => n.id === payload.id);
+      notification.userInitiator.isFollowing = !notification.userInitiator.isFollowing;
+      return {
+        ... state,
+        notifications: [...state.notifications ],
+      }
+    }
     case String(ACTIONS.getNotifications.request): {
       return {
         ...state,
@@ -43,6 +51,22 @@ export default (state = INIT, {payload, type}) => {
       }
     }
     case String(ACTIONS.getNotifications.fail): {
+      return {
+        ...state,
+        loading: false,
+      }
+    }
+    case String(ACTIONS.markAsRead.request): {
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.markAsRead.success): {
+      return {
+        ...state,
+      }
+    }
+    case String(ACTIONS.markAsRead.fail): {
       return {
         ...state,
         loading: false,

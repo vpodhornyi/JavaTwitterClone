@@ -7,10 +7,12 @@ const actions = createActions(
     actions: [
       'SET_PAGE_NUMBER',
       'ADD_NOTIFICATION',
-      'RESET_GET_NOTIFICATIONS'
+      'RESET_GET_NOTIFICATIONS',
+      'UPDATE_IS_FOLLOWING'
     ],
     async: [
-      'GET_NOTIFICATIONS'
+      'GET_NOTIFICATIONS',
+      'MARK_AS_READ',
     ]
   },
   {
@@ -36,6 +38,18 @@ export const getNotifications = () => async (dispatch, getState) => {
 
   } catch (err) {
     dispatch(ACTIONS.getNotifications.fail());
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
+  }
+}
+
+export const markAsRead = (body) => async (dispatch) => {
+  try {
+    dispatch(ACTIONS.markAsRead.request());
+    const data = await api.put(URLS.NOTIFICATIONS.MARK_READ, body);
+    dispatch(ACTIONS.markAsRead.success(data));
+
+  } catch (err) {
+    dispatch(ACTIONS.markAsRead.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }

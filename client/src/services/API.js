@@ -81,7 +81,8 @@ export const URLS = {
     SEARCH: "/tweets/search",
   },
   NOTIFICATIONS: {
-    ROOT: '/notifications'
+    ROOT: '/notifications',
+    MARK_READ: '/notifications/mark-read'
   },
   CHATS: {
     ROOT: '/chats',

@@ -5,13 +5,14 @@ import PropTypes from "prop-types";
 import {Confirm} from '@components';
 import { followUser } from "@redux/user/action";
 
-const UnfollowConfirm = ({ toggleModal, userId, userTag, user }) => {
+const UnfollowConfirm = ({ toggleModal, userId, userTag, user, action }) => {
   const dispatch = useDispatch();
 
   const confirm = () => {
     dispatch(followUser(userId))
     toggleModal();
     if (user) user.isFollowing = false;
+    if (action) dispatch(action());
   }
 
   return <Confirm
@@ -30,5 +31,6 @@ UnfollowConfirm.propTypes = {
   userId: PropTypes.number,
   userTag: PropTypes.string,
   user: PropTypes.object,
+  action: PropTypes.func,
 }
 export default UnfollowConfirm;

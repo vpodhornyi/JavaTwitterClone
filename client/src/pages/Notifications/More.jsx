@@ -1,13 +1,16 @@
 import React, {useContext, useState} from 'react';
+import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 
-import {MoreButton, IconByName} from "@components";
-import {Context} from "@utils/context";
 import {Box, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
 import {styled} from "@mui/material/styles";
+import {MoreButton, IconByName} from "@components";
+import {Context} from "@utils/context";
+import { UnfollowConfirm } from "@components";
+import { followUser } from "@redux/user/action";
+import { ACTIONS } from "@redux/notification/action";
 
 const More = ({notification}) => {
-  const {toggleModal} = useContext(Context);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -52,9 +55,31 @@ const More = ({notification}) => {
 }
 
 const MenuList = ({notification}) => {
-  const {userInitiator: {userTag, isFollowing}} = notification;
+  const {toggleModal} = useContext(Context);
+  const dispatch = useDispatch();
+  const {userInitiator: {userTag, isFollowing, id}, userReceiver: user} = notification;
+
+  const setFollowing = () => {
+    if (isFollowing) {
+      toggleModal(<UnfollowConfirm
+        toggleModal={toggleModal}
+        userId={id}
+        userTag={userTag}
+        user={user}
+        action={() => ACTIONS.updateIsFollowing(notification)}
+      />, true);
+    } else {
+      dispatch(followUser(id));
+      dispatch(ACTIONS.updateIsFollowing(notification));
+    }
+  }
+
+  const markAsRead = () => {
+
+  }
+
   return <>
-    <MenuItem>
+    <MenuItem onClick={setFollowing}>
       <ListItemIcon>
         <IconByName iconName='Person' color='text'/>
       </ListItemIcon>
@@ -62,7 +87,7 @@ const MenuList = ({notification}) => {
         <Typography variant='body1' fontWeight='bold'>{isFollowing ? 'Unfollow' : 'Follow'} @{userTag}</Typography>
       </ListItemText>
     </MenuItem>
-    <MenuItem>
+    <MenuItem onClick={markAsRead}>
       <ListItemIcon>
         <IconByName iconName='MarkChatRead' color='text'/>
       </ListItemIcon>
