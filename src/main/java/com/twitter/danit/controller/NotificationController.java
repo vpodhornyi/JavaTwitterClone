@@ -42,7 +42,7 @@ public class NotificationController extends AbstractController {
   @PutMapping("/mark-read")
   public ResponseEntity<Void> markAsRead(@RequestBody List<Long> ids, Principal principal) {
     User authUser = getAuthUser(principal);
-    notificationService.markAsReadByIds(ids, authUser);
+    notificationService.markAsReadByIdsAndUserReceiverId(ids, authUser);
     return ResponseEntity.ok().build();
   }
 }

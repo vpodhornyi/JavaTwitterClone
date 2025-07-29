@@ -56,17 +56,22 @@ export default (state = INIT, {payload, type}) => {
         loading: false,
       }
     }
-    case String(ACTIONS.markAsRead.request): {
+    case String(ACTIONS.markRead.request): {
       return {
         ...state,
       }
     }
-    case String(ACTIONS.markAsRead.success): {
+    case String(ACTIONS.markRead.success): {
+      const notifications = state.notifications.filter(n => !payload.includes(n.id));
       return {
         ...state,
+        notifications,
+        countUnreadNotifications: state.countUnreadNotifications - 1,
       }
     }
-    case String(ACTIONS.markAsRead.fail): {
+    case String(ACTIONS.markRead.fail): {
+
+
       return {
         ...state,
         loading: false,

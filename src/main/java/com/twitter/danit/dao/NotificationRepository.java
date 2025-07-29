@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-  Optional<Page<Notification>> getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest pageable, User user);
+  Optional<Page<Notification>> findByUserReceiverIdAndIsReadFalseOrderByCreatedAtDesc(PageRequest pageable, Long userId);
 
   Optional<Notification> findByTweetAndUserInitiatorAndNotificationType(Tweet tweet, User user, NotificationType notificationType);
 
@@ -33,4 +33,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
   @Modifying
   @Query("UPDATE Notification n SET n.isRead = true WHERE n.id IN :ids AND n.userReceiver.id = :userId")
   void markAsReadByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId);
+
+  List<Notification> findByIdInAndUserReceiverId(List<Long> ids, Long userId);
 }

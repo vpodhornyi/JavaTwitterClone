@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import com.twitter.danit.dao.NotificationRepository;
 import com.twitter.danit.domain.notification.Notification;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -133,11 +132,20 @@ public class NotificationService {
 
   public Page<Notification> getNotReadTweetsPage(int pageNumber, int pageSize, User user) {
     return notificationRepository
-        .getNotReadNotificationByUserReceiverOrderByCreatedAtDesc(PageRequest.of(pageNumber, pageSize), user).orElse(Page.empty());
+        .findByUserReceiverIdAndIsReadFalseOrderByCreatedAtDesc(PageRequest.of(pageNumber, pageSize), user.getId()).orElse(Page.empty());
   }
 
   @Transactional
   public void markAsReadByIds(List<Long> ids, User user) {
     notificationRepository.markAsReadByIds(ids, user.getId());
+  }
+
+  @Transactional
+  public void markAsReadByIdsAndUserReceiverId(List<Long> ids, User user) {
+    List<Notification> notifications = notificationRepository.findByIdInAndUserReceiverId(ids, user.getId());
+    for (Notification notification : notifications) {
+      notification.setRead(true);
+    }
+    notificationRepository.saveAll(notifications);
   }
 }

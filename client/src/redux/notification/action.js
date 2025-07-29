@@ -12,7 +12,7 @@ const actions = createActions(
     ],
     async: [
       'GET_NOTIFICATIONS',
-      'MARK_AS_READ',
+      'MARK_READ',
     ]
   },
   {
@@ -42,14 +42,14 @@ export const getNotifications = () => async (dispatch, getState) => {
   }
 }
 
-export const markAsRead = (body) => async (dispatch) => {
+export const markRead = (body) => async (dispatch) => {
   try {
-    dispatch(ACTIONS.markAsRead.request());
+    dispatch(ACTIONS.markRead.request());
     const data = await api.put(URLS.NOTIFICATIONS.MARK_READ, body);
-    dispatch(ACTIONS.markAsRead.success(data));
+    dispatch(ACTIONS.markRead.success(body));
 
   } catch (err) {
-    dispatch(ACTIONS.markAsRead.fail());
+    dispatch(ACTIONS.markRead.fail());
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }

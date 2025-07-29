@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
 
 import {Box, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
@@ -8,7 +8,7 @@ import {MoreButton, IconByName} from "@components";
 import {Context} from "@utils/context";
 import { UnfollowConfirm } from "@components";
 import { followUser } from "@redux/user/action";
-import { ACTIONS } from "@redux/notification/action";
+import { ACTIONS, markRead, getNotifications } from "@redux/notification/action";
 
 const More = ({notification}) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,6 +58,7 @@ const MenuList = ({notification}) => {
   const {toggleModal} = useContext(Context);
   const dispatch = useDispatch();
   const {userInitiator: {userTag, isFollowing, id}, userReceiver: user} = notification;
+  const {notifications} = useSelector(state => state.notification)
 
   const setFollowing = () => {
     if (isFollowing) {
@@ -75,7 +76,13 @@ const MenuList = ({notification}) => {
   }
 
   const markAsRead = () => {
+    dispatch(markRead([notification.id]))
+  }
 
+  const markAllAsRead = () => {
+    dispatch(markRead(notifications.map(n => n.id)));
+    dispatch(ACTIONS.resetGetNotifications());
+    dispatch(getNotifications());
   }
 
   return <>
@@ -92,7 +99,15 @@ const MenuList = ({notification}) => {
         <IconByName iconName='MarkChatRead' color='text'/>
       </ListItemIcon>
       <ListItemText>
-        <Typography variant='body1' fontWeight='bold'>Set as read notification</Typography>
+        <Typography variant='body1' fontWeight='bold'>Mark as read</Typography>
+      </ListItemText>
+    </MenuItem>
+    <MenuItem onClick={markAllAsRead}>
+      <ListItemIcon>
+        <IconByName iconName='MarkChatRead' color='text'/>
+      </ListItemIcon>
+      <ListItemText>
+        <Typography variant='body1' fontWeight='bold'>Mark All as read</Typography>
       </ListItemText>
     </MenuItem>
   </>
