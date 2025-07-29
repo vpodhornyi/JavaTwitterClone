@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PageTweetResponseMapper {
   private final TweetResponseMapper tweetResponseMapper;
-  PageTweetResponse dto = new PageTweetResponse();
+  private final PageTweetResponse dto = new PageTweetResponse();
 
   public PageTweetResponse convertToDto(Page<Tweet> entity, User authUser) {
 

@@ -1,11 +1,15 @@
 package com.twitter.danit.domain.notification;
 
+import lombok.Getter;
+
+@Getter
 public enum NotificationType {
-  LIKE,
+  LIKE_TWEET,
+  REPLY_TWEET,
   QUOTE_TWEET,
-  REPLY,
   RETWEET,
   FOLLOW,
+  UNFOLLOW,
   NEW_CHAT_MESSAGE,
-  ADD_TO_CHAT,
+  ADD_TO_CHAT
 }

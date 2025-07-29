@@ -1,7 +1,10 @@
 import React, {lazy, Suspense} from "react";
 
-import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader, Tweets} from '@components';
-import Loading from "../../components/Loader/Loading";
+import {
+  ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader,
+  Tweets,
+  Loading
+} from '@components';
 import TwitForma from "./components/twitForm/TwitForma";
 import HomeHeader from "./Header";
 

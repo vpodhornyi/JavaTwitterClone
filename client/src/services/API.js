@@ -80,6 +80,10 @@ export const URLS = {
     CLEAR_BOOKMARKS: "/tweets/clear-bookmarks",
     SEARCH: "/tweets/search",
   },
+  NOTIFICATIONS: {
+    ROOT: '/notifications',
+    MARK_READ: '/notifications/mark-read'
+  },
   CHATS: {
     ROOT: '/chats',
     ALL: '/chats/all',

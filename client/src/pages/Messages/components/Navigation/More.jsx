@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {styled} from "@mui/material/styles";
-import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu, Drawer} from "@mui/material";
+import {ListItemIcon, ListItemText, Typography, Box, MenuItem, Menu} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {MoreButton, IconByName} from "@components";
@@ -113,6 +113,7 @@ const MenuWrapper = styled(Menu)(({theme}) => ({
     }
   },
 }));
+
 const BoxWrapper = styled(Box)(({theme}) => ({
   '& .MuiButtonBase-root:hover': {
     transition: '0.5s',

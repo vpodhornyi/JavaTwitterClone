@@ -1,9 +1,10 @@
 package com.twitter.danit.domain.notification;
 
 import com.twitter.danit.domain.BaseEntity;
-import com.twitter.danit.domain.notification.NotificationType;
+import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.tweet.Tweet;
 import com.twitter.danit.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Notification extends BaseEntity {
+
+  @Column(length = 500)
+  private String message;
 
   @Enumerated(EnumType.STRING)
   private NotificationType notificationType;
@@ -27,6 +32,10 @@ public class Notification extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "initiator_id")
   private User userInitiator;
+
+  @ManyToOne
+  @JoinColumn(name = "chat_id")
+  private Chat chat;
 
   @ManyToOne
   @JoinColumn(name = "tweet_id")
