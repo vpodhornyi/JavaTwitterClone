@@ -34,6 +34,7 @@ export const getAuthUser = () => async (dispatch) => {
     const data = await api.get(URLS.USERS.ROOT);
     dispatch(ACTIONS.getAuthUser.success(data));
     dispatch(ACTIONS.setCustomize(data?.customize));
+    dispatch(NOTIFICATION_ACTIONS.setCountUnreadNotifications(data?.countUnreadNotifications));
     return data;
 
   } catch (e) {

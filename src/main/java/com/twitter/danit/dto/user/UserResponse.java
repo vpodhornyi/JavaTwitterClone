@@ -23,6 +23,7 @@ public class UserResponse {
   private CustomStyleResponse customize;
   private boolean IsFollowing;
   private Integer countUnreadMessages;
+  private Integer countUnreadNotifications;
   private Integer followingsCount;
   private Integer followersCount;
   private Integer tweetsCount;

@@ -8,7 +8,8 @@ const actions = createActions(
       'SET_PAGE_NUMBER',
       'ADD_NOTIFICATION',
       'RESET_GET_NOTIFICATIONS',
-      'UPDATE_IS_FOLLOWING'
+      'UPDATE_IS_FOLLOWING',
+      'SET_COUNT_UNREAD_NOTIFICATIONS'
     ],
     async: [
       'GET_NOTIFICATIONS',
