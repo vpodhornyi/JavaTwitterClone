@@ -27,12 +27,13 @@ const App = () => {
   const {isChatSelected, chatId} = useSelector(getChatsData);
   const location = useLocation();
   const background = location.state?.background;
+  const tweet = location.state?.tweet;
   const tweetAction = location.state?.tweetAction;
   const mainMenu = menu(authUser.userTag, authorized, isChatSelected,
     authUser.countUnreadMessages, countUnreadNotifications, chatId);
 
   return (preloader ? <Preloader/> :
-      <Context.Provider value={{background, toggleModal, tweetAction}}>
+      <Context.Provider value={{background, tweet, toggleModal, tweetAction}}>
         <ThemeProvider theme={theme}>
           <RootContainer ref={ref}>
             <Header>

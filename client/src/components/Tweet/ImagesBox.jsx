@@ -13,7 +13,7 @@ const ImagesBox = ({tweet}) => {
   return <BoxWrapper onClick={e => e.stopPropagation()}>
     <Link
       className="ImagesLink"
-      state={{ background: location }}
+      state={{ background: location, tweet }}
       to={PATH.USER.tweet_photos(user?.userTag, user?.id, 1)}
     >
       {images.length > 0 && images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
