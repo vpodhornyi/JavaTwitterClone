@@ -9,7 +9,6 @@ import {PATH} from "@utils/constants";
 import {Context} from "@utils/context";
 import Slider from "./Slider";
 
-
 const ImagesPage = () => {
   const [isHide, setHide] = useState(true);
   const {background, tweet} = useContext(Context);
@@ -17,7 +16,6 @@ const ImagesPage = () => {
 
   useEffect(() => {
     document.documentElement.style.overflow = 'hidden';
-    console.log(tweet);
     return () => {
       document.documentElement.style.overflow = '';
     };
@@ -29,7 +27,6 @@ const ImagesPage = () => {
 
   return <BoxWrapper>
     <Box sx={{
-      minHeight: '100vh',
       flexShrink: 1,
       flexGrow: 1,
       position: 'relative',
@@ -41,14 +38,10 @@ const ImagesPage = () => {
       </CloseButtonWrapper>
 
       <HideButtonWrapper onClick={() => toggleHide()}>
-        <CustomIconButton title='Hide' name={isHide ? 'KeyboardDoubleArrowRight' : 'KeyboardDoubleArrowLeft'} color='white_color'/>
+        <CustomIconButton title='Hide' name={isHide ? 'KeyboardDoubleArrowRight' : 'KeyboardDoubleArrowLeft'}
+                          color='white_color'/>
       </HideButtonWrapper>
-      <Box sx={{
-        flex: 1
-      }}>
-        <Slider/>
-        <img src={tweet.images[1].imgUrl} alt=""/>
-      </Box>
+      <Slider images={tweet.images}/>
       <FooterWrapper>
         <TweetFooter tweet={tweet}/>
       </FooterWrapper>
@@ -56,7 +49,7 @@ const ImagesPage = () => {
     {
       isHide &&
       <Box sx={{
-        width: '350px',
+        minWidth: '350px',
         backgroundColor: 'white',
         height: '100vh',
       }}>
@@ -68,18 +61,21 @@ const ImagesPage = () => {
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
+  maxHeight: '100%'
 }))
 
 const CloseButtonWrapper = styled(Box)(({theme}) => ({
   position: 'absolute',
   left: 10,
-  top: 10
+  top: 10,
+  zIndex: 13001,
 }))
 
 const HideButtonWrapper = styled(Box)(({theme}) => ({
   position: 'absolute',
   right: 10,
-  top: 10
+  top: 10,
+  zIndex: 13001,
 }))
 
 const FooterWrapper = styled(Box)(({theme}) => ({
@@ -91,7 +87,7 @@ const FooterWrapper = styled(Box)(({theme}) => ({
   },
 
   '& .IconByName': {
-    fontSize: '1.8rem',
+    fontSize: '2rem',
   }
 }))
 
