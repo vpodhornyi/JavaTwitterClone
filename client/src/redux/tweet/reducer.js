@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   tweetByIdLoading: false,
   form: {
     loading: false,
-    MAX_IMAGES_COUNT: 3,
+    MAX_IMAGES_COUNT: 4,
     images: [],
     text: '',
     canReply: 'PUBLIC',

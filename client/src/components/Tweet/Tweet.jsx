@@ -55,7 +55,7 @@ const Tweet = ({tweet, inViewCheck = true}) => {
           <MoreTweetActionsButton tweet={tweet}/>
         </Box>
         <Typography>{tweet.body}</Typography>
-        <ImagesBox tweet={tweet}/>
+        {tweet.images.length && <ImagesBox tweet={tweet}/>}
         {inViewCheck && <InViewElement toggleVisible={toggleVisible}/>}
         <TweetFooter tweet={tweet}/>
       </Box>
