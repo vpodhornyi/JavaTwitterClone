@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Box} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
@@ -10,29 +10,53 @@ import {Context} from "@utils/context";
 import Slider from "./Slider";
 
 const ImagesPage = () => {
+  const blockRef = useRef(null);
+  const [width, setWidth] = useState(0);
   const [isHide, setHide] = useState(true);
   const {background, tweet} = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Measure the block after it mounts
+    if (blockRef.current) {
+      const currentWidth = blockRef.current.offsetWidth;
+      console.log("Initial width:", currentWidth);
+      setWidth(currentWidth);
+    }
+
+    // Optional: handle resize
+    const handleResize = () => {
+      if (blockRef.current) {
+        setWidth(blockRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // return () => window.removeEventListener('resize', handleResize);
+
     document.documentElement.style.overflow = 'hidden';
     return () => {
       document.documentElement.style.overflow = '';
+      window.removeEventListener('resize', handleResize);
     };
   }, [])
 
   const toggleHide = () => {
     setHide(() => !isHide);
+    setWidth(!isHide ? width - 350 : width + 350);
   }
 
   return <BoxWrapper>
-    <Box sx={{
-      flexShrink: 1,
-      flexGrow: 1,
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <Box
+      className='TEST'
+      ref={blockRef}
+      sx={{
+        flexShrink: 1,
+        flexGrow: 1,
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
       <CloseButtonWrapper onClick={() => navigate(background?.pathname || PATH.ROOT)}>
         <CustomIconButton title='Close' name='Close' color='white_color'/>
       </CloseButtonWrapper>
@@ -41,7 +65,7 @@ const ImagesPage = () => {
         <CustomIconButton title='Hide' name={isHide ? 'KeyboardDoubleArrowRight' : 'KeyboardDoubleArrowLeft'}
                           color='white_color'/>
       </HideButtonWrapper>
-      <Slider images={tweet.images}/>
+      <Slider images={tweet.images} width={width}/>
       <FooterWrapper>
         <TweetFooter tweet={tweet}/>
       </FooterWrapper>
@@ -61,7 +85,8 @@ const ImagesPage = () => {
 
 const BoxWrapper = styled(Box)(({theme}) => ({
   display: 'flex',
-  maxHeight: '100%'
+  height: '100%',
+  overflowX: 'hidden',
 }))
 
 const CloseButtonWrapper = styled(Box)(({theme}) => ({
