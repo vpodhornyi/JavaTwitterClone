@@ -47,5 +47,4 @@ const CommentsBox = ({tweet}) => {
 CommentsBox.propTypes = {
   tweet: PropTypes.object,
 }
-
 export default CommentsBox;
