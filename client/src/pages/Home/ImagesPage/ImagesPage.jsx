@@ -8,23 +8,21 @@ import {styled} from "@mui/material/styles";
 import {PATH} from "@utils/constants";
 import {Context} from "@utils/context";
 import Slider from "./Slider";
+import CommentsBox from "./comments/CommentsBox";
 
 const ImagesPage = () => {
   const blockRef = useRef(null);
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(1600);
   const [isHide, setHide] = useState(true);
   const {background, tweet} = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Measure the block after it mounts
     if (blockRef.current) {
       const currentWidth = blockRef.current.offsetWidth;
-      console.log("Initial width:", currentWidth);
       setWidth(currentWidth);
     }
 
-    // Optional: handle resize
     const handleResize = () => {
       if (blockRef.current) {
         setWidth(blockRef.current.offsetWidth);
@@ -32,8 +30,6 @@ const ImagesPage = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    // return () => window.removeEventListener('resize', handleResize);
-
     document.documentElement.style.overflow = 'hidden';
     return () => {
       document.documentElement.style.overflow = '';
@@ -70,16 +66,7 @@ const ImagesPage = () => {
         <TweetFooter tweet={tweet}/>
       </FooterWrapper>
     </Box>
-    {
-      isHide &&
-      <Box sx={{
-        minWidth: '350px',
-        backgroundColor: 'white',
-        height: '100vh',
-      }}>
-
-      </Box>
-    }
+    {isHide && <CommentsBox tweet={tweet}/>}
   </BoxWrapper>
 }
 

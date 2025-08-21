@@ -8,10 +8,9 @@ import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 
 const Slider = ({images, width}) => {
-  console.log(width);
   return <BoxWrapper
     sx={{
-      width: `${width - 0}px` ,
+      width: `${width - 100}px` ,
       transition: 'width 0.3s',
     }}>
     <Swiper

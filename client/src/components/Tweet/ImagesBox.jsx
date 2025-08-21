@@ -16,9 +16,9 @@ const ImagesBox = ({tweet}) => {
       state={{background: location, tweet}}
       to={PATH.USER.tweet_photos(user?.userTag, user?.id, 1)}
     >
-      <ImageList sx={{width: 500, height: 450}} cols={images.length === 1 ? 1 : 2} rowHeight={164}>
+      <ImageList sx={{width: 500, height: 450}} cols={images.length === 1 ? 1 : 2} rowHeight={images.length === 1 ? 430 : 164}>
         {images.map((item) => (
-          <ImageListItem key={item.imgUrl} cols={item.cols || 1} rows={item.rows || 1}>
+          <ImageListItem sx={{height: 450}} key={item.imgUrl} cols={item.cols || 1} rows={item.rows || 1}>
             <img
               srcSet={`${item.imgUrl}`}
               src={`${item.imgUrl}`}
