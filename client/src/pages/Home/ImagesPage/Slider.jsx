@@ -10,7 +10,7 @@ import {Box} from "@mui/material";
 const Slider = ({images, width}) => {
   return <BoxWrapper
     sx={{
-      width: `${width - 100}px` ,
+      width: `${width - 100}px`,
       transition: 'width 0.3s',
     }}>
     <Swiper

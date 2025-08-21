@@ -5,15 +5,12 @@ import PropTypes from "prop-types";
 import {Avatar, Box, Typography} from "@mui/material";
 import {PATH} from "@utils/constants";
 import {moment} from "@utils";
+import TweetFooter from "@components/Tweet/TweetFooter";
+import {styled} from "@mui/material/styles";
+import MoreTweetActionsButton from "@components/Tweet/MoreTweetActionsButton";
 
 const CommentsBox = ({tweet}) => {
-  return <Box sx={{
-    minWidth: '350px',
-    backgroundColor: 'white',
-    height: '100vh',
-    padding: '10px 15px 0 15px',
-    color: 'black'
-  }}>
+  return <BoxWrapper>
     <Box sx={{
       display: 'flex',
       alignItems: 'flex-start',
@@ -31,20 +28,40 @@ const CommentsBox = ({tweet}) => {
           alignItems: 'center'
         }}>
           <Box sx={{display: 'flex', flexDirection: 'column', ml: '5px'}}>
-            <Typography sx={{fontWeight: 600, color: 'black'}}>{tweet?.user.name}</Typography>
+            <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
             <Typography variant='body2'>@{tweet?.user?.userTag}</Typography>
           </Box>
         </Box>
       </Box>
+      <MoreTweetActionsButton tweet={tweet}/>
     </Box>
-    <Typography sx={{mt: '11px', color: 'black'}}>{tweet.body}</Typography>
+    <Typography sx={{mt: '11px'}}>{tweet.body}</Typography>
     <Typography variant='body2' sx={{mt: '11px'}}>
       {moment(tweet?.createdAt).format('h:mm A - MMMM D, YYYY')}
     </Typography>
-  </Box>
+    <TweetFooterWrapper>
+      <TweetFooter tweet={tweet}/>
+    </TweetFooterWrapper>
+  </BoxWrapper>
 }
+
+const BoxWrapper = styled(Box)(({theme}) => ({
+  minWidth: '350px',
+  backgroundColor: theme.palette.background.main,
+  height: '100vh',
+  padding: '10px 15px 0 15px',
+  color: 'black',
+  borderLeft: `1px solid ${theme.palette.border.main}`,
+}))
+
+const TweetFooterWrapper = styled(Box)(({theme}) => ({
+  marginTop: '11px',
+  borderTop: `1px solid ${theme.palette.border.main}`,
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+}))
 
 CommentsBox.propTypes = {
   tweet: PropTypes.object,
 }
+
 export default CommentsBox;
