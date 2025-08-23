@@ -1,11 +1,11 @@
-import React, {lazy, Suspense} from "react";
+import React, {lazy, Suspense, useRef} from "react";
 
 import {
   ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader,
   Tweets,
   Loading
 } from '@components';
-import TwitForma from "./components/twitForm/TwitForma";
+import TwitForma from "./components/twitForm/TwitForm";
 import HomeHeader from "./Header";
 
 import {styled} from "@mui/material/styles";
@@ -15,15 +15,17 @@ import {URLS} from "@services/API";
 // const Tweets = lazy(() => import('./Tweets'));
 
 const Home = () => {
+  const primaryColumnRef = useRef(null);
+
   return (
     <ColumnWrapper>
-      <PrimaryColumn>
+      <PrimaryColumn ref={primaryColumnRef}>
         <PrimaryHeader pageElement={HomeHeader}/>
         <TweetFormWrapper>
           <TwitForma/>
         </TweetFormWrapper>
         <Suspense fallback={<Loading/>}>
-          <Tweets url={URLS.TWEETS.ROOT}/>
+          <Tweets url={URLS.TWEETS.ROOT} primaryColumnRef={primaryColumnRef}/>
         </Suspense>
       </PrimaryColumn>
       <SitebarColumn>

@@ -11,7 +11,7 @@ import {ACTIONS as TWEET_ACTIONS, getTweetById} from '@redux/tweet/action';
 import {CircularLoader, Tweets, MoreTweetActionsButton} from "@components";
 import ImagesBox from "@components/Tweet/ImagesBox";
 import ActionsTweetButtons from "./ActionsTweetButtons";
-import TwitForma from "../../Home/components/twitForm/TwitForma";
+import TwitForm from "../../Home/components/twitForm/TwitForm";
 import {URLS} from "@services/API";
 
 const RepliesTweet = () => {
@@ -73,7 +73,7 @@ const RepliesTweet = () => {
             <ActionsTweetButtons tweet={tweet}/>
           </Box>
           <Box>
-            <TwitForma
+            <TwitForm
               isReply={true}
               parentTweetId={tweet?.id}
             />
@@ -81,7 +81,7 @@ const RepliesTweet = () => {
         </Box>
       </Box>
       <Box>
-        {!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(id)}/>}
+        {/*{!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(id)}/>}*/}
       </Box>
     </BoxWrapper>);
 }

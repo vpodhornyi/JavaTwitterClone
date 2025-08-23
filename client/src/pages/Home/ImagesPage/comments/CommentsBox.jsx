@@ -7,13 +7,19 @@ import {PATH} from "@utils/constants";
 import {moment} from "@utils";
 import TweetFooter from "@components/Tweet/TweetFooter";
 import {styled} from "@mui/material/styles";
-import MoreTweetActionsButton from "@components/Tweet/MoreTweetActionsButton";
+import TwitForm from "../../components/twitForm/TwitForm";
+import {CircularLoader, Tweets, MoreTweetActionsButton} from "@components";
+import {useSelector} from "react-redux";
+import {URLS} from "@services/API";
 
 const CommentsBox = ({tweet}) => {
-  return <BoxWrapper>
+  const {selectedTweet, tweetByIdLoading} = useSelector(state => state.tweet);
+
+  return <Wrapper>
+  <BoxWrapper>
     <Box sx={{
       display: 'flex',
-      alignItems: 'flex-start',
+      // alignItems: 'flex-start',
     }}>
       <Link
         onClick={e => e.stopPropagation()}
@@ -43,20 +49,36 @@ const CommentsBox = ({tweet}) => {
       <TweetFooter tweet={tweet}/>
     </TweetFooterWrapper>
   </BoxWrapper>
+    <TwitFormaWrapper>
+      <TwitForm  isReply={true}
+                  parentTweetId={tweet?.id}/>
+    </TwitFormaWrapper>
+    <Box>
+      {!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(tweet?.id)}/>}
+    </Box>
+  </Wrapper>
 }
 
-const BoxWrapper = styled(Box)(({theme}) => ({
-  minWidth: '350px',
-  backgroundColor: theme.palette.background.main,
+const Wrapper = styled(Box)(({theme}) => ({
+  minWidth: '400px',
   height: '100vh',
-  padding: '10px 15px 0 15px',
-  color: 'black',
+  display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: theme.palette.background.main,
   borderLeft: `1px solid ${theme.palette.border.main}`,
+  overflow: 'auto',
+}))
+const BoxWrapper = styled(Box)(({theme}) => ({
+  padding: '10px 15px 0 15px',
 }))
 
 const TweetFooterWrapper = styled(Box)(({theme}) => ({
   marginTop: '11px',
   borderTop: `1px solid ${theme.palette.border.main}`,
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+}))
+
+const TwitFormaWrapper = styled(Box)(({theme}) => ({
   borderBottom: `1px solid ${theme.palette.border.main}`,
 }))
 

@@ -1,4 +1,5 @@
 import React, {useEffect} from "react";
+import {useLocation} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,14 +8,31 @@ import PropTypes from "prop-types";
 import {CircularLoader, InViewElement, Tweet} from "@components";
 import {ACTIONS, getTweets} from "@redux/tweet/action";
 
-const Tweets = ({url}) => {
+let scrollPositions = {};
+
+const Tweets = ({url, primaryColumnRef}) => {
   const dispatch = useDispatch();
   const {tweets, pageNumber, totalPages, loading} = useSelector(state => state.tweet);
+  const location = useLocation();
 
   useEffect(() => {
-       dispatch(ACTIONS.resetGetTweets());
-       dispatch(getTweets(url));
-  }, []);
+    return () => {
+      if (primaryColumnRef?.current) {
+        scrollPositions[location.pathname] = primaryColumnRef?.current.scrollTop;
+      }
+      console.log(primaryColumnRef);
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    console.log(primaryColumnRef);
+    dispatch(ACTIONS.resetGetTweets());
+    dispatch(getTweets(url));
+
+    if (primaryColumnRef?.current) {
+      primaryColumnRef.current.scrollTop = scrollPositions[location.pathname] ?? 0;
+    }
+  }, [location.pathname]);
 
   const toggleVisible = async (inView) => {
     if (inView && (pageNumber < totalPages)) {
@@ -23,13 +41,13 @@ const Tweets = ({url}) => {
   }
 
   return (
-      <BoxWrapper>
-        {tweets.map(tweet => <Tweet key={tweet?.key} tweet={tweet}/>)}
-        {!loading && <InViewElement toggleVisible={toggleVisible}/>}
-        {loading && (<Box sx={{position: 'relative', pt: 3, pb: 3}}>
-          <CircularLoader/>
-        </Box>)}
-      </BoxWrapper>
+    <BoxWrapper>
+      {tweets.map(tweet => <Tweet key={tweet?.key} tweet={tweet}/>)}
+      {!loading && <InViewElement toggleVisible={toggleVisible}/>}
+      {loading && (<Box sx={{position: 'relative', pt: 3, pb: 3}}>
+        <CircularLoader/>
+      </Box>)}
+    </BoxWrapper>
   );
 };
 
@@ -39,6 +57,7 @@ const BoxWrapper = styled(Box)({
 
 Tweets.propTypes = {
   url: PropTypes.string,
+  primaryColumnRef: PropTypes.object,
 };
 
 export default Tweets;

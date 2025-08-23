@@ -14,7 +14,7 @@ const ImagesBox = ({tweet}) => {
     <Link
       className="ImagesLink"
       state={{background: location, tweet}}
-      to={PATH.USER.tweet_photos(user?.userTag, user?.id, 1)}
+      to={PATH.USER.tweet_photos(user?.userTag, tweet?.id, 1)}
     >
       <ImageList sx={{width: 500, height: 450}} cols={images.length === 1 ? 1 : 2} rowHeight={images.length === 1 ? 430 : 164}>
         {images.map((item) => (

@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   totalPages: 0,
   tweets: [],
   selectedTweet: {},
+  tweetComments: [],
 };
 
 export default (state = INITIAL_STATE, { payload, type }) => {

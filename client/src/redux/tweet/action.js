@@ -76,6 +76,7 @@ export const getTweets = (url) => async (dispatch, getState) => {
     dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 };
+
 export const createTweet = (body) => async (dispatch) => {
   try {
     dispatch(ACTIONS.createTweet.request());
