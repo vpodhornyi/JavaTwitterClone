@@ -15,17 +15,16 @@ import {URLS} from "@services/API";
 // const Tweets = lazy(() => import('./Tweets'));
 
 const Home = () => {
-  const primaryColumnRef = useRef(null);
 
   return (
-    <ColumnWrapper>
-      <PrimaryColumn ref={primaryColumnRef}>
+    <ColumnWrapper id='main'>
+      <PrimaryColumn>
         <PrimaryHeader pageElement={HomeHeader}/>
         <TweetFormWrapper>
           <TwitForma/>
         </TweetFormWrapper>
         <Suspense fallback={<Loading/>}>
-          <Tweets url={URLS.TWEETS.ROOT} primaryColumnRef={primaryColumnRef}/>
+          <Tweets url={URLS.TWEETS.ROOT}/>
         </Suspense>
       </PrimaryColumn>
       <SitebarColumn>

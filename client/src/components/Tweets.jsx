@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useLocation} from "react-router-dom";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
@@ -10,27 +10,39 @@ import {ACTIONS, getTweets} from "@redux/tweet/action";
 
 let scrollPositions = {};
 
-const Tweets = ({url, primaryColumnRef}) => {
+const Tweets = ({url}) => {
+  const primaryColumnRef = useRef(null);
+  const [t, setT] = useState(primaryColumnRef);
   const dispatch = useDispatch();
   const {tweets, pageNumber, totalPages, loading} = useSelector(state => state.tweet);
   const location = useLocation();
 
-  useEffect(() => {
+/*  useEffect(() => {
     return () => {
       if (primaryColumnRef?.current) {
         scrollPositions[location.pathname] = primaryColumnRef?.current.scrollTop;
       }
-      console.log(primaryColumnRef);
+      console.log(t);
     };
-  }, [location.pathname]);
+  }, [location.pathname]);*/
 
   useEffect(() => {
-    console.log(primaryColumnRef);
     dispatch(ACTIONS.resetGetTweets());
     dispatch(getTweets(url));
+    setT(primaryColumnRef);
+   /* console.log(t);
+    console.log(scrollPositions);
+
+    setTimeout(() => {
+      const m = document.getElementById('main')
+      console.log(m);
+      m.scrollTop = 500;
+    },2000)*/
+
 
     if (primaryColumnRef?.current) {
-      primaryColumnRef.current.scrollTop = scrollPositions[location.pathname] ?? 0;
+      // primaryColumnRef.current.scrollTop = 500;
+      // primaryColumnRef.current.scrollTop = scrollPositions[location.pathname] ?? 500;
     }
   }, [location.pathname]);
 
@@ -57,7 +69,7 @@ const BoxWrapper = styled(Box)({
 
 Tweets.propTypes = {
   url: PropTypes.string,
-  primaryColumnRef: PropTypes.object,
+  // primaryColumnRef: PropTypes.object,
 };
 
 export default Tweets;

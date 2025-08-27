@@ -16,45 +16,45 @@ const CommentsBox = ({tweet}) => {
   const {selectedTweet, tweetByIdLoading} = useSelector(state => state.tweet);
 
   return <Wrapper>
-  <BoxWrapper>
-    <Box sx={{
-      display: 'flex',
-      // alignItems: 'flex-start',
-    }}>
-      <Link
-        onClick={e => e.stopPropagation()}
-        to={PATH.USER.profile(tweet?.user?.userTag)}
-        className="AvatarLink">
-        <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
-      </Link>
-      <Box sx={{width: '100%'}}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Box sx={{display: 'flex', flexDirection: 'column', ml: '5px'}}>
-            <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
-            <Typography variant='body2'>@{tweet?.user?.userTag}</Typography>
+    <BoxWrapper>
+      <Box sx={{
+        display: 'flex',
+        // alignItems: 'flex-start',
+      }}>
+        <Link
+          onClick={e => e.stopPropagation()}
+          to={PATH.USER.profile(tweet?.user?.userTag)}
+          className="AvatarLink">
+          <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
+        </Link>
+        <Box sx={{width: '100%'}}>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <Box sx={{display: 'flex', flexDirection: 'column', ml: '5px'}}>
+              <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
+              <Typography variant='body2'>@{tweet?.user?.userTag}</Typography>
+            </Box>
           </Box>
         </Box>
+        <MoreTweetActionsButton tweet={tweet}/>
       </Box>
-      <MoreTweetActionsButton tweet={tweet}/>
-    </Box>
-    <Typography sx={{mt: '11px'}}>{tweet.body}</Typography>
-    <Typography variant='body2' sx={{mt: '11px'}}>
-      {moment(tweet?.createdAt).format('h:mm A - MMMM D, YYYY')}
-    </Typography>
-    <TweetFooterWrapper>
-      <TweetFooter tweet={tweet}/>
-    </TweetFooterWrapper>
-  </BoxWrapper>
+      <Typography sx={{mt: '11px'}}>{tweet.body}</Typography>
+      <Typography variant='body2' sx={{mt: '11px'}}>
+        {moment(tweet?.createdAt).format('h:mm A - MMMM D, YYYY')}
+      </Typography>
+      <TweetFooterWrapper>
+        <TweetFooter tweet={tweet}/>
+      </TweetFooterWrapper>
+    </BoxWrapper>
     <TwitFormaWrapper>
-      <TwitForm  isReply={true}
-                  parentTweetId={tweet?.id}/>
+      {/*<TwitForm isReply={true} parentTweetId={tweet?.id}/>*/}
     </TwitFormaWrapper>
     <Box>
-      {!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(tweet?.id)}/>}
+      <Typography sx={{margin: '10px auto', textAlign: 'center'}}>In Progress...</Typography>
+      {/*{!tweetByIdLoading && <Tweets url={URLS.TWEETS.getTweetReplies(tweet?.id)}/>}*/}
     </Box>
   </Wrapper>
 }
