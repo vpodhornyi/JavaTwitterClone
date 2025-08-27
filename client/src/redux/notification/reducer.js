@@ -17,6 +17,12 @@ export default (state = INIT, {payload, type}) => {
         pageNumber: payload.pageNumber,
       }
     }
+    case String(ACTIONS.setCountUnreadNotifications): {
+      return {
+        ...state,
+        countUnreadNotifications: payload,
+      }
+    }
     case String(ACTIONS.addNotification): {
       const notifications = [...state.notifications, payload].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       return {

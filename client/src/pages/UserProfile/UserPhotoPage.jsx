@@ -2,7 +2,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
-import {ModalPage} from "../../components";
+import {ModalPage} from "@components";
 
 const UserPhotoPage = () => {
   const {guestUser: user } = useSelector(state => state.user);

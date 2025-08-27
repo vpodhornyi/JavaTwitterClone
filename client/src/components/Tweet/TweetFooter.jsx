@@ -21,7 +21,7 @@ const TweetFooter = ({tweet}) => {
   }, 300);
 
   return (
-    <BoxWrapper>
+    <BoxWrapper className='TweetFooterWrapper'>
       <Box onClick={e => e.stopPropagation()}>
         <Link
           to={PATH.COMPOSE.TWEET}

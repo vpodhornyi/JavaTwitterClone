@@ -15,7 +15,7 @@ import ImagesList from "./imagesList/ImagesList";
 import {LineLoader} from "@components";
 
 
-const TwitForma = ({isReply = false, parentTweetId}) => {
+const TwitForm = ({isReply = false, parentTweetId}) => {
   const form = useSelector(state => state.tweet.form);
   const dispatch = useDispatch();
   const inputRef = useRef();
@@ -141,6 +141,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
     flexDirection: 'column',
   },
 }));
+
 const TextFieldWrapper = styled(TextField)(({theme}) => ({
   width: '100%',
   paddingTop: '5px',
@@ -173,9 +174,9 @@ const TextFieldWrapper = styled(TextField)(({theme}) => ({
   },
 }));
 
-TwitForma.propTypes = {
+TwitForm.propTypes = {
   isReply: PropTypes.bool,
   parentTweetId: PropTypes.number,
 }
 
-export default TwitForma;
+export default TwitForm;

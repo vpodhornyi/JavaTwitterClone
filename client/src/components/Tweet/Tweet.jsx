@@ -9,6 +9,7 @@ import {PATH} from "@utils/constants";
 import {InViewElement} from "@components";
 import {moment} from "@utils";
 import TweetFooter from "./TweetFooter";
+import ImagesBox from "./ImagesBox";
 import MoreTweetActionsButton from "./MoreTweetActionsButton";
 import {ACTIONS, viewTweet} from "@redux/tweet/action";
 
@@ -27,40 +28,38 @@ const Tweet = ({tweet, inViewCheck = true}) => {
   }
 
   return (
-      <BoxWrapper onClick={navigateToTweetPage}>
-        <Link
-            onClick={e => e.stopPropagation()}
-            to={PATH.USER.profile(tweet?.user?.userTag)}
-            className="AvatarLink">
-          <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
-        </Link>
-        <Box sx={{width: '100%'}}>
-          <Box sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <Box sx={{display: 'flex'}}>
-              <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
-              <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
-              <Typography variant='body2' sx={{
-                '&:before': {
-                  content: '"·"',
-                  marginLeft: '5px',
-                  marginRight: '5px',
-                }
-              }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
-            </Box>
-            <MoreTweetActionsButton tweet={tweet}/>
+    <BoxWrapper onClick={navigateToTweetPage}>
+      <Link
+        onClick={e => e.stopPropagation()}
+        to={PATH.USER.profile(tweet?.user?.userTag)}
+        className="AvatarLink">
+        <Avatar className="Avatar" src={tweet?.user?.avatarImgUrl}/>
+      </Link>
+      <Box sx={{width: '100%'}}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <Box sx={{display: 'flex'}}>
+            <Typography sx={{fontWeight: 600}}>{tweet?.user.name}</Typography>
+            <Typography variant='body2' sx={{ml: '5px'}}>@{tweet?.user?.userTag}</Typography>
+            <Typography variant='body2' sx={{
+              '&:before': {
+                content: '"·"',
+                marginLeft: '5px',
+                marginRight: '5px',
+              }
+            }}>{moment(tweet?.createdAt).fromNow(true)}</Typography>
           </Box>
-          <Typography>{tweet.body}</Typography>
-          <Box className="ImagesBox">
-            {tweet?.images.length > 0 && tweet?.images.map((item, i) => <img key={item.key} src={item.imgUrl} alt=""/>)}
-          </Box>
-          {inViewCheck && <InViewElement toggleVisible={toggleVisible}/>}
-          <TweetFooter tweet={tweet}/>
+          <MoreTweetActionsButton tweet={tweet}/>
         </Box>
-      </BoxWrapper>);
+        <Typography>{tweet.body}</Typography>
+        {tweet?.images?.length && <ImagesBox tweet={tweet}/>}
+        {inViewCheck && <InViewElement toggleVisible={toggleVisible}/>}
+        <TweetFooter tweet={tweet}/>
+      </Box>
+    </BoxWrapper>);
 }
 
 const BoxWrapper = styled(Box)(({theme}) => ({
@@ -78,20 +77,6 @@ const BoxWrapper = styled(Box)(({theme}) => ({
 
   '& .AvatarLink': {
     marginRight: 12,
-  },
-
-  '& .ImagesBox': {
-    width: '100%',
-    display: 'flex',
-    flexWrap: 'wrap',
-
-    '& img': {
-      marginTop: 12,
-      borderRadius: '16px',
-      maxWidth: '100%',
-      height: '100%',
-      objectFit: 'cover',
-    }
   },
 }));
 
