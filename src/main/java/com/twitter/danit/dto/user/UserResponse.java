@@ -21,7 +21,9 @@ public class UserResponse {
   private String avatarImgUrl;
   private String headerImgUrl;
   private CustomStyleResponse customize;
-  private Integer countUnreadMessages = 0;
+  private boolean IsFollowing;
+  private Integer countUnreadMessages;
+  private Integer countUnreadNotifications;
   private Integer followingsCount;
   private Integer followersCount;
   private Integer tweetsCount;

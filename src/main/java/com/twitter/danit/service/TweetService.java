@@ -18,10 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -51,6 +48,12 @@ public class TweetService {
 
   public Page<Tweet> getBookmarkTweetsPage(int pageNumber, int pageSize, Long userId) {
     return tweetRepository.findActionsTweetsPage(userId, ActionType.BOOKMARK.name(), PageRequest.of(pageNumber, pageSize)).orElse(Page.empty());
+  }
+
+  public Page<Tweet> findByMatchesInBody(String text, int pageNumber, int pageSize) {
+    Optional<Page<Tweet>> optionalTweets = tweetRepository.findTop10ByMatchingBody(text, PageRequest.of(pageNumber, pageSize));
+
+    return optionalTweets.orElse(Page.empty());
   }
 
   @Transactional

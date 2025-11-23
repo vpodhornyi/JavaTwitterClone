@@ -1,9 +1,9 @@
 import {blue, yellow, pink, purple, orange, green, grey, blueGrey, red} from '@mui/material/colors';
-import { alpha } from "@mui/material/styles";
+import {alpha} from "@mui/material/styles";
 
 export const BACKGROUND = {
   default: {
-    palette:  {
+    palette: {
       title: 'Default',
       textColor: '#000000',
       background: {
@@ -36,6 +36,9 @@ export const BACKGROUND = {
       },
       tweetBackgroundColor: {
         main: 'rgba(0,0,0, 0.03)'
+      },
+      white_color: {
+        main: '#ffffff'
       }
     },
     typography: {
@@ -59,7 +62,7 @@ export const BACKGROUND = {
         fontSize: '1.1rem',
         color: grey[700],
       },
-    }
+    },
   },
   dim: {
     palette: {
@@ -95,6 +98,9 @@ export const BACKGROUND = {
       },
       tweetBackgroundColor: {
         main: 'rgba(255, 255, 255, 0.03)'
+      },
+      white_color: {
+        main: '#ffffff'
       }
     },
     typography: {
@@ -119,7 +125,7 @@ export const BACKGROUND = {
         fontSize: '1.1rem',
         color: blueGrey[300],
       },
-    }
+    },
   },
   lights_out: {
     palette: {
@@ -155,6 +161,9 @@ export const BACKGROUND = {
       },
       tweetBackgroundColor: {
         main: 'rgba(255, 255, 255, 0.03)'
+      },
+      white_color: {
+        main: '#ffffff'
       }
     },
     typography: {
@@ -182,7 +191,7 @@ export const BACKGROUND = {
         fontSize: '1.1rem',
         color: grey[300],
       },
-    }
+    },
   },
 }
 export const COLOR = {
@@ -304,5 +313,5 @@ export const setFontSize = size => {
 }
 export const setBackgroundColor = v => {
   document.getElementsByTagName("body")[0]
-      .style.backgroundColor = BACKGROUND[v].palette.background.main;
+    .style.backgroundColor = BACKGROUND[v].palette.background.main;
 }

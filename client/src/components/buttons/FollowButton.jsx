@@ -15,6 +15,7 @@ const FollowButton = ({
                         disabled = false,
                         userId,
                         userTag,
+                        user,
                         action,
                       }) => {
   const dispatch = useDispatch();
@@ -26,9 +27,11 @@ const FollowButton = ({
           toggleModal={toggleModal}
           userId={userId}
           userTag={userTag}
+          user={user}
       />, true);
     } else {
       dispatch(followUser(userId));
+      if (user) user.isFollowing = true;
     }
   }
 
@@ -49,6 +52,7 @@ const BoxWrapper = styled(Box)(({ theme }) => ({
     border: `1px solid ${theme.palette.text.main}`,
     margin: '10px 0',
     transitionDuration: '0.2s',
+    width: '100%',
 
     '& .CustomFabButtonName': {
       fontWeight: theme.typography.fontWeightBold,
@@ -94,6 +98,7 @@ FollowButton.propTypes = {
   disabled: PropTypes.bool,
   userId: PropTypes.number,
   userTag: PropTypes.string,
+  user: PropTypes.object,
   action: PropTypes.func || undefined,
 }
 export default FollowButton;

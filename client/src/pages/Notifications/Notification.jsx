@@ -1,0 +1,58 @@
+import React from "react";
+import {Avatar, Box, Typography, styled} from "@mui/material";
+import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
+
+import {moment} from "@utils";
+import {PATH} from "@utils/constants";
+import More from './More';
+
+const Notification = ({notification}) => {
+  const {message, userInitiator, createdAt} = notification;
+  return (
+    <BoxWrapper>
+      <Box className="AvatarLinkBox">
+        <Link className="AvatarLink"
+              to={PATH.USER.profile(userInitiator?.userTag)}>
+          <Avatar className="Avatar" src={userInitiator?.avatarImgUrl}/>
+        </Link>
+      </Box>
+      <Typography>{message}</Typography>
+      <Typography variant='body2' sx={{
+        '&:before': {
+          content: '"·"',
+          marginLeft: '5px',
+          marginRight: '5px',
+        }
+      }}>{moment(createdAt).fromNow(true)}</Typography>
+      <More notification={notification}/>
+    </BoxWrapper>
+  )
+}
+
+const BoxWrapper = styled(Box)(({theme}) => ({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  padding: '10px',
+  borderBottom: `1px solid ${theme.palette.border.main}`,
+
+  '&:hover': {
+    backgroundColor: theme.palette.background[1],
+  },
+
+  '& .AvatarLinkBox': {
+    marginRight: 12,
+
+    '& .AvatarLink': {
+      display: 'block',
+      marginBottom: '5px',
+    }
+  },
+}))
+
+Notification.propTypes = {
+  notification: PropTypes.object
+}
+
+export default Notification;

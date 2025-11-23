@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PageTweetResponseMapper {
   private final TweetResponseMapper tweetResponseMapper;
-  PageTweetResponse dto = new PageTweetResponse();
+  private final PageTweetResponse dto = new PageTweetResponse();
 
   public PageTweetResponse convertToDto(Page<Tweet> entity, User authUser) {
 
@@ -23,8 +23,7 @@ public class PageTweetResponseMapper {
 
     List<Tweet> tweets = entity.getContent();
 
-    dto.setElements(tweets.size() > 0 ? tweets.stream().map(t -> tweetResponseMapper.convertToDto(t, authUser)).toList() :
-        new ArrayList<>());
+    dto.setElements(tweets.isEmpty() ? new ArrayList<>() : tweets.stream().map(t -> tweetResponseMapper.convertToDto(t, authUser)).toList());
 
     return dto;
   }

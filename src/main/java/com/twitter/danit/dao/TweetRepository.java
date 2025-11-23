@@ -65,4 +65,7 @@ public interface TweetRepository extends JpaRepository<Tweet, Long> {
   Optional<List<Tweet>> findAllTweetsByUserAndActionType(@Param("userId") Long userId, @Param("actionType") String actionType);
 
   Optional<List<Tweet>> findAllByIdIn(List<Long> ids);
+
+  @Query("select t from Tweet t where t.body like %:text% order by t.updatedAt desc")
+  Optional<Page<Tweet>> findTop10ByMatchingBody(@Param("text") String text, Pageable pageable);
 }

@@ -4,10 +4,12 @@ import {Avatar, Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {FollowButton} from "@components";
+import {useSelector} from "react-redux";
 
 const Person = ({user}) => {
+  const {authUser} = useSelector(state => state.user);
 
-  return ( user &&
+  return (user &&
     <BoxWrapper>
       <Box sx={{display: 'flex'}}>
         <Avatar sx={{mr: 2, width: '3.3rem', height: '3.3rem'}} src={user.avatarImgUrl}/>
@@ -19,7 +21,16 @@ const Person = ({user}) => {
           <Typography variant='body2'>@{user.userTag}</Typography>
         </Box>
       </Box>
-      <FollowButton isFollowing={user.isFollowing} userId={user.id} userTag={user.userTag}/>
+      <Box onClick={e => e.stopPropagation()}>
+        {
+          user.id !== authUser.id && <FollowButton
+            isFollowing={user.isFollowing}
+            userId={user.id}
+            userTag={user.userTag}
+            user={user}
+          />
+        }
+      </Box>
     </BoxWrapper>
   );
 }

@@ -2,10 +2,10 @@ import React from "react";
 import {useSelector} from "react-redux";
 import {styled} from "@mui/material/styles";
 import {Box} from "@mui/material";
-import {ModalPage} from "../../components";
+import {ModalPage} from "@components";
 
 const UserPhotoPage = () => {
-  const {authUser: user } = useSelector(state => state.user);
+  const {guestUser: user } = useSelector(state => state.user);
 
   return (
       <BoxWrapper>
@@ -20,7 +20,7 @@ const BoxWrapper = styled(Box)(({theme}) => ({
   alignItems: 'center',
 
   '& .AvatarImage': {
-    maxWidth: '100%',
+    maxWidth: '50%',
     objectFit: 'cover',
     borderRadius: '50%',
   }

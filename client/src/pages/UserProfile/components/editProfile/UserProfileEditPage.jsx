@@ -7,7 +7,6 @@ import {Box, Typography} from "@mui/material";
 import {Context} from "@utils/context";
 import {ModalPage, CustomIconButton, FollowButton, CircularLoader, StickyHeader} from "../../../../components";
 import FormElement from "./FormElement";
-import {getChatsData} from '@redux/chat/selector';
 import {updateUserProfile, uploadImage} from '@redux/user/action';
 import {PATH} from '@utils/constants';
 
@@ -15,7 +14,6 @@ const UserProfileEditPage = () => {
   const {background} = useContext(Context);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {selectedChat: chat} = useSelector(getChatsData);
   const {authUser: user} = useSelector(state => state.user);
   const [loader, setLoader] = useState(false);
 

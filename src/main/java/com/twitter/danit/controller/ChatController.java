@@ -4,6 +4,7 @@ import com.twitter.danit.domain.chat.Chat;
 import com.twitter.danit.domain.chat.ChatType;
 import com.twitter.danit.domain.chat.Message;
 import com.twitter.danit.domain.chat.MessageSeen;
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.chat.ChatUser;
 import com.twitter.danit.dto.chat.request.*;
@@ -66,9 +67,14 @@ public class ChatController extends AbstractController {
   private final PageChatsResponseMapper pageChatsResponseMapper;
   private final CloudinaryService cloudinaryService;
 
+  private void sendAddToChatNotification(User authUser, Chat chat, User user) {
+    Notification notification = notificationService.addUserToChat(authUser, chat, user);
+    sendStompMessage(userQueue + user.getId(), notificationResponseMapping.convertToDto(notification));
+  }
+
   @GetMapping
   public ResponseEntity<PageChatResponse> getChats(@RequestParam int pageNumber, @RequestParam int pageSize, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Page<Chat> chats = chatService.findAlLByUserId(authUser.getId(), pageNumber, pageSize);
 
     return ResponseEntity.ok(pageChatsResponseMapper.convertToDto(chats, authUser));
@@ -76,7 +82,7 @@ public class ChatController extends AbstractController {
 
   @DeleteMapping
   public ResponseEntity<LeaveChatResponse> leaveChat(@RequestBody LeaveChatRequest leaveChatRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Long chatId = leaveChatRequest.getChatId();
     LeaveChatResponse leaveChatResponse = null;
 
@@ -97,13 +103,13 @@ public class ChatController extends AbstractController {
 
   @GetMapping("/private")
   public ResponseEntity<ChatResponseAbstract> findPrivateChat(@RequestParam Long guestUserId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     return ResponseEntity.ok(privateChatResponseMapper.convertToDto(chatService.findPrivateChatByUsersIds(authUser.getId(), guestUserId), authUser));
   }
 
   @PostMapping("/private")
   public ResponseEntity<PrivateChatResponse> addPrivateChat(@RequestBody PrivateChatRequest privateChatRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Chat chat = privateChatRequestMapper.convertToEntity(privateChatRequest, authUser);
     Chat savedChat = chatService.savePrivateChat(chat);
     String oldKey = privateChatRequest.getOldKey();
@@ -123,7 +129,7 @@ public class ChatController extends AbstractController {
 
   @PostMapping("/group")
   public ResponseEntity<GroupChatResponse> addGroupChat(@RequestBody GroupChatRequest groupChatRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     String oldKey = groupChatRequest.getOldKey();
     String text = groupChatRequest.getMessage();
     Chat chat = groupChatRequestMapper.convertToEntity(groupChatRequest, authUser);
@@ -134,6 +140,7 @@ public class ChatController extends AbstractController {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       groupChatResponse.setOldKey(oldKey);
       simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      sendAddToChatNotification(authUser, savedChat, user);
     });
 
     GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, authUser);
@@ -143,13 +150,13 @@ public class ChatController extends AbstractController {
   }
 
   @PutMapping("/group")
-  public ResponseEntity<GroupChatResponse> editGroupChat(@RequestParam MultipartFile uploadFile,
-                                                         @RequestParam String name,
-                                                         @RequestParam Long chatId,
+  public ResponseEntity<GroupChatResponse> editGroupChat(@RequestBody GroupChatInfoRequest groupChatInfoRequest,
                                                          Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
-    String imgUrl = cloudinaryService.uploadImage(uploadFile);
-    Chat chat = chatService.editGroupChat(chatId, name, imgUrl, authUser);
+    User authUser = getAuthUser(principal);
+    Long chatId = groupChatInfoRequest.getChatId();
+    String title = groupChatInfoRequest.getTitle();
+    String imgUrl = groupChatInfoRequest.getImgUrl();
+    Chat chat = chatService.editGroupChat(chatId, title, imgUrl, authUser);
 
     chat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(chat, user);
@@ -161,7 +168,7 @@ public class ChatController extends AbstractController {
 
   @PostMapping("/add-users")
   public ResponseEntity<AddUsersToGroupResponse> addUserToGroup(@RequestBody AddUsersToGroupRequest addUsersToGroupRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Long chatId = addUsersToGroupRequest.getChatId();
     Chat oldChat = chatService.findById(chatId);
     List<Long> ids = oldChat.getUsers().stream().map(User::getId).toList();
@@ -180,6 +187,7 @@ public class ChatController extends AbstractController {
     usersForAdd.forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);
       simpMessagingTemplate.convertAndSend(userQueue + user.getId(), ResponseEntity.ok(groupChatResponse));
+      sendAddToChatNotification(authUser, savedChat, user);
     });
 
     return ResponseEntity.ok(new AddUsersToGroupResponse(chatId, chatUserMapper.convertToDto(authUser), chatUsers));
@@ -187,7 +195,7 @@ public class ChatController extends AbstractController {
 
   @GetMapping("/messages")
   public ResponseEntity<PageMessagesResponse> getMessages(@RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam Long chatId, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     Page<Message> messages = messageService.findByChatId(chatId, authUser.getId(), pageNumber, pageSize);
 
     return ResponseEntity.ok(pageMessagesMapper.convertToDto(messages, authUser));
@@ -195,7 +203,7 @@ public class ChatController extends AbstractController {
 
   @PostMapping("/messages")
   public ResponseEntity<MessageResponseAbstract> saveNewMessage(@RequestBody MessageRequest messageRequest, Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     String oldKey = messageRequest.getKey();
     Message message = messageRequestMapper.convertToEntity(messageRequest, authUser);
     Message savedMessage = messageService.save(message);
@@ -258,7 +266,7 @@ public class ChatController extends AbstractController {
   @PostMapping("/messages/seen")
   public ResponseEntity<ForeignerMessageSeenResponse> setSeenMessage(@RequestBody MessageSeenRequest messageSeenRequest,
                                                                      Principal principal) {
-    User authUser = userService.findByUserTagTrowException(principal.getName());
+    User authUser = getAuthUser(principal);
     MessageSeen messageSeen = messageSeenRequestMapper.convertToEntity(messageSeenRequest, authUser);
 
     MessageSeen savedMessageSeen = messageService.saveMessageSeen(messageSeen);
@@ -267,9 +275,4 @@ public class ChatController extends AbstractController {
 
     return ResponseEntity.ok(foreignerMessageSeenResponseMapper.convertToDto(savedMessageSeen));
   }
-
-//  @GetMapping("/test")
-//  public List<Chat> test(@RequestParam Long userId){
-//    return chatService.test(userId);
-//  }
 }

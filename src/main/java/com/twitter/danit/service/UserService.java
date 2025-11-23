@@ -164,6 +164,6 @@ public class UserService {
 
     this.save(authUser);
 
-    return isFollow;
+    return !isFollow;
   }
 }

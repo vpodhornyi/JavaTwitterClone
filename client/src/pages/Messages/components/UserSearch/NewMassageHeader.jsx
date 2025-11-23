@@ -5,7 +5,7 @@ import {Box, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 
 import {CustomIconButton, FollowButton} from "@components";
-import {Context} from "../../../../utils/context";
+import {Context} from "@utils/context";
 import {PATH} from "@utils/constants";
 
 const NewMessageHeader = ({isAdd, isGroup, isNext, next, addPeople}) => {

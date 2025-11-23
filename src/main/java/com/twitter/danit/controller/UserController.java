@@ -1,6 +1,7 @@
 package com.twitter.danit.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.twitter.danit.domain.notification.Notification;
 import com.twitter.danit.domain.user.CustomStyle;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.auth.AccountCheckRequest;
@@ -66,22 +67,24 @@ public class UserController extends AbstractController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text) {
+  public ResponseEntity<List<UserResponse>> searchUser(@RequestParam String text, Principal principal) {
+    User authUser = getAuthUser(principal);
     List<User> users = userService.findByMatchesInNameOrUserTag(text.trim());
-    return ResponseEntity.ok(users.stream().map(userResponseMapper::convertToDto).collect(Collectors.toList()));
+    return ResponseEntity.ok(users.stream().map(user -> userResponseMapper.convertToDto(user, authUser)).collect(Collectors.toList()));
   }
 
   @GetMapping("/{userTag}")
-  public ResponseEntity<UserResponse> findByUserTag(@PathVariable(name = "userTag") String userTag) {
+  public ResponseEntity<UserResponse> findByUserTag(@PathVariable(name = "userTag") String userTag, Principal principal) {
+    User authUser = getAuthUser(principal);
     User user = userService.findByUserTagTrowException(userTag);
-    return ResponseEntity.ok(userResponseMapper.convertToDto(user));
+    return ResponseEntity.ok(userResponseMapper.convertToDto(user, authUser));
   }
 
   @PutMapping("/customize")
   public ResponseEntity<CustomStyleResponse> updateCustomize(@RequestBody CustomStyleRequest customStyleRequest, Principal principal) {
     User authUser = getAuthUser(principal);
-    CustomStyle savwdCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
-    return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savwdCustomStyle));
+    CustomStyle savedCustomStyle = userService.updateCustomStyle(authUser, customStyleRequest);
+    return ResponseEntity.ok(customStyleResponseMapper.convertToDto(savedCustomStyle));
   }
 
   @PostMapping("/reset-password")
@@ -99,9 +102,12 @@ public class UserController extends AbstractController {
     User authUser = getAuthUser(principal);
     User followUser = userService.findByIdTrowException(followUserRequest.getFollowUserId());
     boolean isFollow = userService.addFollower(authUser, followUser);
+    String queue = userQueue + followUser.getId();
+    sendStompMessage(queue, followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
 
-    sendStompMessage(userQueue + followUser.getId(),
-        followUserWebsocketResponseMapper.convertToDto(followUser, authUser));
+    Notification notification = isFollow ? notificationService.followUser(authUser, followUser) :
+        notificationService.unfollowUser(authUser, followUser);
+    sendStompMessage(queue, notificationResponseMapping.convertToDto(notification));
 
     return ResponseEntity.ok(followUserResponseMapper.convertToDto(followUser, isFollow, authUser));
   }

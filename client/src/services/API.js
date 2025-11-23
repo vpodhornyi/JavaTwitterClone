@@ -9,7 +9,7 @@ const api = axios.create({
 
 export const interceptor = store => {
   api.interceptors.request.use(conf => {
-    // you can do something before send it.
+    // do something before send it.
     return conf;
   });
 
@@ -78,6 +78,11 @@ export const URLS = {
     retweet: id => `/tweets/${id}/retweet`,
     BOOKMARKS: "/tweets/bookmarks",
     CLEAR_BOOKMARKS: "/tweets/clear-bookmarks",
+    SEARCH: "/tweets/search",
+  },
+  NOTIFICATIONS: {
+    ROOT: '/notifications',
+    MARK_READ: '/notifications/mark-read'
   },
   CHATS: {
     ROOT: '/chats',

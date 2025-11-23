@@ -38,9 +38,9 @@ export default (state = JSON.parse(JSON.stringify(init)), { payload, type }) => 
         guestUserLoader: true
       }
     case String(ACTIONS.getGuestUser.success):
+      state.guestUser = { ...payload };
       return {
         ...state,
-        guestUser: payload,
         guestUserLoader: false
       }
     case String(ACTIONS.getGuestUser.fail):
@@ -75,6 +75,7 @@ export default (state = JSON.parse(JSON.stringify(init)), { payload, type }) => 
     }
     case String(ACTIONS.updateUserProfile.success):
       state.authUser = { ...payload };
+      state.guestUser = { ...payload };
       return {
         ...state,
       };

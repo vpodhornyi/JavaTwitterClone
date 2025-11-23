@@ -5,23 +5,30 @@ import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.UserResponse;
 import com.twitter.danit.facade.GeneralFacade;
 import com.twitter.danit.service.MessageService;
+import com.twitter.danit.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
   private final MessageService messageService;
+  private final NotificationService notificationService;
   private final CustomStyleResponseMapper customStyleDtoMapper;
 
-  public UserResponseMapper(MessageService messageService, CustomStyleResponseMapper customStyleDtoMapper) {
+  public UserResponseMapper(MessageService messageService,
+                            NotificationService notificationService,
+                            CustomStyleResponseMapper customStyleDtoMapper) {
     super(User.class, UserResponse.class);
     this.messageService = messageService;
+    this.notificationService = notificationService;
     this.customStyleDtoMapper = customStyleDtoMapper;
   }
 
-  @Override
-  protected void decorateDto(UserResponse dto, User entity) {
+  private void decorateUser(UserResponse dto, User entity, User user) {
     dto.setCountUnreadMessages(messageService.getCountAllUnreadChatMessagesByUserId(entity.getId()));
     CustomStyle customStyle = entity.getCustomStyle();
+
+    dto.setCountUnreadNotifications(notificationService.getCountUnreadNotification(entity));
 
     if (entity.getBio() == null) dto.setBio("");
     if (entity.getLocation() == null) dto.setLocation("");
@@ -32,8 +39,21 @@ public class UserResponseMapper extends GeneralFacade<User, UserResponse> {
       dto.setCustomize(customStyleDtoMapper.convertToDto(customStyle));
     }
 
+    if (user != null) {
+      dto.setIsFollowing(user.isFollowUser(entity));
+    }
+
     dto.setFollowingsCount(entity.getFollowingsCount());
     dto.setFollowersCount(entity.getFollowersCount());
     dto.setTweetsCount(entity.getTweetsCount());
+  }
+
+  protected void decorateDto(UserResponse dto, User entity) {
+    this.decorateUser(dto, entity, null);
+  }
+
+  @Override
+  protected void decorateDto(UserResponse dto, User entity, User authUser) {
+    this.decorateUser(dto, entity, authUser);
   }
 }

@@ -1,13 +1,23 @@
-import React from 'react';
-import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader} from "../../components";
+import React, {Suspense} from 'react';
+import {
+  ColumnWrapper,
+  PrimaryColumn,
+  PrimaryHeader,
+  SitebarColumn,
+  StickyHeader,
+  Loading
+} from "@components";
 import NotificationHeader from "./Header";
+import NotificationsList from "./NotificationsList";
 
 const Notifications = () => {
   return (
     <ColumnWrapper>
       <PrimaryColumn>
         <PrimaryHeader pageElement={NotificationHeader}/>
-        BODY Notifications primary column
+        <Suspense fallback={<Loading/>}>
+          <NotificationsList/>
+        </Suspense>
       </PrimaryColumn>
       <SitebarColumn>
         <StickyHeader>

@@ -5,7 +5,8 @@ import { ACTIONS as CHAT_ACTIONS } from "../chat/action";
 import { ACTIONS as TWEET_ACTIONS } from "../tweet/action";
 import { ACTIONS as MESSAGE_ACTIONS } from "../chat/message/action";
 import { ACTIONS as SNACK_ACTIONS } from "../snack/action";
-import { PATH } from "../../utils/constants";
+import { ACTIONS as NOTIFICATION_ACTIONS } from "../notification/action";
+import { PATH } from "@utils/constants";
 
 const actions = createActions(
     {
@@ -33,6 +34,7 @@ export const getAuthUser = () => async (dispatch) => {
     const data = await api.get(URLS.USERS.ROOT);
     dispatch(ACTIONS.getAuthUser.success(data));
     dispatch(ACTIONS.setCustomize(data?.customize));
+    dispatch(NOTIFICATION_ACTIONS.setCountUnreadNotifications(data?.countUnreadNotifications));
     return data;
 
   } catch (e) {
@@ -101,7 +103,7 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
     const { user: { authUser } } = getState();
     authUser?.id && api.stompClient.subscribe(`/topic/tweets`, async (data) => {
       const { body } = JSON.parse(data.body);
-      console.log('redit - ', body);
+      console.log('redit topic - ', body);
       switch (body?.type) {
         case 'TWEET_LIKE':
           body.authUserId = authUser.id;
@@ -143,7 +145,7 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
 
     authUser?.id && api.stompClient.subscribe(`/queue/user.${authUser.id}`, async (data) => {
       const { body } = JSON.parse(data.body);
-      console.log('redit - ', body);
+      console.log('redit queue - ', body);
       switch (body?.type) {
         case 'FOLLOW_USER': {
           dispatch(ACTIONS.updateAuthUserInfo(body));
@@ -183,6 +185,13 @@ export const authUserSocketSubscribe = () => async (dispatch, getState) => {
         case 'LEAVE_CHAT':
           dispatch(MESSAGE_ACTIONS.leaveChatNotification(body));
           dispatch(CHAT_ACTIONS.deleteUserFromChat(body));
+          break;
+        case 'LIKE_TWEET':
+        case 'ADD_TO_CHAT':
+        case 'FOLLOW':
+        case 'UNFOLLOW':
+          dispatch(NOTIFICATION_ACTIONS.addNotification(body));
+          dispatch(SNACK_ACTIONS.open(body));
           break;
         default:
           console.log('no type');

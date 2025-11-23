@@ -1,35 +1,46 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import { Avatar, Box } from "@mui/material";
-import { CustomFabButton } from "../../../../components"
+import {Link, useLocation} from "react-router-dom";
+import {styled} from "@mui/material/styles";
+import {Avatar, Box} from "@mui/material";
+import {CustomFabButton} from "@components"
 import PropTypes from "prop-types";
 
-import { PATH } from "@utils/constants";
-import { useSelector } from "react-redux";
+import {PATH} from "@utils/constants";
+import {useSelector} from "react-redux";
+import {FollowButton} from "@components";
 
-const UserPhotoBlock = ({ user }) => {
-  const { authUser } = useSelector(state => state.user);
+const UserPhotoBlock = ({user}) => {
+  const {authUser} = useSelector(state => state.user);
   const location = useLocation();
 
   return (
-      <BoxWrapper>
-        <Link
-            className="UserPhotoLink"
-            to={PATH.USER.photo(user.userTag)}
-            state={{ background: location }}>
-          <Avatar className="Avatar" src={user.avatarImgUrl}/>
-        </Link>
-        <Link
+    <BoxWrapper>
+      <Link
+        className="UserPhotoLink"
+        to={PATH.USER.photo(user.userTag)}
+        state={{background: location}}>
+        <Avatar className="Avatar" src={user.avatarImgUrl}/>
+      </Link>
+      {
+        authUser.id === user.id ?
+          <Link
             to={PATH.SETTINGS.PROFILE}
-            state={{ background: location }}
-        >
-          {authUser.id === user.id && <CustomFabButton name="Edit profile" className="EditProfile"/>}
-        </Link>
-      </BoxWrapper>);
+            state={{background: location}}
+          >
+            <CustomFabButton name="Edit profile" className="EditProfile"/>
+          </Link>
+          :
+          <FollowButton
+            isFollowing={user.isFollowing}
+            userId={user.id}
+            userTag={user.userTag}
+            user={user}
+          />
+      }
+    </BoxWrapper>);
 }
 
-const BoxWrapper = styled(Box)(({ theme }) => ({
+const BoxWrapper = styled(Box)(({theme}) => ({
   width: '100%',
   paddingBottom: '25px',
   display: 'flex',
