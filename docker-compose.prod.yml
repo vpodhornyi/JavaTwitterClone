@@ -15,14 +15,18 @@ services:
       - twitter-net
 
   twitter-rabbit:
-    image: rabbitmq:3-management
+    image: pcloud/rabbitmq-stomp:latest
     container_name: twitter-rabbit
     restart: unless-stopped
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     ports:
-      - "15672:15672"
+      - "5672:5672"    # AMQP для Spring
+      - "15672:15672"  # веб-панель RabbitMQ
+      - "61613:61613"  # STOMP (то, что нужно WebSocketConfig)
+    volumes:
+      - twitter-rabbit-data:/var/lib/rabbitmq/mnesia
     networks:
       - twitter-net
 
@@ -48,3 +52,6 @@ networks:
 
 volumes:
   twitter_db_data:
+    external: false
+  twitter-rabbit-data:
+    external: false
