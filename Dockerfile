@@ -1,16 +1,19 @@
+# ==== build stage ====
 FROM maven:3.9-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
 COPY pom.xml .
-COPY .mvn .mvn
-COPY mvnw mvnw
-RUN chmod +x mvnw
+RUN mvn -B dependency:go-offline
 
 COPY src ./src
 
-RUN ./mvnw -B clean package -DskipTests
+RUN mvn -B clean package -DskipTests
 
+
+# ==== runtime stage ====
 FROM eclipse-temurin:17-jre-jammy
+
 WORKDIR /app
 
 ENV JAVA_OPTS="-Xms256m -Xmx512m"
