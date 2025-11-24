@@ -32,7 +32,7 @@ jwt:
     refresh: ${JWT_SECRET_REFRESH}
   access:
     leave:
-      minutes: ${JWT_ECCESS_LEAVE_MINUTES}
+      minutes: ${JWT_ACCESS_LEAVE_MINUTES}
   refresh:
     leave:
       days: ${JWT_REFRESH_LEAVE_DAYS}
