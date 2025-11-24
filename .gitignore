@@ -7,7 +7,7 @@ target/
 /src/main/resources/env.properties
 /src/main/resources/application.yml
 
-.env.prod
+.env
 
 ### STS ###
 .apt_generated
