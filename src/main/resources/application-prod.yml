@@ -28,14 +28,14 @@ spring:
 
 jwt:
   secret:
-    access: ${JWT_SECRET_ACCESS}
-    refresh: ${JWT_SECRET_REFRESH}
+    access: ZddN3xkiGziZvyJMNwRYidT+pumQe7PCZr7TSK7MxPBKRuYa9hwFJfXTDJPhsraqVvDfhWiJMjXJS1VWRuE8hA==
+    refresh: 65tu9kn6htFNbc8C9PZ2NIwyx9JB3H699FxbAswDFOyZTvMrHisSM8wf47zOkYGlVL3mPwIpq4iQjBq74PZOyg==
   access:
     leave:
-      minutes: ${JWT_ACCESS_LEAVE_MINUTES}
+      minutes: 30
   refresh:
     leave:
-      days: ${JWT_REFRESH_LEAVE_DAYS}
+      days: 30
   authorization:
     user:
       field: userTag
