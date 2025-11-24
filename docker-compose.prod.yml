@@ -32,6 +32,8 @@ services:
       dockerfile: Dockerfile
     container_name: twitter-backend
     restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     depends_on:
       - twitter-db
       - twitter-rabbit
