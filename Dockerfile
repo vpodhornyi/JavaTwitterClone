@@ -20,7 +20,7 @@ WORKDIR /app
 
 ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/*.war app.war
 
 EXPOSE 8080
 
