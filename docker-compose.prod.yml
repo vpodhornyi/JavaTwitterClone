@@ -6,7 +6,7 @@ services:
     container_name: twitter-frontend
     working_dir: /app
     volumes:
-      - ./frontend:/app
+      - ./client:/app
     command: sh -c "npm install && npm run build && npx serve -s dist -l 8081"
     ports:
       - "8081:8081"
