@@ -4,8 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-/src/main/resources/env.properties
-/src/main/resources/application.yml
+/src/main/resources/env.old.properties
 
 .env
 
