@@ -35,9 +35,9 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     ports:
-      - "5672:5672"    # AMQP для Spring
-      - "15672:15672"  # веб-панель RabbitMQ
-      - "61613:61613"  # STOMP (то, что нужно WebSocketConfig)
+      - "5672:5672"    # AMQP for Spring
+      - "15672:15672"  # RabbitMQ manager
+      - "61613:61613"  # STOMP
     volumes:
       - twitter-rabbit-data:/var/lib/rabbitmq/mnesia
     networks:
@@ -54,6 +54,8 @@ services:
     depends_on:
       - twitter-db
       - twitter-rabbit
+    ports:
+      - "8082:8082"
     networks:
       - twitter-net
       - proxy
