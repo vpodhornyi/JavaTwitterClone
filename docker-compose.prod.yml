@@ -15,7 +15,7 @@ services:
       - twitter-net
 
   twitter-db:
-    image: postgres:23.0.2
+    image: postgres:17
     container_name: twitter-db
     restart: unless-stopped
     environment:
