@@ -1,5 +1,5 @@
 # ==== build stage ====
-FROM eclipse-temurin:23-jdk AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN mvn -Pprod -B clean package -DskipTests
 
 
 # ==== runtime stage ====
-FROM eclipse-temurin:23-jdk
+FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
