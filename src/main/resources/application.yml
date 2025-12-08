@@ -30,14 +30,18 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
+
   rabbitmq:
-    host: ${SPRING_RABBITMQ_HOST}
-    port: ${WEBSOCKET_PORT}
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}        # 5672
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
-    clientname: ${SPRING_RABBITMQ_USERNAME}
-    clientpassword: ${SPRING_RABBITMQ_PASSWORD}
-    path: ${WEBSOCKET_PATH}
+
+  websocket:
+    path: ${WEBSOCKET_PATH:/ws}
+    port: ${WEBSOCKET_PORT}         # 61613
+    clientUser: ${WEBSOCKET_CLIENT_USER}
+    clientPassword: ${WEBSOCKET_CLIENT_PASSWORD}
 
   mail:
     host: smtp.gmail.com
@@ -113,6 +117,9 @@ spring:
   sql:
     init:
       mode: always
+
+  rabbitmq:
+    host: localhost
 
   jpa:
     defer-datasource-initialization: true

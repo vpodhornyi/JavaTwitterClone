@@ -10,19 +10,19 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-  @Value("${WEBSOCKET_PATH}")
+  @Value("${spring.websocket.path}")
   private String path;
-  @Value("${RABBITMQ_USER}")
+  @Value("${spring.rabbitmq.username}")
   private String userName;
-  @Value("${RABBITMQ_PASSWORD}")
+  @Value("${spring.rabbitmq.password}")
   private String userPassword;
-  @Value("${WEBSOCKET_CLIENT_USER}")
+  @Value("${spring.websocket.clientUser}")
   private String clientName;
-  @Value("${WEBSOCKET_CLIENT_PASSWORD}")
+  @Value("${spring.websocket.clientPassword}")
   private String clientPassword;
-  @Value("${RABBITMQ_HOST}")
+  @Value("${spring.rabbitmq.host}")
   private String websocketHost;
-  @Value("${WEBSOCKET_PORT}")
+  @Value("${spring.websocket.port}")
   private int websocketPort;
 
   @Override
