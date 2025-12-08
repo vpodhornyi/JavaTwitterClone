@@ -31,12 +31,12 @@ spring:
     driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
   rabbitmq:
-    host: ${WEBSOCKET_HOST}
+    host: ${SPRING_RABBITMQ_HOST}
     port: ${WEBSOCKET_PORT}
-    username: ${WEBSOCKET_USERNAME}
-    password: ${WEBSOCKET_PASSWORD}
-    clientname: ${WEBSOCKET_CLIENTNAME}
-    clientpassword: ${WEBSOCKET_CLIENPASSWORD}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    clientname: ${SPRING_RABBITMQ_USERNAME}
+    clientpassword: ${SPRING_RABBITMQ_PASSWORD}
     path: ${WEBSOCKET_PATH}
 
   mail:
