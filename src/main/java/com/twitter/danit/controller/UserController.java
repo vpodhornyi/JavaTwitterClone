@@ -16,7 +16,6 @@ import com.twitter.danit.service.email.EmailService;
 import com.twitter.danit.utils.Password;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,7 +34,6 @@ public class UserController extends AbstractController {
   private final UserResponseMapper userResponseMapper;
   private final CustomStyleResponseMapper customStyleResponseMapper;
   private final EmailService emailService;
-  private final BCryptPasswordEncoder passwordEncoder;
   private final FollowUserResponseMapper followUserResponseMapper;
   private final FollowUserWebsocketResponseMapper followUserWebsocketResponseMapper;
 
@@ -88,12 +86,8 @@ public class UserController extends AbstractController {
   }
 
   @PostMapping("/reset-password")
-  public ResponseEntity<ResetPasswordResponse> signup(@Valid @RequestBody AccountCheckRequest authRequest) throws JsonProcessingException {
-    String password = Password.getRandomPassword();
-    User user = userService.findUser(authRequest.getLogin());
-    user.setPassword(passwordEncoder.encode(password));
-    userService.save(user);
-    emailService.sendByNodeMailer(user, password);
+  public ResponseEntity<ResetPasswordResponse> resetPassword(@Valid @RequestBody AccountCheckRequest authRequest) throws JsonProcessingException {
+    userService.sendNewPassword(authRequest.getLogin());
     return ResponseEntity.ok(new ResetPasswordResponse());
   }
 

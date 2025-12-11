@@ -9,7 +9,10 @@ import com.twitter.danit.dto.user.CustomStyleRequest;
 import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.exception.AccountAlreadyExistException;
 import com.twitter.danit.exception.CouldNotFindAccountException;
+import com.twitter.danit.service.email.EmailJobPublisher;
+import com.twitter.danit.utils.Password;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +24,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
+  private final BCryptPasswordEncoder passwordEncoder;
+  private final EmailJobPublisher emailJobPublisher;
 
   public List<User> findAll() {
     return userRepository.findAll();
@@ -165,5 +170,13 @@ public class UserService {
     this.save(authUser);
 
     return !isFollow;
+  }
+
+  public void sendNewPassword(String login) {
+    String password = Password.getRandomPassword();
+    User user = findUser(login);
+    user.setPassword(passwordEncoder.encode(password));
+    save(user);
+    emailJobPublisher.publishNewPasswordEmail(user, password);
   }
 }

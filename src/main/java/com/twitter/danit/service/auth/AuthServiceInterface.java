@@ -1,10 +1,12 @@
 package com.twitter.danit.service.auth;
 
+import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.auth.*;
+import com.twitter.danit.dto.user.UserRequest;
 import lombok.NonNull;
 
-public interface AuthService {
-  
+public interface AuthServiceInterface {
+
   public AccountCheckResponse account(@NonNull AccountCheckRequest req);
 
   public JwtResponse login(@NonNull JwtRequest req);
@@ -17,4 +19,5 @@ public interface AuthService {
 
   void deleteAllByLogin(String login);
 
+  User signup(@NonNull UserRequest userRequest);
 }
