@@ -36,6 +36,9 @@ export const PATH = {
   },
   AUTH: {
     ROOT: '/auth',
+    GOOGLE: {
+      CALLBACK: 'callback'
+    },
     SING_IN: {
       LOGIN: 'sing-in/login',
       PASSWORD: 'sing-in/password',

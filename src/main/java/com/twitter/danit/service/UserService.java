@@ -11,7 +11,9 @@ import com.twitter.danit.exception.AccountAlreadyExistException;
 import com.twitter.danit.exception.CouldNotFindAccountException;
 import com.twitter.danit.service.email.EmailJobPublisher;
 import com.twitter.danit.utils.Password;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,22 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
   private final EmailJobPublisher emailJobPublisher;
+  private final Random rand;
+
+  public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, EmailJobPublisher emailJobPublisher) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.emailJobPublisher = emailJobPublisher;
+    this.rand = new Random();
+  }
 
   public List<User> findAll() {
     return userRepository.findAll();
@@ -117,9 +128,8 @@ public class UserService {
     throw new CouldNotFindAccountException();
   }
 
-  public User findByUserEmail(String email) {
-    Optional<User> optionalUser = userRepository.findByEmail(email);
-    return optionalUser.orElse(null);
+  public Optional<User> findByEmail(String email) {
+    return userRepository.findByEmail(email);
   }
 
   public List<User> findByMatchesInNameOrUserTag(String text) {
@@ -178,5 +188,17 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     save(user);
     emailJobPublisher.publishNewPasswordEmail(user, password);
+  }
+
+  public String generateUserTag(String userName) {
+    String userTag = userName.replaceAll("\\s+", "").toLowerCase() + rand.nextInt(9);
+    Optional<User> optionalUser = userRepository.findByUserTag(userTag);
+
+    while (optionalUser.isPresent()) {
+      int randomNumber = rand.nextInt(9);
+      userTag = userTag + randomNumber;
+      optionalUser = userRepository.findByUserTag(userTag);
+    }
+    return userTag;
   }
 }

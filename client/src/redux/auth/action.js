@@ -14,7 +14,7 @@ const actions = createActions(
       "SET_NEW_USER_DATA",
       "RESET_DATA",
     ],
-    async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "CREATE_NEW_USER", "LOGOUT"]
+    async: ["IS_ACCOUNT_EXIST", "AUTHORIZE", "CREATE_NEW_USER", "LOGOUT", "AUTH_WITH_GOOGLE"]
   },
   {
     prefix: "auth"
@@ -66,57 +66,54 @@ export const createNewUser = (body) => async dispatch => {
   }
 };
 
-export const runLoginSecondStep =
-  ({login, navigate, background}) =>
-    async dispatch => {
-      if (await dispatch(isAccountExist(login))) {
-        navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_IN.PASSWORD}`, {
-          state: {background}
-        });
-      }
-      disableLoading(dispatch);
-    };
+export const runLoginSecondStep = ({login, navigate, background}) =>
+  async dispatch => {
+    if (await dispatch(isAccountExist(login))) {
+      navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_IN.PASSWORD}`, {
+        state: {background}
+      });
+    }
+    disableLoading(dispatch);
+  };
 
-export const runSingUpSecondStep =
-  ({name, email, password, birthDate, navigate, background}) =>
-    async dispatch => {
-      dispatch(ACTIONS.setNewUserData({name, email, password, birthDate}));
+export const runSingUpSecondStep = ({name, email, password, birthDate, navigate, background}) =>
+  async dispatch => {
+    dispatch(ACTIONS.setNewUserData({name, email, password, birthDate}));
 
-      if (!(await dispatch(isAccountExist(email, false)))) {
-        navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_UP.CREATE_ACCOUNT}`, {
-          state: {background}
-        });
-      } else {
-        dispatch(SNACK_ACTIONS.open({message: `Account with email ${email} already exist!`}));
-      }
-      disableLoading(dispatch);
-    };
+    if (!(await dispatch(isAccountExist(email, false)))) {
+      navigate(`${PATH.AUTH.ROOT}/${PATH.AUTH.SING_UP.CREATE_ACCOUNT}`, {
+        state: {background}
+      });
+    } else {
+      dispatch(SNACK_ACTIONS.open({message: `Account with email ${email} already exist!`}));
+    }
+    disableLoading(dispatch);
+  };
 
-export const authorize =
-  ({login, password, navigate}) =>
-    async dispatch => {
-      try {
-        dispatch(ACTIONS.authorize.request());
-        const {type, accessToken, refreshToken} = await api.post(
-          URLS.AUTH.AUTHORIZE,
-          {login, password}
-        );
-        setHeaderAuthorization(accessToken, type);
-        setAuthToken(accessToken);
-        setRefreshToken(refreshToken);
-        setTokenType(type);
-        dispatch(ACTIONS.authorize.success());
-        dispatch(getAuthUser());
-        navigate(`${PATH.HOME}`);
+export const authorize = ({login, password, navigate}) =>
+  async dispatch => {
+    try {
+      dispatch(ACTIONS.authorize.request());
+      const {type, accessToken, refreshToken} = await api.post(
+        URLS.AUTH.AUTHORIZE,
+        {login, password}
+      );
+      setHeaderAuthorization(accessToken, type);
+      setAuthToken(accessToken);
+      setRefreshToken(refreshToken);
+      setTokenType(type);
+      dispatch(ACTIONS.authorize.success());
+      dispatch(getAuthUser());
+      navigate(`${PATH.HOME}`);
 
-      } catch (err) {
-        setTimeout(() => {
-          dispatch(ACTIONS.disableLoading());
-          dispatch(ACTIONS.authorize.fail());
-        }, 300);
-        dispatch(SNACK_ACTIONS.open(err?.response?.data));
-      }
-    };
+    } catch (err) {
+      setTimeout(() => {
+        dispatch(ACTIONS.disableLoading());
+        dispatch(ACTIONS.authorize.fail());
+      }, 300);
+      dispatch(SNACK_ACTIONS.open(err?.response?.data));
+    }
+  };
 
 export const logout = ({navigate}) => async dispatch => {
   try {
@@ -135,5 +132,16 @@ export const logout = ({navigate}) => async dispatch => {
     dispatch(CHAT_ACTIONS.resetData());
     dispatch(MESSAGE_ACTIONS.resetData());
     dispatch(USER_ACTIONS.resetData());
+  }
+}
+
+export const authWithGoogle = () => async dispatch => {
+  try {
+    // const {data} = await api.get(URLS.AUTH.GOOGLE);
+    // console.log(data);
+    window.location.href = URLS.BASE_URL + URLS.AUTH.GOOGLE;
+
+  } catch (err) {
+    dispatch(SNACK_ACTIONS.open(err?.response?.data));
   }
 }
