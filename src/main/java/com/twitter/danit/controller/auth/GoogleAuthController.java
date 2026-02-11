@@ -43,7 +43,8 @@ public class GoogleAuthController {
     String refresh = dto.getJwt().getRefreshToken();
     String redirectUrl = "http://localhost:3000/auth/callback"
         + "?access=" + URLEncoder.encode(access, StandardCharsets.UTF_8)
-        + "&refresh=" + URLEncoder.encode(refresh, StandardCharsets.UTF_8);
+        + "&refresh=" + URLEncoder.encode(refresh, StandardCharsets.UTF_8)
+        + "&type=" + URLEncoder.encode("Bearer", StandardCharsets.UTF_8);
 
     response.sendRedirect(redirectUrl);
   }

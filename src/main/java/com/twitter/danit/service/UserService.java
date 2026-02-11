@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
-//@RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder passwordEncoder;
@@ -58,12 +57,6 @@ public class UserService {
     LocalDate birthDate = userRequest.getBirthDate();
     String headerImgUrl = userRequest.getHeaderImgUrl();
     String avatarImgUrl = userRequest.getAvatarImgUrl();
-
-//    if (!user.getName().equals(name)) user.setName(name);
-//    if (!user.getBio().equals(bio)) user.setBio(bio);
-//    if (!user.getLocation().equals(location)) user.setLocation(location);
-//    if (!user.getHeaderImgUrl().equals(headerImgUrl)) user.setHeaderImgUrl(headerImgUrl);
-//    if (!user.getAvatarImgUrl().equals(avatarImgUrl)) user.setAvatarImgUrl(avatarImgUrl);
 
     user.setName(name);
     user.setBio(bio);

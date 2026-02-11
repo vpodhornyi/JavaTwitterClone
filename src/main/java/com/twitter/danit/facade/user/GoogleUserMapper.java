@@ -19,7 +19,6 @@ public class GoogleUserMapper extends GeneralFacade<User, GoogleUserInfo> {
   private void decorateEntity(GoogleUserInfo dto, User entity) {
     entity.setUserTag(userService.generateUserTag(dto.getName()));
     entity.setProvider(AuthProvider.GOOGLE);
-    entity.setPassword(null);
     entity.setBirthDate(null);
     entity.setAvatarImgUrl(dto.getPicture());
   }

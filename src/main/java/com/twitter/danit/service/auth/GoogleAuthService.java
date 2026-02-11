@@ -5,11 +5,14 @@ import com.twitter.danit.dto.auth.google.GoogleTokenResponse;
 import com.twitter.danit.dto.auth.google.GoogleUserInfo;
 import com.twitter.danit.facade.user.GoogleUserMapper;
 import com.twitter.danit.service.UserService;
+import com.twitter.danit.service.email.EmailJobPublisher;
+import com.twitter.danit.utils.Password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,6 +40,8 @@ public class GoogleAuthService {
 
   private final UserService userService;
   private final GoogleUserMapper googleUserMapper;
+  private final PasswordEncoder passwordEncoder;
+  private final EmailJobPublisher emailJobPublisher;
 
   public String buildGoogleAuthorizationUrl() {
     String encodedRedirect = URLEncoder.encode(redirectUri, StandardCharsets.UTF_8);
@@ -103,7 +108,11 @@ public class GoogleAuthService {
     return userService.findByEmail(info.getEmail())
         .orElseGet(() -> {
           User user = googleUserMapper.convertToEntity(info);
+          String password = Password.getRandomPassword();
+          user.setPassword(passwordEncoder.encode(password));
+          user.setUserTag(userService.generateUserTag(info.getName()));
           userService.save(user);
+          emailJobPublisher.publishWelcomeEmail(user, password);
           return user;
         });
   }

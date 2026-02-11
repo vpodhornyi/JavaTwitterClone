@@ -31,7 +31,7 @@ public class SecurityConfig {
                         @Value("${api.version}/auth/account") String account,
                         @Value("${api.version}/auth/login") String login,
                         @Value("${api.version}/auth/signup") String signup,
-                        @Value("${api.version}/auth/google") String google,
+                        @Value("${api.version}/auth/google/**") String google,
                         @Value("${api.version}/users/reset-password") String resetPassword,
                         @Value("${api.version}/auth/access") String token) {
     this.ws = ws;
