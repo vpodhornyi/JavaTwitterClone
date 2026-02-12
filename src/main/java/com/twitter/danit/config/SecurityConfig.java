@@ -23,6 +23,7 @@ public class SecurityConfig {
   private final String login;
   private final String token;
   private final String signup;
+  private final String google;
   private final String resetPassword;
 
   public SecurityConfig(JwtFilter jwtFilter,
@@ -30,6 +31,7 @@ public class SecurityConfig {
                         @Value("${api.version}/auth/account") String account,
                         @Value("${api.version}/auth/login") String login,
                         @Value("${api.version}/auth/signup") String signup,
+                        @Value("${api.version}/auth/google/**") String google,
                         @Value("${api.version}/users/reset-password") String resetPassword,
                         @Value("${api.version}/auth/access") String token) {
     this.ws = ws;
@@ -38,6 +40,7 @@ public class SecurityConfig {
     this.login = login;
     this.token = token;
     this.signup = signup;
+    this.google = google;
     this.resetPassword = resetPassword;
   }
 
@@ -49,17 +52,25 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http
-            .httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeHttpRequests(
-                    auth -> auth
-                            .antMatchers(ws, account, login, token, signup, resetPassword).permitAll()
-                            .anyRequest().authenticated()
-                            .and()
-                            .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            ).build();
+        .httpBasic().disable()
+        .csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authorizeHttpRequests(
+            auth -> auth
+                .antMatchers(
+                    ws,
+                    account,
+                    login,
+                    token,
+                    signup,
+                    google,
+                    resetPassword
+                ).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        ).build();
   }
 
   @Bean

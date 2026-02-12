@@ -19,6 +19,7 @@ import UserProfileEdit from './UserProfile/components/editProfile/UserProfileEdi
 import HeaderPhotoPage from './UserProfile/HeaderPhotoPage';
 import UserPhotoPage from './UserProfile/UserPhotoPage';
 import Auth from './Auth/Auth';
+import AuthCallback from './Auth/AuthCallback';
 import Login from './Auth/SignIn/Login';
 import Password from './Auth/SignIn/Password';
 import ForgotPassword from './Auth/SignIn/ForgotPassword';
@@ -30,6 +31,7 @@ export {
 
   // auth log in, sing up
   Auth,
+  AuthCallback,
   Login,
   Password,
   ForgotPassword,

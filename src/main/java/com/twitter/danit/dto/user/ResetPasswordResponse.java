@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResetPasswordResponse {
+  boolean showMessage = true;
   private final String message = "We send new password to your email!";
 }

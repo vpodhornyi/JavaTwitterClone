@@ -2,7 +2,7 @@ import React, {lazy} from 'react';
 import {Navigate} from "react-router-dom";
 import {
   Home, Explore, Notifications, Messages, Chat, ChatInfo, Bookmarks, CreateAccount, SelectMessage,
-  Lists, UserProfile, UserSearch, Auth, Login, Password, ForgotPassword, SingUp, UserData, Participants,
+  Lists, UserProfile, UserSearch, Auth, AuthCallback, Login, Password, ForgotPassword, SingUp, UserData, Participants,
   GroupEditPage, Navigation, UserProfileEdit, HeaderPhotoPage, UserPhotoPage, TweetFormPage, RepliesTweetPage,
   ImagesPage
 } from "../pages";
@@ -191,6 +191,10 @@ export const modalRoutes = authorized => {
         path: PATH.AUTH.ROOT,
         element: <Auth/>,
         children: [
+          {
+            path: PATH.AUTH.GOOGLE.CALLBACK,
+            element: <AuthCallback/>,
+          },
           {
             path: PATH.AUTH.SING_IN.LOGIN,
             element: <Login/>,

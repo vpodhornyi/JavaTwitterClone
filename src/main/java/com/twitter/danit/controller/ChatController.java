@@ -174,15 +174,15 @@ public class ChatController extends AbstractController {
     List<Long> ids = oldChat.getUsers().stream().map(User::getId).toList();
 
     List<User> usersForAdd = addUsersToGroupRequest.getUsersIds().stream()
-      .filter(id -> ids.stream().filter(i -> Objects.equals(i, id)).findFirst().isEmpty())
-      .map(userService::findById)
-      .toList();
+        .filter(id -> ids.stream().filter(i -> Objects.equals(i, id)).findFirst().isEmpty())
+        .map(userService::findById)
+        .toList();
     List<ChatUser> chatUsers = usersForAdd.stream().map(chatUserMapper::convertToDto).toList();
 
     Chat savedChat = chatService.addUsersToChat(chatId, usersForAdd);
     oldChat.getUsers().stream().filter(u -> !u.equals(authUser)).forEach(user -> simpMessagingTemplate
-      .convertAndSend(userQueue + user.getId(), ResponseEntity.ok(new AddUsersToGroupResponse(chatId,
-        chatUserMapper.convertToDto(authUser), chatUsers))));
+        .convertAndSend(userQueue + user.getId(), ResponseEntity.ok(new AddUsersToGroupResponse(chatId,
+            chatUserMapper.convertToDto(authUser), chatUsers))));
 
     usersForAdd.forEach(user -> {
       GroupChatResponse groupChatResponse = groupChatResponseMapper.convertToDto(savedChat, user);

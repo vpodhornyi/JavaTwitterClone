@@ -3,8 +3,12 @@ package com.twitter.danit.service.auth;
 import com.twitter.danit.dao.RefreshJwtStoreDao;
 import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.auth.*;
+import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.exception.WrongPasswordException;
+import com.twitter.danit.facade.user.UserRequestMapper;
 import com.twitter.danit.service.UserService;
+import com.twitter.danit.service.email.EmailJobPublisher;
+import com.twitter.danit.utils.Password;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +21,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class JwtAuthService implements AuthService {
+public class JwtAuthService implements AuthServiceInterface {
   public final UserService userService;
+  private final UserRequestMapper userRequestMapper;
   private final RefreshJwtStoreDao refreshJwtStoreDao;
   private final JwtProvider jwtProvider;
   private final BCryptPasswordEncoder passwordEncoder;
+  private final EmailJobPublisher emailJobPublisher;
 
   @Override
   public AccountCheckResponse account(@NonNull AccountCheckRequest req) {
@@ -101,5 +107,15 @@ public class JwtAuthService implements AuthService {
   @Transactional
   public void deleteAllByLogin(String login) {
     refreshJwtStoreDao.deleteAllByLogin(login);
+  }
+
+  @Override
+  public User signup(@NonNull UserRequest userRequest) {
+    String password = Password.getRandomPassword();
+    userRequest.setPassword(password);
+    User user = userService.createNewUser(userRequestMapper.convertToEntity(userRequest));
+    emailJobPublisher.publishWelcomeEmail(user, password);
+
+    return user;
   }
 }

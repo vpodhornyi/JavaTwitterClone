@@ -1,4 +1,4 @@
-package com.twitter.danit.controller;
+package com.twitter.danit.controller.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.twitter.danit.dto.auth.AccountCheckResponse;
@@ -10,22 +10,13 @@ import com.twitter.danit.domain.user.User;
 import com.twitter.danit.dto.user.UserRequest;
 import com.twitter.danit.dto.user.NewUserResponse;
 import com.twitter.danit.facade.user.NewUserResponseMapper;
-import com.twitter.danit.facade.user.UserRequestMapper;
-import com.twitter.danit.service.email.EmailService;
-import com.twitter.danit.service.UserService;
 import com.twitter.danit.service.auth.JwtAuthService;
 
-import com.twitter.danit.utils.Password;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -36,10 +27,7 @@ import javax.validation.Valid;
 @CrossOrigin
 public class AuthController {
   private final JwtAuthService jwtAuthService;
-  private final UserRequestMapper userRequestMapper;
   private final NewUserResponseMapper newUserResponseMapper;
-  private final UserService userService;
-  private final EmailService emailService;
 
   @PostMapping("/account")
   public ResponseEntity<AccountCheckResponse> account(@Valid @RequestBody AccountCheckRequest authRequest) {
@@ -75,10 +63,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<NewUserResponse> signup(@RequestBody UserRequest userRequest) throws JsonProcessingException {
-    String password = Password.getRandomPassword();
-    userRequest.setPassword(password);
-    User user = userService.createNewUser(userRequestMapper.convertToEntity(userRequest));
-    emailService.sendByNodeMailer(user, password);
+    User user = jwtAuthService.signup(userRequest);
     return ResponseEntity.ok(newUserResponseMapper.convertToDto(user));
   }
 }

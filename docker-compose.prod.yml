@@ -14,19 +14,6 @@ services:
       - proxy
       - twitter-net
 
-  twitter-db:
-    image: postgres:17
-    container_name: twitter-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME}
-      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-    volumes:
-      - twitter_db_data:/var/lib/postgresql/data
-    networks:
-      - twitter-net
-
   twitter-rabbit:
     image: pcloud/rabbitmq-stomp:latest
     container_name: twitter-rabbit
@@ -59,11 +46,15 @@ services:
     networks:
       - twitter-net
       - proxy
+      - postgres_network
 
 networks:
   twitter-net:
   proxy:
     external: true
+  postgres_network:
+    external: true
+    name: postgres_network
 
 volumes:
   twitter_db_data:
