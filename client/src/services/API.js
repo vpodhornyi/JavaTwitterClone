@@ -4,7 +4,8 @@ import {getTokens, setTokenType, setAuthToken, setHeaderAuthorization, deleteTok
 
 const BASE_URL = process.env.REACT_APP_API_VERSION;
 const api = axios.create({
-  baseURL: BASE_URL
+  // baseURL: BASE_URL
+  baseURL: '/api/v0'
 });
 
 export const interceptor = store => {
@@ -57,7 +58,7 @@ export const URLS = {
     SEARCH: "/users/search",
     CUSTOMIZE: "/users/customize",
     PROFILE: "/users/profile",
-    getProfile: userTag => `/users/${userTag}`,
+    getProfile: userTag => `/users${userTag}`,
     RESET_PASSWORD: `/users/reset-password`,
     FOLLOW: '/users/follow'
   },

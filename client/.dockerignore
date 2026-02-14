@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Build output
+build
+dist
+
+# Development and testing
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Git
+.git
+.gitignore
+
+# IDE and editor files
+.vscode
+.idea
+
+# Linting and formatting
+.eslintrc.json
+.stylelintrc.json
+
+# Documentation
+README.md
+
+# Docker files (already in context)
+Dockerfile
+.dockerignore
+
+# Misc
+.DS_Store
+*.log

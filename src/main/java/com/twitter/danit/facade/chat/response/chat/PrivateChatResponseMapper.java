@@ -30,17 +30,19 @@ public class PrivateChatResponseMapper extends GeneralFacade<Chat, PrivateChatRe
     List<User> users = entity.getUsers();
     User guestUser;
 
-    if (user.equals(users.get(0))) {
-      guestUser = users.get(1);
-      dto.setAuthUser(chatUserMapper.convertToDto(users.get(0)));
-    } else {
-      guestUser = users.get(0);
-      dto.setAuthUser(chatUserMapper.convertToDto(users.get(1)));
+    if (users.size() == 2) {
+      if (user.equals(users.get(0))) {
+        guestUser = users.get(1);
+        dto.setAuthUser(chatUserMapper.convertToDto(users.get(0)));
+      } else {
+        guestUser = users.get(0);
+        dto.setAuthUser(chatUserMapper.convertToDto(users.get(1)));
+      }
+      dto.setGuestUser(chatUserMapper.convertToDto(guestUser, user));
+      dto.setTitle(guestUser.getName());
+      dto.setUserTag(guestUser.getUserTag());
+      dto.setAvatarImgUrl(guestUser.getAvatarImgUrl());
     }
-    dto.setGuestUser(chatUserMapper.convertToDto(guestUser, user));
-    dto.setTitle(guestUser.getName());
-    dto.setUserTag(guestUser.getUserTag());
-    dto.setAvatarImgUrl(guestUser.getAvatarImgUrl());
 
     try {
       Message lastChatMessage = messageService.findLastChatMessage(entity.getId(), user.getId());

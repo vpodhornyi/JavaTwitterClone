@@ -33,9 +33,14 @@ const reducer = combineReducers({
   notification: notificationReducer,
 })
 
+const wsProtocol =
+  window.location.protocol === "https:" ? "wss" : "ws";
+
+const brokerURL = `${wsProtocol}://${window.location.host}/ws`;
+
 const stompClient = (onConnect) => {
   const client = new Client({
-    brokerURL: process.env.REACT_APP_API_BROKER_URL,
+    brokerURL,
     connectHeaders: {
       login: 'user',
       passcode: 'password',
