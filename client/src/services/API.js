@@ -2,10 +2,9 @@ import axios from "axios";
 import {ACTIONS} from '@redux/auth/action';
 import {getTokens, setTokenType, setAuthToken, setHeaderAuthorization, deleteTokens} from "@utils";
 
-const BASE_URL = process.env.REACT_APP_API_VERSION;
+const BASE_URL = '/api/v0';
 const api = axios.create({
-  // baseURL: BASE_URL
-  baseURL: '/api/v0'
+  baseURL: BASE_URL
 });
 
 export const interceptor = store => {

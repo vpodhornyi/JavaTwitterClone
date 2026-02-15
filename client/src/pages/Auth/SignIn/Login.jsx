@@ -7,7 +7,7 @@ import {OrLine, Question, Container, ButtonWrapper} from '../components';
 import {CustomFabButton} from '../../../components';
 import {Context} from "../../../utils/context";
 import {PATH} from "../../../utils/constants";
-import {runLoginSecondStep} from '@redux/auth/action';
+import {runLoginSecondStep, authWithGoogle} from '@redux/auth/action';
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -23,7 +23,11 @@ const Login = () => {
     <Container>
       <Typography className='StepTitle' variant='h1'>{"Sign in to Twitter"}</Typography>
       <ButtonWrapper>
-        <CustomFabButton className='GoogleSingIn' name='Sign in with Google'/>
+        <CustomFabButton
+          className='GoogleSingIn'
+          name='Sign in with Google'
+          onClick={() => dispatch(authWithGoogle())}
+        />
       </ButtonWrapper>
       <OrLine/>
       <TextField
