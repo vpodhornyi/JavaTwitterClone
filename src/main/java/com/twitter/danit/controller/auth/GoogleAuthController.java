@@ -5,6 +5,7 @@ import com.twitter.danit.dto.user.NewUserResponse;
 import com.twitter.danit.facade.user.NewUserResponseMapper;
 import com.twitter.danit.service.auth.GoogleAuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,8 @@ import java.nio.charset.StandardCharsets;
 @Validated
 @CrossOrigin
 public class GoogleAuthController {
+  @Value("${app.frontend.base-url}")
+  private String frontendBaseUrl;
   private final GoogleAuthService googleAuthService;
   private final NewUserResponseMapper newUserResponseMapper;
 
@@ -41,7 +44,7 @@ public class GoogleAuthController {
 
     String access = dto.getJwt().getAccessToken();
     String refresh = dto.getJwt().getRefreshToken();
-    String redirectUrl = "http://localhost:3000/auth/callback"
+    String redirectUrl = frontendBaseUrl +  "/auth/callback"
         + "?access=" + URLEncoder.encode(access, StandardCharsets.UTF_8)
         + "&refresh=" + URLEncoder.encode(refresh, StandardCharsets.UTF_8)
         + "&type=" + URLEncoder.encode("Bearer", StandardCharsets.UTF_8);

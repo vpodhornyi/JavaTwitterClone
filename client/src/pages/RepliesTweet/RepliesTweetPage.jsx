@@ -1,7 +1,6 @@
 import React, {Suspense} from "react";
-import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader} from "../../components";
+import {ColumnWrapper, PrimaryColumn, PrimaryHeader, SitebarColumn, StickyHeader, Loading} from "../../components";
 import Header from "./Header";
-import Loading from "../../components/Loader/Loading";
 import RepliesTweet from "./components/RepliesTweet";
 
 const RepliesTweetPage = () => {

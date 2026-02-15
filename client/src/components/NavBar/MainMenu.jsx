@@ -1,9 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {styled} from "@mui/material/styles";
 import {useLocation} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import MainMenuButton from "./MainMenuButton";
-import PropTypes from "prop-types";
 
 const MainMenu = ({user, menu}) => {
   const location = useLocation();

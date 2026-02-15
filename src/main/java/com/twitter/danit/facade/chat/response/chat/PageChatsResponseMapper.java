@@ -23,7 +23,7 @@ public class PageChatsResponseMapper {
 
     List<Chat> chats = entity.getContent();
 
-    if (chats.size() > 0) {
+    if (!chats.isEmpty()) {
       dto.setElements(chats.stream().map(ch -> {
         if (ch.getType().equals(ChatType.PRIVATE)) {
           return privateChatResponseMapper.convertToDto(ch, user);
