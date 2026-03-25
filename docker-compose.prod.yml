@@ -49,6 +49,7 @@ networks:
   twitter-net:
   proxy:
     external: true
+    name: nginx-proxy-manager_default
   postgres_network:
     external: true
     name: postgres_network
